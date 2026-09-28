@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Tag from '@/components/Tag.astro';
+import { formatDate } from '@/lib/content';
+export async function getStaticPaths() {
+  const notes = await getCollection('notes', ({ data }) => !data.draft);
+  return notes.map((note) => ({ params: { id: note.id }, props: { note } }));
+}
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+<BaseLayout title={`${note.data.title} — Notes — MCX`} description={`A technical note about ${note.data.topic}.`}>
+  <article class="note shell">
+    <header>
+      <a class="back" href="/notes/">← Notes</a>
+      <div class="note-meta"><time datetime={note.data.publishDate.toISOString()}>{formatDate(note.data.publishDate, 'long')}</time><Tag text={note.data.topic} /></div>
+      <h1>{note.data.title}</h1>
+    </header>
+    <div class="note-body"><Content /></div>
+  </article>
+</BaseLayout>
+<style is:global>
+  .note { max-width: 850px; padding-top: clamp(4rem, 9vw, 8rem); }
+  .note .back { color: var(--ink-faint); font: .65rem/1 var(--mono); }
+  .note .back:hover { color: var(--accent); }
+  .note-meta { display: flex; align-items: center; gap: 1rem; margin-top: 4rem; color: var(--ink-faint); font: .63rem/1.4 var(--mono); }
+  .note h1 { margin: 1.2rem 0 3.5rem; max-width: 800px; font: 460 clamp(3rem, 7vw, 5.8rem)/.95 var(--serif); letter-spacing: -.05em; }
+  .note-body { max-width: 700px; color: var(--ink-soft); font-size: 1.04rem; line-height: 1.8; }
+  .note-body p { margin: 0 0 1.4rem; }
+</style>

@@ -1,0 +1,158 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Geometry from '@/components/Geometry.astro';
+import Tag from '@/components/Tag.astro';
+import { formatDate } from '@/lib/content';
+
+interface Props {
+  entry: CollectionEntry<'writing'>;
+  headings: { depth: number; slug: string; text: string }[];
+}
+const { entry, headings } = Astro.props;
+const toc = headings.filter((heading) => heading.depth === 2);
+---
+<BaseLayout title={`${entry.data.title} — MCX`} description={entry.data.description} article>
+  <article class="article">
+    <header class="article-header shell">
+      <div class="article-meta reveal">
+        <nav aria-label="Breadcrumb"><a href="/writing/">Writing</a><span>›</span><span aria-current="page">Analysis</span></nav>
+        <p><time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time><span>·</span>{entry.data.readingTime} min read</p>
+      </div>
+      <div class="article-hero">
+        <div class="article-title reveal reveal--2">
+          {entry.data.eyebrow && <p class="eyebrow">{entry.data.eyebrow}</p>}
+          <h1>{entry.data.title}</h1>
+          <p class="dek">{entry.data.description}</p>
+          <div class="article-tags">{entry.data.tags.map((tag) => <Tag text={tag} href={`/writing/?tag=${encodeURIComponent(tag)}`} />)}</div>
+        </div>
+        <Geometry variant="article" class="article-geometry" />
+      </div>
+    </header>
+
+    <div class="mobile-toc shell">
+      <details>
+        <summary>Contents <span>{toc.length.toString().padStart(2, '0')} sections</span></summary>
+        <ol>{toc.map((heading, index) => <li><a href={`#${heading.slug}`}>{String(index + 1).padStart(2, '0')}. {heading.text}</a></li>)}</ol>
+      </details>
+    </div>
+
+    <div class="article-grid shell">
+      <aside class="toc" aria-label="Table of contents">
+        <p>Contents</p>
+        <ol>{toc.map((heading, index) => <li><a href={`#${heading.slug}`} data-toc-link><span>{String(index + 1).padStart(2, '0')}.</span>{heading.text}</a></li>)}</ol>
+      </aside>
+      <div class="prose"><slot /></div>
+      <aside class="article-rail" aria-label="Article information">
+        <p class="section-label">Status</p>
+        <p>Working note</p>
+        <p class="section-label">Updated</p>
+        <p>{formatDate(entry.data.updatedDate ?? entry.data.publishDate)}</p>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  const setupArticle = async () => {
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    const sections = links.map((link) => document.querySelector<HTMLElement>(link.hash)).filter(Boolean) as HTMLElement[];
+    if (links.length && !document.body.dataset.tocReady) {
+      document.body.dataset.tocReady = 'true';
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.filter((item) => item.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (!visible) return;
+        links.forEach((link) => link.toggleAttribute('aria-current', link.hash === `#${visible.target.id}`));
+      }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+      sections.forEach((section) => observer.observe(section));
+    }
+    const blocks = [...document.querySelectorAll<HTMLElement>('pre[data-language="mermaid"] > code')];
+    if (blocks.length) {
+      const { default: mermaid } = await import('mermaid');
+      mermaid.initialize({ startOnLoad: false, theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'neutral', securityLevel: 'strict', fontFamily: 'Inter Variable, sans-serif' });
+      for (const [index, block] of blocks.entries()) {
+        const pre = block.parentElement;
+        if (!pre || pre.dataset.rendered) continue;
+        pre.dataset.rendered = 'true';
+        const container = document.createElement('div'); container.className = 'mermaid-diagram';
+        try { const { svg } = await mermaid.render(`mermaid-${index}-${Date.now()}`, block.textContent ?? ''); container.innerHTML = svg; pre.replaceWith(container); } catch { /* Keep source visible if Mermaid cannot render. */ }
+      }
+    }
+  };
+  setupArticle(); document.addEventListener('astro:page-load', setupArticle);
+</script>
+
+<style is:global>
+  .article-header { padding-top: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid var(--line-soft); }
+  .article-meta { display: flex; justify-content: space-between; align-items: center; gap: 2rem; color: var(--ink-faint); font: .62rem/1.4 var(--mono); }
+  .article-meta nav, .article-meta p { display: flex; align-items: center; gap: .55rem; margin: 0; }
+  .article-meta a:hover { color: var(--accent); }
+  .article-hero { position: relative; min-height: clamp(410px, 45vw, 560px); display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, .7fr); align-items: center; overflow: hidden; }
+  .article-title { position: relative; z-index: 2; padding-block: 4rem 5rem; }
+  .article-title h1 { max-width: 930px; margin: 0; font: 460 clamp(3.35rem, 6vw, 6.35rem)/.93 var(--serif); letter-spacing: -.057em; text-wrap: balance; }
+  .article-title .dek { max-width: 720px; margin: 1.45rem 0 1.5rem; color: var(--ink-soft); font-size: clamp(.95rem, 1.4vw, 1.1rem); line-height: 1.65; }
+  .article-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .article-geometry { position: absolute; z-index: 0; right: -2rem; bottom: 0; width: 46%; height: 80%; opacity: .9; }
+  .article-grid { display: grid; grid-template-columns: 190px minmax(0, 760px) minmax(120px, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; padding-top: clamp(4rem, 8vw, 7.5rem); }
+  .toc { position: sticky; top: 2.5rem; }
+  .toc > p { margin: 0 0 1rem; color: var(--ink-faint); font: .6rem/1.2 var(--mono); letter-spacing: .09em; text-transform: uppercase; }
+  .toc ol { margin: 0; padding: 0; list-style: none; }
+  .toc a { position: relative; display: grid; grid-template-columns: 1.7rem 1fr; gap: .15rem; padding: .38rem 0; color: var(--ink-faint); font-size: .64rem; line-height: 1.35; transition: color .25s ease, transform .25s var(--ease-out); }
+  .toc a::before { content: ''; position: absolute; left: -.8rem; top: .75rem; width: 3px; height: 3px; border-radius: 50%; background: var(--accent); opacity: 0; transform: scale(0); transition: opacity .2s ease, transform .25s var(--ease-out); }
+  .toc a:hover { color: var(--ink); }
+  .toc a[aria-current] { color: var(--ink); transform: translateX(3px); }
+  .toc a[aria-current]::before { opacity: 1; transform: scale(1); }
+  .toc a span { font-family: var(--mono); font-size: .55rem; }
+  .article-rail { position: sticky; top: 2.5rem; padding-left: 1rem; border-left: 1px solid var(--line-soft); color: var(--ink-faint); font-size: .62rem; }
+  .article-rail p { margin: 0 0 .85rem; }
+  .article-rail .section-label { margin-bottom: .25rem; }
+  .mobile-toc { display: none; }
+
+  .prose { min-width: 0; color: var(--ink-soft); font-size: 1.01rem; line-height: 1.78; }
+  .prose > :first-child { margin-top: 0; }
+  .prose h2, .prose h3 { color: var(--ink); font-family: var(--serif); font-weight: 470; letter-spacing: -.034em; scroll-margin-top: 2rem; }
+  .prose h2 { margin: 4.6rem 0 1.25rem; font-size: clamp(2rem, 3.2vw, 2.65rem); line-height: 1.04; }
+  .prose h2:first-child { margin-top: 0; }
+  .prose h3 { margin: 3rem 0 1rem; font-size: 1.55rem; }
+  .prose p { margin: 0 0 1.45rem; }
+  .prose a { color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent); text-underline-offset: .18em; }
+  .prose strong { color: var(--ink); font-weight: 610; }
+  .prose ul, .prose ol { margin: 0 0 1.6rem; padding-left: 1.25rem; }
+  .prose li { padding-left: .3rem; margin-bottom: .5rem; }
+  .prose li::marker { color: var(--accent); }
+  .prose blockquote { margin: 2.2rem 0; padding: .2rem 0 .2rem 1.25rem; border-left: 1px solid var(--accent); color: var(--ink); font-family: var(--serif); font-size: 1.28rem; line-height: 1.55; }
+  .prose blockquote p { margin: 0; }
+  .prose code:not(pre code) { padding: .13em .32em; border-radius: 3px; background: var(--code-bg); color: var(--ink); font: .83em/1.4 var(--mono); }
+  .prose pre { margin: 2rem 0; padding: 1.15rem 1.25rem; border: 1px solid var(--line-soft); border-radius: 5px; font-size: .78rem; line-height: 1.65; }
+  .prose table { width: 100%; margin: 2rem 0; border-collapse: collapse; font-size: .78rem; }
+  .prose th, .prose td { padding: .7rem .8rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .prose th { color: var(--ink); font: 570 .65rem/1.4 var(--mono); letter-spacing: .03em; }
+  .prose .wide-figure { width: min(1040px, calc(100vw - 2 * var(--gutter))); margin-left: max(calc((760px - min(1040px, calc(100vw - 2 * var(--gutter)))) / 2), calc((760px - 100vw + 2 * var(--gutter)) / 2)); }
+  .prose .mermaid-diagram { margin: 2.5rem 0; padding: 1.5rem; border: 1px solid var(--line-soft); background: color-mix(in srgb, var(--surface) 45%, transparent); text-align: center; overflow-x: auto; }
+  .prose .mermaid-diagram svg { max-height: 240px; }
+  .prose .katex-display { margin: 2rem 0; overflow-x: auto; overflow-y: hidden; }
+  @media (max-width: 1050px) {
+    .article-grid { grid-template-columns: 170px minmax(0, 1fr); }
+    .article-rail { display: none; }
+    .article-hero { grid-template-columns: 1fr; }
+    .article-geometry { right: -5rem; width: 42%; height: 54%; opacity: .42; }
+    .prose .wide-figure { width: 100%; margin-left: 0; }
+  }
+  @media (max-width: 760px) {
+    .article-meta { align-items: flex-start; }
+    .article-meta nav span[aria-current] { display: none; }
+    .article-title { padding-block: 3.2rem 4rem; }
+    .article-title h1 { font-size: clamp(3rem, 14.5vw, 5rem); }
+    .article-hero { min-height: 450px; }
+    .article-geometry { width: 90%; height: 48%; right: -28%; opacity: .45; }
+    .article-grid { grid-template-columns: 1fr; padding-top: 4rem; }
+    .toc { display: none; }
+    .mobile-toc { display: block; margin-top: 1.2rem; }
+    .mobile-toc details { border-block: 1px solid var(--line-soft); }
+    .mobile-toc summary { display: flex; justify-content: space-between; padding: .9rem 0; cursor: pointer; color: var(--ink); font: .65rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+    .mobile-toc summary span { color: var(--ink-faint); }
+    .mobile-toc ol { margin: 0; padding: .2rem 0 1rem; list-style: none; }
+    .mobile-toc li { padding: .32rem 0; font-size: .75rem; color: var(--ink-soft); }
+    .prose .wide-figure { width: 100%; }
+  }
+</style>

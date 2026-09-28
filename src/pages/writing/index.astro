@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import WritingRow from '@/components/WritingRow.astro';
+import Icon from '@/components/Icon.astro';
+import { byNewest } from '@/lib/content';
+
+const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort(byNewest);
+const tags = [...new Set(entries.flatMap((entry) => entry.data.tags))].sort();
+const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullYear()))].sort((a, b) => b - a);
+---
+<BaseLayout title="Writing — MCX" description="Technical articles on AI systems, GPU performance, and distributed inference.">
+  <header class="page-intro shell reveal">
+    <p class="eyebrow">Research archive · {entries.length.toString().padStart(2, '0')} entries</p>
+    <h1>Writing</h1>
+    <p>Technical articles on AI systems, GPU performance, and distributed inference. Organized as an archive, not a feed.</p>
+  </header>
+
+  <section class="archive shell" id="archive" aria-label="Writing archive">
+    <div class="archive-tools">
+      <div class="filters" role="group" aria-label="Filter writing by topic">
+        <button class="filter active" type="button" data-filter="all" aria-pressed="true">All</button>
+        {tags.map((tag) => <button class="filter" type="button" data-filter={tag.toLowerCase()} aria-pressed="false">{tag}</button>)}
+      </div>
+      <label class="archive-search">
+        <span class="sr-only">Search writing</span><Icon name="search" />
+        <input type="search" placeholder="Search" autocomplete="off" data-search />
+      </label>
+    </div>
+    <p class="no-results" data-no-results hidden>No writing matches that filter.</p>
+    {years.map((year) => (
+      <section class="year-group" data-year>
+        <h2>{year}</h2>
+        <div>{entries.filter((entry) => entry.data.publishDate.getFullYear() === year).map((entry) => <WritingRow entry={entry} />)}</div>
+      </section>
+    ))}
+  </section>
+</BaseLayout>
+
+<script>
+  const setupArchive = () => {
+    const root = document.querySelector<HTMLElement>('.archive');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = 'true';
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const rows = [...root.querySelectorAll<HTMLElement>('[data-writing-row]')];
+    const search = root.querySelector<HTMLInputElement>('[data-search]');
+    const empty = root.querySelector<HTMLElement>('[data-no-results]');
+    const requested = new URLSearchParams(location.search).get('tag')?.toLowerCase();
+    let selected = requested && buttons.some((button) => button.dataset.filter === requested) ? requested : 'all';
+    if (selected !== 'all') buttons.forEach((button) => { const active = button.dataset.filter === selected; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
+    const update = () => {
+      const query = search?.value.trim().toLowerCase() ?? '';
+      let shown = 0;
+      rows.forEach((row) => {
+        const matchesTag = selected === 'all' || (row.dataset.tags ?? '').split('|').includes(selected);
+        const matchesQuery = !query || (row.textContent ?? '').toLowerCase().includes(query);
+        row.hidden = !(matchesTag && matchesQuery);
+        if (!row.hidden) shown++;
+      });
+      root.querySelectorAll<HTMLElement>('[data-year]').forEach((group) => {
+        group.hidden = !group.querySelector('[data-writing-row]:not([hidden])');
+      });
+      if (empty) empty.hidden = shown !== 0;
+    };
+    buttons.forEach((button) => button.addEventListener('click', () => {
+      selected = button.dataset.filter ?? 'all';
+      buttons.forEach((item) => { const active = item === button; item.classList.toggle('active', active); item.setAttribute('aria-pressed', String(active)); });
+      update();
+    }));
+    search?.addEventListener('input', update);
+    update();
+  };
+  setupArchive(); document.addEventListener('astro:page-load', setupArchive);
+</script>
+
+<style>
+  .archive { padding-top: clamp(2rem, 4vw, 3.5rem); }
+  .archive-tools { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+  .filters { display: flex; flex-wrap: wrap; gap: .45rem; }
+  .filter { min-height: 1.9rem; padding: .4rem .7rem; border: 1px solid var(--line-soft); border-radius: 999px; background: transparent; color: var(--ink-soft); font-size: .63rem; line-height: 1; cursor: pointer; transition: color .2s ease, background .2s ease, border-color .2s ease; }
+  .filter:hover { color: var(--ink); border-color: var(--line); }
+  .filter.active { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+  .archive-search { flex: 0 0 auto; width: 10rem; display: flex; align-items: center; gap: .45rem; border-bottom: 1px solid var(--line); color: var(--ink-faint); }
+  .archive-search :global(svg) { width: .8rem; }
+  .archive-search input { width: 100%; padding: .35rem 0; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: .68rem; }
+  .archive-search input::placeholder { color: var(--ink-faint); }
+  .year-group { display: grid; grid-template-columns: 8rem 1fr; gap: 2rem; padding-top: 3.2rem; }
+  .year-group h2 { position: sticky; top: 2rem; align-self: start; margin: 0; font: 510 1.4rem/1 var(--serif); }
+  .year-group > div { border-top: 1px solid var(--line); }
+  .no-results { padding: 3rem 0; color: var(--ink-soft); }
+  [hidden] { display: none !important; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  @media (max-width: 760px) {
+    .archive-tools { display: block; }
+    .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .8rem; scrollbar-width: none; }
+    .filters::-webkit-scrollbar { display: none; }
+    .archive-search { width: 100%; margin-top: 1rem; }
+    .year-group { grid-template-columns: 1fr; gap: 1rem; }
+    .year-group h2 { position: static; }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import Tag from './Tag.astro';
+interface Props {
+  project: {
+    index: string;
+    title: string;
+    summary: string;
+    tags: readonly string[];
+    status: string;
+    article: string;
+  };
+}
+const { project } = Astro.props;
+---
+<article class="project-card">
+  <div class="project-number">{project.index}</div>
+  <div class="project-tags">{project.tags.map((tag) => <Tag text={tag} />)}</div>
+  <h3><a href={project.article}>{project.title}</a></h3>
+  <p>{project.summary}</p>
+  <div class="project-footer">
+    <a class="text-link" href={project.article}>Read analysis <span class="arrow" aria-hidden="true">→</span></a>
+    <span class="project-status">{project.status}</span>
+  </div>
+</article>
+
+<style>
+  .project-card { min-width: 0; position: relative; padding: 1.8rem 1.7rem 1.55rem; border: 1px solid var(--line-soft); background: color-mix(in srgb, var(--surface) 36%, transparent); transition: border-color .24s ease, transform .24s var(--ease-out), background .24s ease; }
+  .project-card::before { content: ''; position: absolute; inset: -1px auto auto -1px; width: 0; height: 1px; background: var(--accent); transition: width .28s var(--ease-out); }
+  .project-card:hover { border-color: var(--line); transform: translateY(-1px); background: color-mix(in srgb, var(--surface) 64%, transparent); }
+  .project-card:hover::before { width: 3rem; }
+  .project-number { color: var(--accent); font: 590 .73rem/1 var(--mono); letter-spacing: .04em; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: .3rem; margin: 1rem 0 1.25rem; }
+  h3 { margin: 0; max-width: 19ch; font: 470 clamp(1.45rem, 2.2vw, 1.9rem)/1.02 var(--serif); letter-spacing: -.035em; }
+  h3 a { transition: color .2s ease; }
+  h3 a:hover { color: var(--accent); }
+  p { min-height: 4.8em; margin: 1rem 0 1.6rem; color: var(--ink-soft); font-size: .78rem; line-height: 1.6; }
+  .project-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .project-status { color: var(--ink-faint); font: .62rem/1 var(--mono); text-transform: uppercase; }
+  @media (max-width: 880px) { p { min-height: auto; } }
+</style>

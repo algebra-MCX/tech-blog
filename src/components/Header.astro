@@ -1,0 +1,51 @@
+---
+import Icon from './Icon.astro';
+import { site } from '@/data/site';
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/projects/', label: 'Work' },
+  { href: '/writing/', label: 'Writing' },
+  { href: '/notes/', label: 'Notes' },
+  { href: '/about/', label: 'About' }
+];
+---
+<header class="site-header" data-header>
+  <div class="header-inner shell">
+    <a class="wordmark" href="/" aria-label="MCX home">MCX<span class="wordmark-dot">.</span></a>
+    <nav class="primary-nav" aria-label="Primary navigation" id="primary-navigation">
+      {nav.map((item) => <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>{item.label}</a>)}
+    </nav>
+    <div class="header-actions">
+      <a class="icon-button search-link" href="/writing/#archive" aria-label="Search writing"><Icon name="search" /></a>
+      <button class="icon-button theme-toggle" type="button" aria-label="Switch color theme" data-theme-toggle>
+        <span class="theme-icon theme-icon--sun"><Icon name="sun" /></span>
+        <span class="theme-icon theme-icon--moon"><Icon name="moon" /></span>
+      </button>
+      <a class="icon-button github-link" href={site.github} aria-label="GitHub"><Icon name="github" /></a>
+      <button class="icon-button menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation" data-menu-toggle>
+        <span class="menu-open"><Icon name="menu" /></span><span class="menu-close"><Icon name="close" /></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const setupHeader = () => {
+    const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const nav = document.querySelector<HTMLElement>('#primary-navigation');
+    if (toggle && nav && !toggle.dataset.ready) {
+      toggle.dataset.ready = 'true';
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        nav.dataset.open = String(!open);
+        document.body.classList.toggle('nav-open', !open);
+      });
+      nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false'); nav.dataset.open = 'false'; document.body.classList.remove('nav-open');
+      }));
+    }
+  };
+  setupHeader();
+  document.addEventListener('astro:page-load', setupHeader);
+</script>

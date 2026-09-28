@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Geometry from '@/components/Geometry.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import WritingRow from '@/components/WritingRow.astro';
+import SocialLinks from '@/components/SocialLinks.astro';
+import { projects } from '@/data/projects';
+import { byNewest } from '@/lib/content';
+
+const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort(byNewest);
+---
+<BaseLayout>
+  <section class="hero shell">
+    <div class="hero-copy">
+      <p class="eyebrow reveal">AI systems · GPU · distributed inference</p>
+      <h1 class="editorial-title reveal">I work on efficient<br />execution of irregular<br />AI workloads on<br />modern accelerators.</h1>
+      <p class="hero-description reveal reveal--2">Exploring better execution methods for LLM serving, mixture-of-experts models, and large-scale distributed inference through systems design, profiling, and open-source contributions.</p>
+      <div class="reveal reveal--3"><SocialLinks /></div>
+    </div>
+    <div class="hero-visual reveal reveal--3">
+      <Geometry variant="home" />
+      <div class="exploring">
+        <p>Currently exploring</p>
+        <ul>
+          <li>MoE execution</li><li>CUDA / Triton</li><li>Communication overlap</li><li>Runtime architecture</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="work shell" aria-labelledby="selected-work">
+    <div class="section-heading">
+      <h2 id="selected-work">Selected Work</h2>
+      <a href="/projects/">View all <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="work-grid">{projects.map((project) => <ProjectCard project={project} />)}</div>
+  </section>
+
+  <section class="recent shell" aria-labelledby="recent-writing">
+    <div class="section-heading">
+      <h2 id="recent-writing">Recent Writing</h2>
+      <a href="/writing/">Archive <span aria-hidden="true">→</span></a>
+    </div>
+    <div>{writing.slice(0, 4).map((entry) => <WritingRow entry={entry} compact />)}</div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { min-height: min(760px, calc(100svh - 84px)); display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(340px, .78fr); gap: clamp(2rem, 6vw, 7rem); align-items: center; padding-block: clamp(4rem, 8vh, 7rem) clamp(5rem, 9vh, 8rem); border-bottom: 1px solid var(--line-soft); }
+  .hero-copy { position: relative; z-index: 2; }
+  .hero h1 { max-width: 850px; font-size: clamp(3.7rem, 5.9vw, 6.15rem); }
+  .hero-description { max-width: 690px; margin: 1.55rem 0 1.8rem; color: var(--ink-soft); font-size: clamp(.91rem, 1.15vw, 1.03rem); line-height: 1.65; }
+  .hero-visual { position: relative; height: min(500px, 54vw); min-height: 390px; }
+  .hero-visual :global(.geometry) { position: absolute; inset: 0; }
+  .exploring { position: absolute; right: 1.5%; bottom: 6%; padding-left: 1rem; border-left: 1px solid var(--line); color: var(--ink-faint); }
+  .exploring p { margin: 0 0 .65rem; color: var(--accent); font: .59rem/1.2 var(--mono); letter-spacing: .11em; text-transform: uppercase; }
+  .exploring ul { margin: 0; padding: 0; list-style: none; font: .61rem/1.7 var(--mono); text-transform: uppercase; letter-spacing: .04em; }
+  .work, .recent { padding-top: var(--section); }
+  .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 2rem; margin-bottom: 1.35rem; }
+  .section-heading h2 { margin: 0; font: 540 clamp(1.4rem, 2vw, 1.75rem)/1 var(--serif); letter-spacing: -.025em; }
+  .section-heading a { color: var(--ink-soft); font-size: .68rem; }
+  .section-heading a span { display: inline-block; margin-left: .25rem; transition: transform .2s var(--ease-out); }
+  .section-heading a:hover { color: var(--accent); }
+  .section-heading a:hover span { transform: translateX(3px); }
+  .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 1000px) {
+    .hero { grid-template-columns: minmax(0, 1.2fr) minmax(290px, .8fr); gap: 1rem; }
+    .hero h1 { font-size: clamp(3.35rem, 6vw, 5rem); }
+    .work-grid { grid-template-columns: 1fr 1fr; }
+    .work-grid > :last-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 760px) {
+    .hero { min-height: auto; display: block; padding-top: 3.7rem; }
+    .hero h1 { font-size: clamp(3.2rem, 13.4vw, 4.55rem); }
+    .hero-visual { height: 210px; min-height: 0; margin-top: 3rem; overflow: hidden; opacity: .82; }
+    .hero-visual :global(.geometry) { width: 380px; right: -70px; left: auto; }
+    .exploring { left: 0; right: auto; bottom: 0; background: linear-gradient(90deg, var(--bg) 75%, transparent); padding-right: 2rem; }
+    .work-grid { grid-template-columns: 1fr; }
+    .work-grid > :last-child { grid-column: auto; }
+  }
+</style>

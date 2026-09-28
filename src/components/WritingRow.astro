@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Tag from './Tag.astro';
+import { formatCompactDate } from '@/lib/content';
+interface Props { entry: CollectionEntry<'writing'>; compact?: boolean }
+const { entry, compact = false } = Astro.props;
+---
+<article class:list={['writing-row', { compact }]} data-writing-row data-tags={entry.data.tags.join('|').toLowerCase()}>
+  <time datetime={entry.data.publishDate.toISOString()}>{formatCompactDate(entry.data.publishDate)}</time>
+  <div class="writing-main">
+    <h3><a href={`/writing/${entry.id}/`}>{entry.data.title}</a></h3>
+    {!compact && <p>{entry.data.description}</p>}
+  </div>
+  <div class="writing-tags">{entry.data.tags.slice(0, compact ? 3 : 2).map((tag) => <Tag text={tag} />)}</div>
+  <a class="reading-time" href={`/writing/${entry.id}/`} aria-label={`Read ${entry.data.title}, ${entry.data.readingTime} minute read`}>
+    {entry.data.readingTime} min <span aria-hidden="true">→</span>
+  </a>
+</article>
+
+<style>
+  .writing-row { display: grid; grid-template-columns: 5rem minmax(0, 1fr) auto 4.4rem; gap: 1.3rem; align-items: start; padding: 1.35rem 0; border-bottom: 1px solid var(--line-soft); transition: opacity .2s ease; }
+  time { padding-top: .2rem; color: var(--ink-faint); font: .65rem/1.4 var(--mono); }
+  h3 { margin: 0; font: 490 1.04rem/1.3 var(--serif); letter-spacing: -.018em; }
+  h3 a { transition: color .2s ease; }
+  h3 a:hover { color: var(--accent); }
+  p { margin: .42rem 0 0; max-width: 58ch; color: var(--ink-soft); font-size: .73rem; line-height: 1.55; }
+  .writing-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .3rem; padding-top: .05rem; }
+  .reading-time { justify-self: end; padding-top: .2rem; color: var(--ink-soft); font: .63rem/1.4 var(--mono); white-space: nowrap; transition: color .2s ease; }
+  .reading-time span { display: inline-block; transition: transform .2s var(--ease-out); }
+  .reading-time:hover { color: var(--accent); }
+  .reading-time:hover span { transform: translateX(3px); }
+  .compact { grid-template-columns: 5rem minmax(0, 1fr) auto 4.4rem; padding: 1rem 0; }
+  .compact h3 { font-size: .88rem; font-family: var(--sans); font-weight: 480; }
+  @media (max-width: 780px) {
+    .writing-row, .compact { grid-template-columns: 4.2rem 1fr auto; gap: .75rem; }
+    .writing-tags { display: none; }
+    .reading-time { grid-column: 3; }
+  }
+  @media (max-width: 520px) {
+    .writing-row, .compact { grid-template-columns: 1fr auto; padding: 1.1rem 0; }
+    time { grid-column: 1 / -1; padding: 0; }
+    .reading-time { grid-column: 2; grid-row: 2; font-size: 0; }
+    .reading-time span { font-size: .8rem; }
+  }
+</style>

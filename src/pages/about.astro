@@ -1,0 +1,53 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Geometry from '@/components/Geometry.astro';
+import SocialLinks from '@/components/SocialLinks.astro';
+---
+<BaseLayout title="About — MCX" description="About MCX and the systems questions behind this research notebook.">
+  <section class="about-hero shell">
+    <div class="about-copy reveal">
+      <p class="eyebrow">About this notebook</p>
+      <h1>About</h1>
+      <p class="lead">I work on efficient execution of irregular AI workloads on modern accelerators.</p>
+      <p>My interests include mixture-of-experts execution, GPU scheduling, distributed inference, communication and computation co-design, and runtime architecture.</p>
+      <p class="truth-note">Employment, education, affiliations, and publication history are intentionally omitted until verified details are provided.</p>
+      <SocialLinks />
+    </div>
+    <Geometry variant="about" class="about-geometry" />
+  </section>
+  <section class="interests shell">
+    <p class="section-label">Technical interests</p>
+    <div class="interest-grid">
+      <h2>Questions worth<br />measuring carefully.</h2>
+      <ol>
+        <li><span>01</span>Irregular AI workloads</li>
+        <li><span>02</span>Mixture-of-experts execution</li>
+        <li><span>03</span>GPU scheduling</li>
+        <li><span>04</span>Distributed inference</li>
+        <li><span>05</span>Communication / computation overlap</li>
+        <li><span>06</span>Runtime architecture</li>
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero { min-height: min(780px, calc(100svh - 84px)); display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .72fr); gap: clamp(3rem, 8vw, 8rem); align-items: center; padding-block: clamp(4rem, 8vw, 8rem); border-bottom: 1px solid var(--line-soft); }
+  h1 { margin: 0; font: 460 clamp(4.5rem, 9vw, 8.5rem)/.88 var(--serif); letter-spacing: -.06em; }
+  .lead { max-width: 650px; margin: 2.1rem 0 1.2rem; color: var(--ink); font: 470 clamp(1.6rem, 3vw, 2.5rem)/1.15 var(--serif); letter-spacing: -.03em; }
+  .about-copy > p:not(.eyebrow):not(.lead) { max-width: 630px; color: var(--ink-soft); font-size: .88rem; }
+  .truth-note { padding-top: .8rem; border-top: 1px solid var(--line-soft); font-size: .67rem !important; }
+  .about-copy :global(.social-links) { margin-top: 1.8rem; }
+  .about-geometry { height: 570px; }
+  .interests { padding-top: var(--section); }
+  .interest-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); margin-top: 2.5rem; }
+  .interest-grid h2 { margin: 0; font: 470 clamp(2.4rem, 4.5vw, 4.3rem)/1 var(--serif); letter-spacing: -.045em; }
+  .interest-grid ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .interest-grid li { display: grid; grid-template-columns: 3.5rem 1fr; padding: .9rem 0; border-bottom: 1px solid var(--line-soft); font-size: .78rem; }
+  .interest-grid li span { color: var(--accent); font: .62rem/1.5 var(--mono); }
+  @media (max-width: 760px) {
+    .about-hero { min-height: auto; grid-template-columns: 1fr; gap: 2rem; }
+    .about-geometry { height: 250px; width: 300px; justify-self: end; overflow: hidden; opacity: .7; }
+    .interest-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+</style>

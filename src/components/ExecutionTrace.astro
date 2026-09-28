@@ -1,0 +1,32 @@
+<figure class="trace wide-figure">
+  <div class="trace-label">Execution trace · schematic</div>
+  <div class="trace-frame" role="img" aria-label="Schematic execution timeline with compute, communication, CPU, and memory lanes. This is not benchmark data.">
+    <div class="axis"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+    <div class="lane"><b>GPU 0</b><i class="compute a"></i><i class="comm b"></i><i class="compute c"></i><i class="memory d"></i></div>
+    <div class="lane"><b>GPU 1</b><i class="compute e"></i><i class="cpu f"></i><i class="comm g"></i><i class="compute h"></i></div>
+    <div class="lane"><b>GPU 2</b><i class="memory i"></i><i class="compute j"></i><i class="comm k"></i><i class="compute l"></i></div>
+    <div class="lane"><b>GPU 3</b><i class="cpu m"></i><i class="comm n"></i><i class="compute o"></i><i class="memory p"></i></div>
+  </div>
+  <div class="legend"><span class="compute">Compute</span><span class="comm">Communication</span><span class="cpu">CPU</span><span class="memory">Memory</span></div>
+  <figcaption>Figure 1. Illustrative execution trace for layout validation only; replace with a verified profiler capture before publication.</figcaption>
+</figure>
+
+<style>
+  .trace { margin-block: 2.7rem; }
+  .trace-label { margin-bottom: .55rem; color: var(--ink-faint); font: .6rem/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .trace-frame { padding: 1.2rem 1.1rem 1rem; border: 1px solid var(--line-soft); border-radius: 5px; background: var(--surface-cool); overflow: hidden; }
+  .axis { display: flex; justify-content: space-between; margin: 0 0 .8rem 4.4rem; color: var(--ink-faint); font: .52rem/1 var(--mono); }
+  .lane { position: relative; display: grid; grid-template-columns: 3.8rem 1fr; align-items: center; height: 2rem; border-top: 1px solid var(--line-soft); overflow: hidden; }
+  .lane b { font: 510 .56rem/1 var(--mono); color: var(--ink-soft); }
+  .lane i { position: absolute; left: calc(3.8rem + var(--x)); width: var(--w); height: .55rem; border-radius: 1px; opacity: .8; }
+  .compute { background: #235a8d; }.comm { background: #4d877b; }.cpu { background: #9b78ae; }.memory { background: #b68d42; }
+  .a{--x:0%;--w:18%}.b{--x:20%;--w:9%}.c{--x:31%;--w:34%}.d{--x:68%;--w:17%}
+  .e{--x:4%;--w:31%}.f{--x:37%;--w:7%}.g{--x:46%;--w:23%}.h{--x:72%;--w:23%}
+  .i{--x:0%;--w:8%}.j{--x:11%;--w:42%}.k{--x:56%;--w:13%}.l{--x:72%;--w:26%}
+  .m{--x:6%;--w:11%}.n{--x:19%;--w:31%}.o{--x:53%;--w:29%}.p{--x:85%;--w:12%}
+  .legend { display: flex; justify-content: flex-end; gap: 1rem; margin-top: .7rem; color: var(--ink-soft); font: .55rem/1 var(--mono); }
+  .legend span { display: inline-flex; align-items: center; gap: .35rem; background: none; }
+  .legend span::before { content: ''; width: .55rem; height: .55rem; background: currentColor; }
+  figcaption { margin-top: .75rem; color: var(--ink-faint); font-size: .68rem; line-height: 1.5; }
+  @media (max-width: 620px) { .trace-frame { padding-inline: .7rem; } .axis { margin-left: 3.2rem; }.lane { grid-template-columns: 2.8rem 1fr; }.lane b { font-size: .49rem; }.lane i { left: calc(2.8rem + var(--x)); }.legend { justify-content: flex-start; flex-wrap: wrap; } }
+</style>

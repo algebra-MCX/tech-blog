@@ -1,0 +1,91 @@
+---
+interface Props {
+  variant?: 'home' | 'article' | 'projects' | 'about';
+  class?: string;
+  label?: string;
+}
+const { variant = 'home', class: className, label = 'Abstract mathematical construction' } = Astro.props;
+---
+<figure class:list={['geometry', `geometry--${variant}`, className]} aria-label={label}>
+  {variant === 'home' && (
+    <svg viewBox="0 0 620 520" role="img">
+      <g class="grid">
+        <path d="M86 64V456M186 20V476M306 76V506M430 0V458M536 90V486" />
+        <path d="M22 138H590M0 254H620M48 374H574" />
+      </g>
+      <g class="construct">
+        <path class="draw draw-a" d="M86 112C86 329 194 408 306 374C424 339 430 212 430 42" />
+        <path class="draw draw-b" d="M186 254C209 430 455 454 536 254" />
+        <path class="draw draw-c" d="M306 254C306 117 393 88 536 138" />
+        <path d="M86 254H536M306 76V456" />
+        <path class="arc" d="M186 374A120 120 0 0 1 306 254" />
+      </g>
+      <g class="guides">
+        <path d="M74 112h24M74 374h24M294 76h24M294 456h24M418 42h24M524 138h24" />
+        <circle cx="245" cy="389" r="56" />
+      </g>
+      <g class="nodes">
+        <circle cx="86" cy="254" r="3" /><circle cx="186" cy="374" r="3" />
+        <circle class="node-major pulse" cx="306" cy="254" r="5" />
+        <circle class="node-major" cx="430" cy="138" r="4" />
+        <circle class="node-major drift" cx="536" cy="254" r="7" />
+      </g>
+    </svg>
+  )}
+  {variant === 'article' && (
+    <svg viewBox="0 0 620 310" role="img">
+      <g class="grid"><path d="M62 58H584M128 20V286M448 4V300M552 38V274" /></g>
+      <g class="construct">
+        <path class="draw draw-a" d="M74 262C170 262 176 138 310 138S446 58 552 58" />
+        <path class="draw draw-b" d="M310 286A148 148 0 0 1 458 138A94 94 0 0 1 552 232" />
+        <path d="M448 22V286" />
+      </g>
+      <g class="guides"><circle cx="458" cy="138" r="42"/><circle cx="552" cy="232" r="25"/></g>
+      <g class="nodes"><circle cx="128" cy="234" r="3"/><circle class="node-major" cx="310" cy="138" r="4"/><circle class="node-major pulse" cx="448" cy="58" r="5"/><circle class="node-major" cx="552" cy="232" r="4"/></g>
+    </svg>
+  )}
+  {variant === 'projects' && (
+    <svg viewBox="0 0 430 520" role="img">
+      <g class="grid"><path d="M215 24V496M52 260H378"/></g>
+      <g class="planes">
+        <path class="draw draw-a" d="m70 120 145-76 145 76-145 76Z"/>
+        <path d="m70 214 145-76 145 76-145 76Z"/>
+        <path d="m70 308 145-76 145 76-145 76Z"/>
+        <path d="m70 402 145-76 145 76-145 76Z"/>
+        <path d="M70 120v282M360 120v282M215 44v452"/>
+      </g>
+      <g class="nodes"><circle class="node-major pulse" cx="215" cy="196" r="5"/><circle class="node-major" cx="215" cy="290" r="4"/><circle cx="70" cy="402" r="3"/></g>
+    </svg>
+  )}
+  {variant === 'about' && (
+    <svg viewBox="0 0 480 560" role="img">
+      <g class="grid"><path d="M72 42V518M208 14V548M386 58V502M34 182H446M16 386H470"/></g>
+      <g class="construct"><path class="draw draw-a" d="M40 510A346 346 0 0 1 386 164"/><path class="draw draw-b" d="M72 386A136 136 0 0 1 208 250C306 250 386 330 386 428"/><path d="M208 94V512"/></g>
+      <g class="guides"><circle cx="386" cy="164" r="54"/><circle cx="208" cy="386" r="136"/></g>
+      <g class="nodes"><circle class="node-major" cx="72" cy="386" r="4"/><circle class="node-major pulse" cx="208" cy="250" r="5"/><circle class="node-major" cx="386" cy="164" r="5"/><circle cx="386" cy="428" r="3"/></g>
+    </svg>
+  )}
+</figure>
+
+<style>
+  .geometry { margin: 0; pointer-events: none; user-select: none; color: var(--line-geometry); }
+  svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  path, circle { vector-effect: non-scaling-stroke; }
+  .grid path { fill: none; stroke: currentColor; stroke-width: .6; opacity: .34; }
+  .construct path, .planes path { fill: none; stroke: currentColor; stroke-width: .82; opacity: .8; }
+  .guides path, .guides circle { fill: none; stroke: currentColor; stroke-width: .55; opacity: .38; stroke-dasharray: 3 5; }
+  .nodes circle { fill: var(--line-strong); stroke: var(--surface); stroke-width: 1.5; }
+  .nodes .node-major { fill: var(--accent); }
+  .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: geometry-draw 1.2s var(--ease-out) .16s forwards; }
+  .draw-b { animation-delay: .28s; }
+  .draw-c { animation-delay: .38s; }
+  .pulse { transform-box: fill-box; transform-origin: center; animation: point-breathe 7s ease-in-out 1.2s infinite; }
+  .drift { animation: point-drift 9s ease-in-out 1.4s infinite; }
+  .planes path { opacity: .55; }
+  .planes path:nth-child(2) { opacity: .68; }
+  .planes path:nth-child(3) { opacity: .82; }
+  @keyframes geometry-draw { to { stroke-dashoffset: 0; } }
+  @keyframes point-breathe { 0%, 100% { opacity: .7; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.08); } }
+  @keyframes point-drift { 0%, 100% { transform: translate(0); } 50% { transform: translate(-2px, 1px); } }
+  @media (prefers-reduced-motion: reduce) { .draw { animation: none; stroke-dashoffset: 0; } .pulse, .drift { animation: none; } }
+</style>

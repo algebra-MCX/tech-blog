@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro';
+import { site } from '@/data/site';
+---
+<div class="social-links" aria-label="Contact links">
+  <a class="button-dark" href={site.github} aria-label="GitHub profile"><Icon name="github" /> GitHub <span aria-hidden="true">↗</span></a>
+  <a class="icon-link" href={site.x} aria-label="X profile"><Icon name="x" /><span aria-hidden="true">↗</span></a>
+  <a class="icon-link" href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" /><span>Email</span><span aria-hidden="true">↗</span></a>
+</div>
+
+<style>
+  .social-links { display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap; }
+  @media (max-width: 420px) { .social-links { gap: .85rem; } }
+</style>
