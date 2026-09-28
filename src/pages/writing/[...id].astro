@@ -4,9 +4,18 @@ import ArticleLayout from '@/layouts/ArticleLayout.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('writing', ({ data }) => !data.draft);
-  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+  const translations = await getCollection('writingZh');
+  return entries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry, translation: translations.find((item) => item.data.source === entry.id) }
+  }));
 }
-const { entry } = Astro.props;
+const { entry, translation } = Astro.props;
 const { Content, headings } = await render(entry);
+const translated = translation ? await render(translation) : null;
+const ContentZh = translated?.Content;
 ---
-<ArticleLayout entry={entry} headings={headings}><Content /></ArticleLayout>
+<ArticleLayout entry={entry} headings={headings}>
+  <div data-lang="en"><Content /></div>
+  {ContentZh && <div data-lang="zh"><ContentZh /></div>}
+</ArticleLayout>

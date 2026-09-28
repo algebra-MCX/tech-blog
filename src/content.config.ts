@@ -31,4 +31,14 @@ const notes = defineCollection({
   })
 });
 
-export const collections = { writing, notes };
+const writingZh = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/writing-zh' }),
+  schema: z.object({ source: z.string() })
+});
+
+const notesZh = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/notes-zh' }),
+  schema: z.object({ source: z.string() })
+});
+
+export const collections = { writing, notes, writingZh, notesZh };
