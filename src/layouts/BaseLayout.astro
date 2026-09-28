@@ -45,6 +45,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
         const theme = saved === 'dark' || saved === 'light' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
+        const language = localStorage.getItem('mcx-language') === 'zh' ? 'zh' : 'en';
+        document.documentElement.dataset.language = language;
+        document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
       })();
     </script>
     <slot name="head" />
@@ -69,6 +72,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
       };
       setupTheme();
       document.addEventListener('astro:page-load', setupTheme);
+      const setupLanguage = () => {
+        document.querySelectorAll<HTMLButtonElement>('[data-language-toggle]').forEach((button) => {
+          if (button.dataset.ready) return;
+          button.dataset.ready = 'true';
+          button.addEventListener('click', () => {
+            const next = document.documentElement.dataset.language === 'zh' ? 'en' : 'zh';
+            document.documentElement.dataset.language = next;
+            document.documentElement.lang = next === 'zh' ? 'zh-CN' : 'en';
+            localStorage.setItem('mcx-language', next);
+            window.dispatchEvent(new CustomEvent('mcx:language-change', { detail: next }));
+          });
+        });
+      };
+      setupLanguage();
+      document.addEventListener('astro:page-load', setupLanguage);
     </script>
   </body>
 </html>

@@ -1,19 +1,20 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Tag from './Tag.astro';
-import { formatCompactDate } from '@/lib/content';
+import Localized from './Localized.astro';
+import { formatCompactDate, formatCompactDateZh } from '@/lib/content';
 interface Props { entry: CollectionEntry<'writing'>; compact?: boolean }
 const { entry, compact = false } = Astro.props;
 ---
 <article class:list={['writing-row', { compact }]} data-writing-row data-tags={entry.data.tags.join('|').toLowerCase()}>
-  <time datetime={entry.data.publishDate.toISOString()}>{formatCompactDate(entry.data.publishDate)}</time>
+  <time datetime={entry.data.publishDate.toISOString()}><Localized en={formatCompactDate(entry.data.publishDate)} zh={formatCompactDateZh(entry.data.publishDate)} /></time>
   <div class="writing-main">
-    <h3><a href={`/writing/${entry.id}/`}>{entry.data.title}</a></h3>
-    {!compact && <p>{entry.data.description}</p>}
+    <h3><a href={`/writing/${entry.id}/`}><Localized en={entry.data.title} zh={entry.data.titleZh} /></a></h3>
+    {!compact && <p><Localized en={entry.data.description} zh={entry.data.descriptionZh} /></p>}
   </div>
   <div class="writing-tags">{entry.data.tags.slice(0, compact ? 3 : 2).map((tag) => <Tag text={tag} />)}</div>
   <a class="reading-time" href={`/writing/${entry.id}/`} aria-label={`Read ${entry.data.title}, ${entry.data.readingTime} minute read`}>
-    {entry.data.readingTime} min <span aria-hidden="true">→</span>
+    {entry.data.readingTime} <Localized en="min" zh="分钟" /> <span aria-hidden="true">→</span>
   </a>
 </article>
 

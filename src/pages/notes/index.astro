@@ -2,22 +2,23 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Tag from '@/components/Tag.astro';
-import { byNewest, formatDate } from '@/lib/content';
+import Localized from '@/components/Localized.astro';
+import { byNewest, formatDate, formatDateZh } from '@/lib/content';
 const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(byNewest);
 ---
 <BaseLayout title="Notes — MCX" description="Short technical observations, experiments, and findings.">
   <header class="page-intro shell reveal">
-    <p class="eyebrow">Laboratory notebook · {notes.length.toString().padStart(2, '0')} entries</p>
-    <h1>Notes</h1>
-    <p>Short technical observations, experiments, and findings. Small enough to remain specific.</p>
+    <p class="eyebrow"><Localized en="Laboratory notebook" zh="实验室笔记" /> · {notes.length.toString().padStart(2, '0')} <Localized en="entries" zh="则" /></p>
+    <h1><Localized en="Notes" zh="笔记" /></h1>
+    <p><Localized en="Short technical observations, experiments, and findings. Small enough to remain specific." zh="简短的技术观察、实验与发现；保持具体，不作空泛延伸。" /></p>
   </header>
   <section class="notes shell" aria-label="Technical notes">
-    <div class="notes-head"><span>Date</span><span>Observation</span><span>Topic</span><span></span></div>
+    <div class="notes-head"><span><Localized en="Date" zh="日期" /></span><span><Localized en="Observation" zh="观察" /></span><span><Localized en="Topic" zh="主题" /></span><span></span></div>
     {notes.map((note) => (
       <article class="note-row">
-        <time datetime={note.data.publishDate.toISOString()}>{formatDate(note.data.publishDate)}</time>
-        <h2><a href={`/notes/${note.id}/`}>{note.data.title}</a></h2>
-        <Tag text={note.data.topic} />
+        <time datetime={note.data.publishDate.toISOString()}><Localized en={formatDate(note.data.publishDate)} zh={formatDateZh(note.data.publishDate)} /></time>
+        <h2><a href={`/notes/${note.id}/`}><Localized en={note.data.title} zh={note.data.titleZh} /></a></h2>
+        <span data-lang="en"><Tag text={note.data.topic} /></span><span data-lang="zh"><Tag text={note.data.topicZh} /></span>
         <a class="note-arrow" href={`/notes/${note.id}/`} aria-label={`Read ${note.data.title}`}><span aria-hidden="true">→</span></a>
       </article>
     ))}

@@ -1,0 +1,5 @@
+---
+interface Props { en: string; zh: string; class?: string }
+const { en, zh, class: className } = Astro.props;
+---
+<span class={className}><span data-lang="en">{en}</span><span data-lang="zh">{zh}</span></span>

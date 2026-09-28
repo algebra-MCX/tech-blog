@@ -6,3 +6,4 @@ dist/
 .env.*
 !.env.example
 5eed36ae-849a-469c-aed6-6cb93a94c3b9.png
+.vercel

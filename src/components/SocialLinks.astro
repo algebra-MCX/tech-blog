@@ -5,10 +5,12 @@ import { site } from '@/data/site';
 <div class="social-links" aria-label="Contact links">
   <a class="button-dark" href={site.github} aria-label="GitHub profile"><Icon name="github" /> GitHub <span aria-hidden="true">↗</span></a>
   {site.x && <a class="icon-link" href={site.x} aria-label="X profile"><Icon name="x" /><span aria-hidden="true">↗</span></a>}
-  {site.email && <a class="icon-link" href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" /><span>Email</span><span aria-hidden="true">↗</span></a>}
+  {site.email && <a class="icon-link" href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" /><span data-lang="en">Email</span><span data-lang="zh">邮箱</span><span aria-hidden="true">↗</span></a>}
+  <a class="icon-link" href={site.curriculum} aria-label="Curriculum vitae"><span class="cv-mark">CV</span><span data-lang="en">Curriculum</span><span data-lang="zh">简历</span><span aria-hidden="true">↗</span></a>
 </div>
 
 <style>
   .social-links { display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap; }
+  .cv-mark { font: 500 .62rem/1 var(--mono); }
   @media (max-width: 420px) { .social-links { gap: .85rem; } }
 </style>

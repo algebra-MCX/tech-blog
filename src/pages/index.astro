@@ -5,6 +5,7 @@ import Geometry from '@/components/Geometry.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import WritingRow from '@/components/WritingRow.astro';
 import SocialLinks from '@/components/SocialLinks.astro';
+import Localized from '@/components/Localized.astro';
 import { projects } from '@/data/projects';
 import { byNewest } from '@/lib/content';
 
@@ -13,15 +14,15 @@ const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort
 <BaseLayout>
   <section class="hero shell">
     <div class="hero-copy">
-      <p class="eyebrow reveal">AI systems · GPU · distributed inference</p>
-      <h1 class="editorial-title reveal">I work on efficient<br />execution of irregular<br />AI workloads on<br />modern accelerators.</h1>
-      <p class="hero-description reveal reveal--2">Exploring better execution methods for LLM serving, mixture-of-experts models, and large-scale distributed inference through systems design, profiling, and open-source contributions.</p>
+      <p class="eyebrow reveal"><Localized en="AI systems · GPU · distributed inference" zh="AI 系统 · GPU · 分布式推理" /></p>
+      <h1 class="editorial-title reveal"><span data-lang="en">I work on efficient<br />execution of irregular<br />AI workloads on<br />modern accelerators.</span><span data-lang="zh">研究不规则 AI 负载<br />如何在现代加速器上<br />更高效地执行。</span></h1>
+      <p class="hero-description reveal reveal--2"><Localized en="Exploring better execution methods for LLM serving, mixture-of-experts models, and large-scale distributed inference through systems design, profiling, and open-source contributions." zh="通过系统设计、性能分析与开源贡献，探索面向大语言模型服务、混合专家模型和大规模分布式推理的更优执行方法。" /></p>
       <div class="reveal reveal--3"><SocialLinks /></div>
     </div>
     <div class="hero-visual reveal reveal--3">
       <Geometry variant="home" />
       <div class="exploring">
-        <p>Currently exploring</p>
+        <p><Localized en="Currently exploring" zh="当前探索" /></p>
         <ul>
           <li>MoE execution</li><li>CUDA / Triton</li><li>Communication overlap</li><li>Runtime architecture</li>
         </ul>
@@ -31,16 +32,16 @@ const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort
 
   <section class="work shell" aria-labelledby="selected-work">
     <div class="section-heading">
-      <h2 id="selected-work">Selected Work</h2>
-      <a href="/projects/">View all <span aria-hidden="true">→</span></a>
+      <h2 id="selected-work"><Localized en="Selected Work" zh="精选工作" /></h2>
+      <a href="/projects/"><Localized en="View all" zh="查看全部" /> <span aria-hidden="true">→</span></a>
     </div>
     <div class="work-grid">{projects.map((project) => <ProjectCard project={project} />)}</div>
   </section>
 
   <section class="recent shell" aria-labelledby="recent-writing">
     <div class="section-heading">
-      <h2 id="recent-writing">Recent Writing</h2>
-      <a href="/writing/">Archive <span aria-hidden="true">→</span></a>
+      <h2 id="recent-writing"><Localized en="Recent Writing" zh="近期文章" /></h2>
+      <a href="/writing/"><Localized en="Archive" zh="文章归档" /> <span aria-hidden="true">→</span></a>
     </div>
     <div>{writing.slice(0, 4).map((entry) => <WritingRow entry={entry} compact />)}</div>
   </section>

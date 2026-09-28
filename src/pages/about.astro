@@ -2,30 +2,31 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Geometry from '@/components/Geometry.astro';
 import SocialLinks from '@/components/SocialLinks.astro';
+import Localized from '@/components/Localized.astro';
 ---
 <BaseLayout title="About — MCX" description="About MCX and the systems questions behind this research notebook.">
   <section class="about-hero shell">
     <div class="about-copy reveal">
-      <p class="eyebrow">About this notebook</p>
-      <h1>About</h1>
-      <p class="lead">I work on efficient execution of irregular AI workloads on modern accelerators.</p>
-      <p>My interests include mixture-of-experts execution, GPU scheduling, distributed inference, communication and computation co-design, and runtime architecture.</p>
-      <p class="truth-note">Employment, education, affiliations, and publication history are intentionally omitted until verified details are provided.</p>
+      <p class="eyebrow"><Localized en="About this notebook" zh="关于这本研究笔记" /></p>
+      <h1><Localized en="About" zh="关于" /></h1>
+      <p class="lead"><Localized en="I work on efficient execution of irregular AI workloads on modern accelerators." zh="我研究不规则 AI 负载如何在现代加速器上高效执行。" /></p>
+      <p><Localized en="My interests include mixture-of-experts execution, GPU scheduling, distributed inference, communication and computation co-design, and runtime architecture." zh="关注方向包括混合专家模型执行、GPU 调度、分布式推理、通信与计算协同设计，以及运行时架构。" /></p>
+      <p class="truth-note"><Localized en="Employment, education, affiliations, and publication history are intentionally omitted until verified details are provided." zh="在获得可核实的信息之前，本站有意不展示任职、教育、机构关联与发表记录。" /></p>
       <SocialLinks />
     </div>
     <Geometry variant="about" class="about-geometry" />
   </section>
   <section class="interests shell">
-    <p class="section-label">Technical interests</p>
+    <p class="section-label"><Localized en="Technical interests" zh="技术兴趣" /></p>
     <div class="interest-grid">
-      <h2>Questions worth<br />measuring carefully.</h2>
+      <h2><span data-lang="en">Questions worth<br />measuring carefully.</span><span data-lang="zh">值得谨慎测量<br />与验证的问题。</span></h2>
       <ol>
-        <li><span>01</span>Irregular AI workloads</li>
-        <li><span>02</span>Mixture-of-experts execution</li>
-        <li><span>03</span>GPU scheduling</li>
-        <li><span>04</span>Distributed inference</li>
-        <li><span>05</span>Communication / computation overlap</li>
-        <li><span>06</span>Runtime architecture</li>
+        <li><span>01</span><Localized en="Irregular AI workloads" zh="不规则 AI 负载" /></li>
+        <li><span>02</span><Localized en="Mixture-of-experts execution" zh="混合专家模型执行" /></li>
+        <li><span>03</span><Localized en="GPU scheduling" zh="GPU 调度" /></li>
+        <li><span>04</span><Localized en="Distributed inference" zh="分布式推理" /></li>
+        <li><span>05</span><Localized en="Communication / computation overlap" zh="通信 / 计算重叠" /></li>
+        <li><span>06</span><Localized en="Runtime architecture" zh="运行时架构" /></li>
       </ol>
     </div>
   </section>

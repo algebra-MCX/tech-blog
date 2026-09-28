@@ -2,7 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Tag from '@/components/Tag.astro';
-import { formatDate } from '@/lib/content';
+import Localized from '@/components/Localized.astro';
+import { formatDate, formatDateZh } from '@/lib/content';
 export async function getStaticPaths() {
   const notes = await getCollection('notes', ({ data }) => !data.draft);
   return notes.map((note) => ({ params: { id: note.id }, props: { note } }));
@@ -13,9 +14,9 @@ const { Content } = await render(note);
 <BaseLayout title={`${note.data.title} — Notes — MCX`} description={`A technical note about ${note.data.topic}.`}>
   <article class="note shell">
     <header>
-      <a class="back" href="/notes/">← Notes</a>
-      <div class="note-meta"><time datetime={note.data.publishDate.toISOString()}>{formatDate(note.data.publishDate, 'long')}</time><Tag text={note.data.topic} /></div>
-      <h1>{note.data.title}</h1>
+      <a class="back" href="/notes/">← <Localized en="Notes" zh="笔记" /></a>
+      <div class="note-meta"><time datetime={note.data.publishDate.toISOString()}><Localized en={formatDate(note.data.publishDate, 'long')} zh={formatDateZh(note.data.publishDate, 'long')} /></time><span data-lang="en"><Tag text={note.data.topic} /></span><span data-lang="zh"><Tag text={note.data.topicZh} /></span></div>
+      <h1><Localized en={note.data.title} zh={note.data.titleZh} /></h1>
     </header>
     <div class="note-body"><Content /></div>
   </article>

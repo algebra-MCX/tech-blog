@@ -3,7 +3,8 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Geometry from '@/components/Geometry.astro';
 import Tag from '@/components/Tag.astro';
-import { formatDate } from '@/lib/content';
+import Localized from '@/components/Localized.astro';
+import { formatDate, formatDateZh } from '@/lib/content';
 
 interface Props {
   entry: CollectionEntry<'writing'>;
@@ -11,19 +12,26 @@ interface Props {
 }
 const { entry, headings } = Astro.props;
 const toc = headings.filter((heading) => heading.depth === 2);
+const headingZh: Record<string, string> = {
+  'The Problem': '问题', 'Execution Path': '执行路径', Hypothesis: '假设', Implementation: '实现',
+  'Performance Surprise': '性能反常', Profiling: '性能分析', 'Root Cause': '根因', Lessons: '经验',
+  "What's Next": '下一步', Principle: '原则', 'Working premise': '工作前提', 'Evidence needed': '所需证据',
+  Status: '状态', Questions: '问题', Scope: '范围', 'Why irregularity matters': '为何不规则性重要',
+  'Measurement plan': '测量计划', 'Working list': '工作清单'
+};
 ---
 <BaseLayout title={`${entry.data.title} — MCX`} description={entry.data.description} article>
   <article class="article">
     <header class="article-header shell">
       <div class="article-meta reveal">
-        <nav aria-label="Breadcrumb"><a href="/writing/">Writing</a><span>›</span><span aria-current="page">Analysis</span></nav>
-        <p><time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time><span>·</span>{entry.data.readingTime} min read</p>
+        <nav aria-label="Breadcrumb"><a href="/writing/"><Localized en="Writing" zh="文章" /></a><span>›</span><span aria-current="page"><Localized en="Analysis" zh="分析" /></span></nav>
+        <p><time datetime={entry.data.publishDate.toISOString()}><Localized en={formatDate(entry.data.publishDate)} zh={formatDateZh(entry.data.publishDate)} /></time><span>·</span>{entry.data.readingTime} <Localized en="min read" zh="分钟阅读" /></p>
       </div>
       <div class="article-hero">
         <div class="article-title reveal reveal--2">
-          {entry.data.eyebrow && <p class="eyebrow">{entry.data.eyebrow}</p>}
-          <h1>{entry.data.title}</h1>
-          <p class="dek">{entry.data.description}</p>
+          {entry.data.eyebrow && <p class="eyebrow"><Localized en={entry.data.eyebrow} zh={entry.data.eyebrowZh ?? entry.data.eyebrow} /></p>}
+          <h1><Localized en={entry.data.title} zh={entry.data.titleZh} /></h1>
+          <p class="dek"><Localized en={entry.data.description} zh={entry.data.descriptionZh} /></p>
           <div class="article-tags">{entry.data.tags.map((tag) => <Tag text={tag} href={`/writing/?tag=${encodeURIComponent(tag)}`} />)}</div>
         </div>
         <Geometry variant="article" class="article-geometry" />
@@ -32,22 +40,22 @@ const toc = headings.filter((heading) => heading.depth === 2);
 
     <div class="mobile-toc shell">
       <details>
-        <summary>Contents <span>{toc.length.toString().padStart(2, '0')} sections</span></summary>
-        <ol>{toc.map((heading, index) => <li><a href={`#${heading.slug}`}>{String(index + 1).padStart(2, '0')}. {heading.text}</a></li>)}</ol>
+        <summary><Localized en="Contents" zh="目录" /> <span>{toc.length.toString().padStart(2, '0')} <Localized en="sections" zh="节" /></span></summary>
+        <ol>{toc.map((heading, index) => <li><a href={`#${heading.slug}`}>{String(index + 1).padStart(2, '0')}. <Localized en={heading.text} zh={headingZh[heading.text] ?? heading.text} /></a></li>)}</ol>
       </details>
     </div>
 
     <div class="article-grid shell">
       <aside class="toc" aria-label="Table of contents">
-        <p>Contents</p>
-        <ol>{toc.map((heading, index) => <li><a href={`#${heading.slug}`} data-toc-link><span>{String(index + 1).padStart(2, '0')}.</span>{heading.text}</a></li>)}</ol>
+        <p><Localized en="Contents" zh="目录" /></p>
+        <ol>{toc.map((heading, index) => <li><a href={`#${heading.slug}`} data-toc-link><span>{String(index + 1).padStart(2, '0')}.</span><Localized en={heading.text} zh={headingZh[heading.text] ?? heading.text} /></a></li>)}</ol>
       </aside>
       <div class="prose"><slot /></div>
       <aside class="article-rail" aria-label="Article information">
-        <p class="section-label">Status</p>
-        <p>Working note</p>
-        <p class="section-label">Updated</p>
-        <p>{formatDate(entry.data.updatedDate ?? entry.data.publishDate)}</p>
+        <p class="section-label"><Localized en="Status" zh="状态" /></p>
+        <p><Localized en="Working note" zh="工作笔记" /></p>
+        <p class="section-label"><Localized en="Updated" zh="更新" /></p>
+        <p><Localized en={formatDate(entry.data.updatedDate ?? entry.data.publishDate)} zh={formatDateZh(entry.data.updatedDate ?? entry.data.publishDate)} /></p>
       </aside>
     </div>
   </article>

@@ -5,7 +5,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://example.com',
+  site: process.env.SITE_URL ?? 'https://tech-blog-chi.vercel.app',
   integrations: [mdx(), sitemap()],
   markdown: {
     remarkPlugins: [remarkMath],

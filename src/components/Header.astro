@@ -1,19 +1,20 @@
 ---
 import Icon from './Icon.astro';
+import Localized from './Localized.astro';
 import { site } from '@/data/site';
 const path = Astro.url.pathname;
 const nav = [
-  { href: '/projects/', label: 'Work' },
-  { href: '/writing/', label: 'Writing' },
-  { href: '/notes/', label: 'Notes' },
-  { href: '/about/', label: 'About' }
+  { href: '/projects/', en: 'Work', zh: '项目' },
+  { href: '/writing/', en: 'Writing', zh: '文章' },
+  { href: '/notes/', en: 'Notes', zh: '笔记' },
+  { href: '/about/', en: 'About', zh: '关于' }
 ];
 ---
 <header class="site-header" data-header>
   <div class="header-inner shell">
     <a class="wordmark" href="/" aria-label="MCX home">MCX<span class="wordmark-dot">.</span></a>
     <nav class="primary-nav" aria-label="Primary navigation" id="primary-navigation">
-      {nav.map((item) => <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>{item.label}</a>)}
+      {nav.map((item) => <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
     </nav>
     <div class="header-actions">
       <a class="icon-button search-link" href="/writing/#archive" aria-label="Search writing"><Icon name="search" /></a>
@@ -21,6 +22,7 @@ const nav = [
         <span class="theme-icon theme-icon--sun"><Icon name="sun" /></span>
         <span class="theme-icon theme-icon--moon"><Icon name="moon" /></span>
       </button>
+      <button class="language-toggle" type="button" aria-label="切换中英文 / Switch language" data-language-toggle><span data-lang="en">中</span><span data-lang="zh">EN</span></button>
       <a class="icon-button github-link" href={site.github} aria-label="GitHub"><Icon name="github" /></a>
       <button class="icon-button menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation" data-menu-toggle>
         <span class="menu-open"><Icon name="menu" /></span><span class="menu-close"><Icon name="close" /></span>

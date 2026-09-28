@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import WritingRow from '@/components/WritingRow.astro';
 import Icon from '@/components/Icon.astro';
+import Localized from '@/components/Localized.astro';
 import { byNewest } from '@/lib/content';
 
 const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort(byNewest);
@@ -11,23 +12,23 @@ const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullY
 ---
 <BaseLayout title="Writing — MCX" description="Technical articles on AI systems, GPU performance, and distributed inference.">
   <header class="page-intro shell reveal">
-    <p class="eyebrow">Research archive · {entries.length.toString().padStart(2, '0')} entries</p>
-    <h1>Writing</h1>
-    <p>Technical articles on AI systems, GPU performance, and distributed inference. Organized as an archive, not a feed.</p>
+    <p class="eyebrow"><Localized en="Research archive" zh="研究归档" /> · {entries.length.toString().padStart(2, '0')} <Localized en="entries" zh="篇" /></p>
+    <h1><Localized en="Writing" zh="文章" /></h1>
+    <p><Localized en="Technical articles on AI systems, GPU performance, and distributed inference. Organized as an archive, not a feed." zh="关于 AI 系统、GPU 性能与分布式推理的技术文章。以研究档案而非信息流的方式组织。" /></p>
   </header>
 
   <section class="archive shell" id="archive" aria-label="Writing archive">
     <div class="archive-tools">
       <div class="filters" role="group" aria-label="Filter writing by topic">
-        <button class="filter active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter active" type="button" data-filter="all" aria-pressed="true"><Localized en="All" zh="全部" /></button>
         {tags.map((tag) => <button class="filter" type="button" data-filter={tag.toLowerCase()} aria-pressed="false">{tag}</button>)}
       </div>
       <label class="archive-search">
         <span class="sr-only">Search writing</span><Icon name="search" />
-        <input type="search" placeholder="Search" autocomplete="off" data-search />
+        <input type="search" placeholder="Search / 搜索" autocomplete="off" data-search />
       </label>
     </div>
-    <p class="no-results" data-no-results hidden>No writing matches that filter.</p>
+    <p class="no-results" data-no-results hidden><Localized en="No writing matches that filter." zh="没有符合条件的文章。" /></p>
     {years.map((year) => (
       <section class="year-group" data-year>
         <h2>{year}</h2>

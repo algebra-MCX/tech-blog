@@ -1,12 +1,16 @@
 ---
 import Tag from './Tag.astro';
+import Localized from './Localized.astro';
 interface Props {
   project: {
     index: string;
     title: string;
+    titleZh: string;
     summary: string;
+    summaryZh: string;
     tags: readonly string[];
     status: string;
+    statusZh: string;
     article: string;
   };
 }
@@ -15,11 +19,11 @@ const { project } = Astro.props;
 <article class="project-card">
   <div class="project-number">{project.index}</div>
   <div class="project-tags">{project.tags.map((tag) => <Tag text={tag} />)}</div>
-  <h3><a href={project.article}>{project.title}</a></h3>
-  <p>{project.summary}</p>
+  <h3><a href={project.article}><Localized en={project.title} zh={project.titleZh} /></a></h3>
+  <p><Localized en={project.summary} zh={project.summaryZh} /></p>
   <div class="project-footer">
-    <a class="text-link" href={project.article}>Read analysis <span class="arrow" aria-hidden="true">→</span></a>
-    <span class="project-status">{project.status}</span>
+    <a class="text-link" href={project.article}><Localized en="Read analysis" zh="阅读分析" /> <span class="arrow" aria-hidden="true">→</span></a>
+    <span class="project-status"><Localized en={project.status} zh={project.statusZh} /></span>
   </div>
 </article>
 

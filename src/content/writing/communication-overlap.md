@@ -1,6 +1,8 @@
 ---
 title: "Communication Overlap Is Not Free"
+titleZh: "通信重叠并非免费"
 description: "A closer look at GPU contention, NCCL, and the limits of overlap in expert-parallel inference."
+descriptionZh: "重新审视专家并行推理中的 GPU 争用、NCCL，以及通信重叠的边界。"
 publishDate: 2026-09-18
 tags: [Distributed Systems, EP]
 readingTime: 8
