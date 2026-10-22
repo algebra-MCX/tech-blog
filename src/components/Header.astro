@@ -9,10 +9,10 @@ const path = Astro.url.pathname;
 const id = path.split('/').filter(Boolean).slice(1).join('/');
 const projectArticle = path.startsWith('/writing/') || (path.startsWith('/notes/') && noteMap[id] && !noteMap[id].noteCategory);
 const nav = [
-  { href: site.homepage, en: 'Home ↗', zh: '个人主页 ↗', active: false },
   { href: '/projects/', en: 'Projects', zh: '项目', active: path.startsWith('/projects/') || projectArticle },
   { href: '/guides/', en: 'Guides', zh: '指南', active: path.startsWith('/guides/') },
-  { href: '/notes/', en: 'Notes', zh: '想法', active: path.startsWith('/notes/') && !projectArticle }
+  { href: '/notes/', en: 'Notes', zh: '想法', active: path.startsWith('/notes/') && !projectArticle },
+  { href: site.homepage, en: 'Home ↗', zh: '个人主页 ↗', active: false }
 ];
 ---
 <header class="site-header shell glass-surface">

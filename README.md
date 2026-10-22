@@ -32,7 +32,7 @@ Writing supports Markdown and MDX, syntax highlighting, KaTeX math, Mermaid diag
 
 ## Adjust the structure
 
-Navigation is Home / Projects / Guides / Notes. Home returns to the personal homepage (including bilingual resumes); the wordmark returns to the blog index. Legacy About URLs redirect to the personal homepage. Search indexes both languages and filters by type, project and domain. The small brand avatar is optimized into 32/64px WebP assets at build time.
+Navigation is Projects / Guides / Notes / Home. Home returns to the personal homepage (including bilingual resumes); the wordmark returns to the blog index. Legacy About URLs redirect to the personal homepage. Search indexes both languages and filters by type, project and domain. The small brand avatar is optimized into 32/64px WebP assets at build time.
 
 Each project has Overview, Start Here and Resources. Experiments, Debugging and Design appear when they contain entries or repository documents. Add a project in `projects.ts`, then assign articles in `writingMap` or legacy notes in `noteMap`. Repository links describe study/research context, not an implied upstream contribution.
 
