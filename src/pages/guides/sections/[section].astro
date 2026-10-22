@@ -16,7 +16,7 @@ const symptoms = [
 ];
 ---
 <BaseLayout title={`${section.en} — Guides — Chenxi Ma`} description={section.description}>
-  <header class="page-intro shell"><a class="back-link" href="/guides/"><Localized en="← Guides" zh="← 指南" /></a><h1><Localized en={section.en} zh={section.zh} /></h1><p><Localized en={section.description} zh={section.descriptionZh} /></p></header>
+  {section.id !== 'quickstarts' && <header class="page-intro shell"><a class="back-link" href="/guides/"><Localized en="← Guides" zh="← 指南" /></a><h1><Localized en={section.en} zh={section.zh} /></h1><p><Localized en={section.description} zh={section.descriptionZh} /></p></header>}
   {section.id === 'quickstarts' ? <QuickstartIndex entries={entries} /> : <section class="library-section shell"><nav class="section-tabs" aria-label="Guide categories">{guideSections.map(s => <a href={`/guides/sections/${s.id}/`} aria-current={section.id === s.id ? 'page' : undefined}><Localized en={s.en} zh={s.zh} /></a>)}</nav><div class="guide-cards">{entries.map(e => <div class="reading-glass guide-card"><EntryCard href={`/guides/${e.id}/`} title={e.data.title} titleZh={e.data.titleZh} description={e.data.description} descriptionZh={e.data.descriptionZh} /></div>)}</div></section>}
   {section.id === 'playbooks' && <section class="library-section shell" id="debugging-map"><div class="section-heading"><h2><Localized en="Debugging map" zh="排障地图" /></h2></div><p class="section-description"><Localized en="Start with a symptom. Some linked investigations are still working outlines." zh="从症状出发查找记录，其中部分研究仍处于提纲阶段。" /></p><div class="guide-cards">{symptoms.map(s => <div class="reading-glass guide-card"><EntryCard href={s.href} title={s.en} titleZh={s.zh} label={s.label} /></div>)}</div></section>}
 </BaseLayout>

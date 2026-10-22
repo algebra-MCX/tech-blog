@@ -10,6 +10,7 @@ interface Props { entries: CollectionEntry<'guides'>[] }
 const { entries } = Astro.props;
 ---
 <section class="library-section shell" data-research-browser aria-label="Quickstarts / 最简入门">
+  <h1 class="sr-only"><Localized en="Quickstarts" zh="最简入门" /></h1>
   <ResearchFilters total={entries.length} noun="examples" />
   <div class="research-results-stage" data-research-stage>
     <div class="research-grid" data-research-results>{entries.map(entry => <article class="reading-glass research-quickstart" data-research-item data-primary-category={entry.data.primaryCategory}>
