@@ -22,7 +22,7 @@ const assignment = noteMap[note.id];
 const project = projectById(assignment?.project);
 const category = noteSections.find(s => s.id === assignment?.noteCategory);
 const topic = noteTopics.find(t => t.id === assignment?.noteTopic);
-const parentHref = topic ? `/notes/topics/${topic.id}/` : category ? `/notes/sections/${category.id}/` : project ? `/projects/${project.id}/` : '/notes/';
+const parentHref = topic ? `/notes/topics/${topic.id}/` : category ? `/notes/sections/${category.id}/` : project ? `/projects/${project.id}/articles/?kind=${assignment.section}` : '/notes/';
 ---
 <BaseLayout title={`${note.data.title} — Notes — Chenxi Ma`} description={`A technical note about ${note.data.topic}.`}>
   <article class="note shell">

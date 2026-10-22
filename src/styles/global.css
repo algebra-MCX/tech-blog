@@ -322,7 +322,9 @@ main { min-height: calc(100svh - 245px); }
 .project-card h2 span { float: right; font-size: 21px; font-weight: 400; color: var(--ink-faint); }
 .project-card p { margin: 12px 0 22px; font-size: 17px; line-height: 1.8; color: var(--ink-soft); }
 .project-card p.project-subtitle { margin: 0; font-size: 14px; color: var(--accent); }
-.project-card .project-links { margin-top: auto; padding-top: 10px; gap: 12px 20px; }
+.project-card .project-links { margin-top: 0; padding-top: 10px; gap: 12px 20px; }
+.project-card p.project-card-inventory { margin-top: auto; padding-top: 8px; font-size: 13px; color: var(--ink-faint); }
+.project-card-inventory > [aria-hidden] { padding-inline: 5px; }
 .card-topline { display: flex; flex-wrap: wrap; gap: 8px 12px; font-size: 12px; color: var(--ink-faint); }
 .card-topline > span:last-child { display: flex; gap: 9px; }
 .status-dot::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--accent); vertical-align: middle; }
@@ -355,11 +357,6 @@ main { min-height: calc(100svh - 245px); }
 .entry-card p.eyebrow { margin: 0 0 9px; font-size: 13px; color: var(--ink-faint); }
 .project-hero .back-link, .back-link { display: inline-block; margin-bottom: 18px; font-size: 15px; color: var(--accent); }
 .repository-link { display: inline-block; margin-top: 20px; font-size: 16px; }
-.project-workspace { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 24px; padding-top: 32px; align-items: start; }
-.project-sidebar { position: sticky; top: 120px; padding: 12px; }
-.project-sidebar a { display: flex; align-items: center; min-height: 44px; padding: 8px 10px; font-size: 15px; color: var(--ink-soft); }
-.project-sidebar a:hover { color: var(--accent); background: var(--lens-fill); border-radius: 10px; }
-.project-chapters { min-width: 0; display: grid; gap: 24px; }
 .chapter { min-width: 0; padding: 28px; scroll-margin-top: 120px; }
 .chapter h2 { margin: 0 0 20px; font-size: 28px; }
 .chapter > p { color: var(--ink-soft); font-size: 18px; }
@@ -371,6 +368,15 @@ main { min-height: calc(100svh - 245px); }
 .reading-status { padding: 12px 16px; border-left: 2px solid var(--glass-border); background: var(--glass-fill); border-radius: 0 12px 12px 0; font-size: 15px; color: var(--ink-soft); margin-top: 22px; }
 .note-context { margin-bottom: 0; font-size: 15px; color: var(--ink-faint); }
 .article-return { display: flex; flex-wrap: wrap; gap: 12px 22px; margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 16px; }
+.guide-project-context.shell { margin-top: 26px; }
+.guide-context-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; padding: 13px 17px; border: 1px solid var(--glass-border); border-radius: 13px; background: var(--glass-fill); font-size: 14px; }
+.guide-context-bar > span { color: var(--ink-faint); font-size: 13px; }
+.guide-project-context--next { margin-top: 30px; }
+.prose a.guide-context-next, .prose a.project-next-article { display: grid; gap: 10px; padding: 22px; border: 1px solid var(--glass-border); border-radius: 15px; background: var(--glass-fill); text-decoration: none; color: var(--ink); }
+.guide-context-next .eyebrow, .project-next-article .eyebrow { margin: 0; font-size: 13px; color: var(--ink-faint); }
+.guide-context-next strong, .project-next-article strong { font-size: 22px; line-height: 1.5; }
+.guide-context-next > span:last-child, .project-next-article > span:last-child { font-size: 14px; color: var(--ink-faint); }
+.project-next-article { margin-top: 32px; }
 .article-meta nav { flex-wrap: wrap; }
 .search-large { display: flex; align-items: center; gap: 14px; padding: 12px 20px; margin-bottom: 24px; }
 .search-large .icon { flex-shrink: 0; }
@@ -391,9 +397,6 @@ main { min-height: calc(100svh - 245px); }
 @media (max-width: 850px) {
   .project-cards { grid-template-columns: 1fr; }
   .project-card h2 { margin-top: 16px; }
-  .project-workspace { grid-template-columns: 1fr; }
-  .project-sidebar { position: static; display: flex; overflow-x: auto; gap: 8px; border-radius: 16px; }
-  .project-sidebar a { flex-shrink: 0; white-space: nowrap; }
   .chapter { scroll-margin-top: 165px; }
 }
 @media (max-width: 600px) {
@@ -408,7 +411,6 @@ main { min-height: calc(100svh - 245px); }
   .project-card, .route-card, .guide-card { padding: 22px; }
   .chapter { padding: 22px 20px; }
   .chapter h2 { font-size: 25px; }
-  .project-workspace { padding-top: 24px; gap: 18px; }
   .entry-card h3 { font-size: 21px; }
   .filter-bar { gap: 12px; }
   .filter-bar label { flex: 1 1 120px; }

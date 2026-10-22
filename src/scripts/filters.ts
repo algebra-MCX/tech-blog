@@ -1,6 +1,7 @@
 document.querySelectorAll<HTMLElement>('[data-filter-list]').forEach(root => {
   const controls = [...root.querySelectorAll<HTMLSelectElement | HTMLInputElement>('[data-filter]')];
   const rows = [...root.querySelectorAll<HTMLElement>('[data-filter-row]')];
+  const picks = [...root.querySelectorAll<HTMLButtonElement>('[data-filter-pick]')];
   const apply = () => {
     let visible = 0;
     for (const row of rows) {
@@ -17,12 +18,31 @@ document.querySelectorAll<HTMLElement>('[data-filter-list]').forEach(root => {
     if (empty) empty.hidden = visible !== 0;
     const count = root.querySelector<HTMLElement>('[data-filter-count]');
     if (count) count.textContent = String(visible);
+    picks.forEach(button => {
+      const control = controls.find(item => item.dataset.filter === button.dataset.filterPick);
+      button.setAttribute('aria-pressed', String(control?.value === button.dataset.value));
+    });
   };
   const params = new URLSearchParams(location.search);
   for (const control of controls) {
     const requested = params.get(control.dataset.filter ?? '');
-    if (requested && (control instanceof HTMLInputElement || [...control.options].some(option => option.value === requested))) control.value = requested;
+    const choices = picks.filter(button => button.dataset.filterPick === control.dataset.filter);
+    if (requested && (!choices.length || choices.some(button => button.dataset.value === requested)) && (control instanceof HTMLInputElement || [...control.options].some(option => option.value === requested))) control.value = requested;
     control.addEventListener(control instanceof HTMLInputElement ? 'input' : 'change', apply);
   }
+  picks.forEach(button => button.addEventListener('click', () => {
+    const control = controls.find(item => item.dataset.filter === button.dataset.filterPick);
+    if (!control) return;
+    control.value = button.dataset.value ?? 'all';
+    apply();
+    const url = new URL(location.href);
+    controls.forEach(item => {
+      const key = item.dataset.filter;
+      if (!key) return;
+      if (!item.value || item.value === 'all') url.searchParams.delete(key);
+      else url.searchParams.set(key, item.value);
+    });
+    history.replaceState(history.state, '', url);
+  }));
   apply();
 });

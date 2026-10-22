@@ -1,0 +1,39 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Localized from '@/components/Localized.astro';
+import { projects, type Project } from '@/data/projects';
+import { projectViews, type ProjectView } from '@/lib/project-content';
+import '@/styles/projects.css';
+interface Props { project: Project; view: ProjectView; count?: number }
+const { project, view, count } = Astro.props;
+const current = projectViews.find(item => item.id === view)!;
+---
+<BaseLayout title={`${project.title}${view === 'overview' ? '' : ` · ${current.en}`} — Chenxi Ma`} description={project.summary}>
+  <div class="project-desk shell" data-project-desk data-project-id={project.id} data-project-view={view}>
+    <div class="project-context-bar">
+      <a class="project-back" href="/projects/"><span aria-hidden="true">←</span><Localized en="All projects" zh="全部项目" /></a>
+      <label class="project-picker"><span><Localized en="Project" zh="当前项目" /></span><select aria-label="Switch project / 切换项目" data-project-switch>{projects.map(item => <option value={`/projects/${item.id}/`} selected={item.id === project.id}>{item.title}</option>)}</select></label>
+    </div>
+    <header class="project-masthead"><div><p class="eyebrow"><Localized en="Project notebook" zh="项目档案" /></p><h1>{project.title}</h1></div><a class="project-github" href={project.repository}>GitHub <span aria-hidden="true">↗</span></a></header>
+    <nav class="project-view-nav glass-surface" aria-label="Project navigation / 项目导航">{projectViews.map(item => <a href={`/projects/${project.id}/${item.suffix}`} aria-current={view === item.id ? 'page' : undefined}><Localized en={item.en} zh={item.zh} />{item.id === 'articles' && count !== undefined && <span class="project-tab-count">{count}</span>}</a>)}</nav>
+    <div class="project-view-content" id="project-content"><slot /></div>
+  </div>
+</BaseLayout>
+<script>
+  const desk = document.querySelector<HTMLElement>('[data-project-desk]');
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (desk && header) {
+    const positionNav = () => desk.style.setProperty('--project-nav-top', `${header.offsetHeight + (parseFloat(getComputedStyle(header).top) || 0) + 12}px`);
+    new ResizeObserver(positionNav).observe(header);
+    positionNav();
+    const picker = desk.querySelector<HTMLSelectElement>('[data-project-switch]');
+    picker?.addEventListener('change', () => {
+      if ([...picker.options].some(option => option.value === picker.value)) location.assign(picker.value);
+    });
+    if (desk.dataset.projectView === 'overview') {
+      const old = location.hash.slice(1);
+      const destination = old === 'start' ? 'start/' : old === 'resources' ? 'resources/' : ['experiments', 'debugging', 'design'].includes(old) ? `articles/?kind=${old}` : '';
+      if (destination) location.replace(`/projects/${desk.dataset.projectId}/${destination}`);
+    }
+  }
+</script>

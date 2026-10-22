@@ -30,13 +30,11 @@ A starting example is [checking train/test overlap](/guides/data-leakage/). It a
 Choose a project from [Projects](/projects/), then use its sections:
 
 - **Overview** explains the question, scope, current evidence and limits.
-- **Start Here** links the prerequisites and small starting examples.
-- **Experiments** tests hypotheses through baselines and controlled comparisons.
-- **Debugging** follows a specific symptom through evidence toward a cause.
-- **Design** explains mechanisms, constraints and choices.
-- **Resources** points to the repository and original materials.
+- **Start** gives you an ordered reading route, with a next step after each guide.
+- **Articles** collects the project's writing and original documents. Filter by **Experiments**, **Debugging** or **Design** to find the kind of answer you need.
+- **Code** points to the repository and supporting materials.
 
-Sections appear when they have content. A repository link identifies the code context; the project description explains the scope of the notebook. Follow the recorded version and environment when attempting a reproduction.
+These four navigation links stay in the same place on every project page. Each opens its own page, so you can focus on one task at a time. A repository link identifies the code context; the project description explains the scope of the notebook. Follow the recorded version and environment when attempting a reproduction.
 
 ## If you have a specific problem
 

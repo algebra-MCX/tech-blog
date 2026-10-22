@@ -36,3 +36,4 @@ export const projects = [
   }
 ] as const;
 export const projectById = (id?: string) => projects.find(project => project.id === id);
+export type Project = typeof projects[number];

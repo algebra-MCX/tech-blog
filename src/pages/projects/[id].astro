@@ -1,30 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectLayout from '@/layouts/ProjectLayout.astro';
 import Localized from '@/components/Localized.astro';
-import EntryCard from '@/components/EntryCard.astro';
 import { projects } from '@/data/projects';
-import { projectSections, writingMap, noteMap } from '@/data/library';
+import { getProjectContent } from '@/lib/project-content';
 export function getStaticPaths() { return projects.map(project => ({ params: { id: project.id }, props: { project } })); }
 const { project } = Astro.props;
-const writing = await getCollection('writing', ({ data }) => !data.draft);
-const notes = await getCollection('notes', ({ data }) => !data.draft);
-const guides = await getCollection('guides', ({ data }) => !data.draft);
-const entries = [
-  ...writing.filter(e => writingMap[e.id]?.project === project.id).map(e => ({ ...e, assignment: writingMap[e.id], href: `/writing/${e.id}/` })),
-  ...notes.filter(e => noteMap[e.id]?.project === project.id && !noteMap[e.id]?.noteCategory).map(e => ({ ...e, assignment: noteMap[e.id], href: `/notes/${e.id}/` }))
-];
-const sections = projectSections.filter(section => ['overview', 'start', 'resources'].includes(section.id) || entries.some(e => e.assignment.section === section.id) || project.resources.some(r => r.section === section.id));
+const { items, starts, originals, outlines } = await getProjectContent(project);
+const first = starts[0];
+const recommendation = originals[0];
 ---
-<BaseLayout title={`${project.title} — Projects — Chenxi Ma`} description={project.summary}>
-  <header class="page-intro shell project-hero"><a class="back-link" href="/projects/"><Localized en="← Projects" zh="← 项目" /></a><p class="eyebrow"><Localized en={project.role} zh={project.roleZh} /></p><h1>{project.title}</h1><p><Localized en={project.summary} zh={project.summaryZh} /></p><a class="text-link repository-link" href={project.repository}>GitHub ↗</a></header>
-  <div class="project-workspace shell">
-    <nav class="project-sidebar reading-glass" aria-label="Project sections">{sections.map(section => <a href={`#${section.id}`}><Localized en={section.en} zh={section.zh} /></a>)}</nav>
-    <div class="project-chapters">
-      <section id="overview" class="chapter reading-glass"><p class="eyebrow">01 · <Localized en="Overview" zh="概览" /></p><h2><Localized en="The question & its boundaries" zh="问题与边界" /></h2><p><Localized en={project.scope} zh={project.scopeZh} /></p><div class="boundary-note"><strong><Localized en="Current evidence" zh="当前证据" /></strong><p><Localized en={project.boundary} zh={project.boundaryZh} /></p></div><p class="chapter-caption"><Localized en="Suggested order: start with the guides, then read the experiments and investigations below." zh="建议先阅读入门指南，再进入下方实验与研究记录。" /></p></section>
-      <section id="start" class="chapter reading-glass"><p class="eyebrow">02 · Start Here</p><h2><Localized en="A small starting point" zh="从一个小例子开始" /></h2>{project.start.map(id => { const entry = guides.find(g => g.id === id); return entry && <EntryCard href={`/guides/${entry.id}/`} title={entry.data.title} titleZh={entry.data.titleZh} description={entry.data.description} descriptionZh={entry.data.descriptionZh} />; })}</section>
-      {sections.filter(s => ['experiments', 'debugging', 'design'].includes(s.id)).map(section => <section id={section.id} class="chapter reading-glass"><p class="eyebrow"><Localized en={section.en} zh={section.zh} /></p><h2><Localized en={section.en} zh={section.zh} /></h2>{entries.filter(e => e.assignment.section === section.id).map(e => <EntryCard href={e.href} title={e.data.title} titleZh={e.data.titleZh} label="Working outline" labelZh="研究提纲" />)}{project.resources.filter(r => r.section === section.id).map(resource => <EntryCard href={resource.url} title={resource.title} titleZh={resource.titleZh} label="Repository document" labelZh="仓库文档" external />)}</section>)}
-      <section id="resources" class="chapter reading-glass"><p class="eyebrow"><Localized en="Resources" zh="代码与材料" /></p><h2><Localized en="Follow the source" zh="查看原始材料" /></h2><EntryCard href={project.repository} title={project.repository.replace('https://github.com/', '')} titleZh={project.repository.replace('https://github.com/', '')} label="GitHub" external />{project.resources.filter(r => ['overview', 'resources'].includes(r.section)).map(resource => <EntryCard href={resource.url} title={resource.title} titleZh={resource.titleZh} external />)}<p class="chapter-caption"><Localized en="Repository documents may evolve. Record the exact commit when reproducing a result." zh="仓库文档会持续更新；复现结果时，请记录具体 Commit。" /></p></section>
-    </div>
-  </div>
-</BaseLayout>
+<ProjectLayout project={project} view="overview" count={items.length}>
+  <section class="project-overview" aria-labelledby="project-question">
+    <div class="overview-story"><p class="eyebrow"><Localized en="The question" zh="这个项目在研究什么" /></p><h2 id="project-question"><Localized en={project.subtitle} zh={project.subtitleZh} /></h2><p class="project-lead"><Localized en={project.scope} zh={project.scopeZh} /></p><div class="project-main-actions"><a class="project-primary-action" href={`/projects/${project.id}/start/`}><Localized en="Start reading" zh="从这里开始读" /><span aria-hidden="true">→</span></a><a class="project-secondary-action" href={`/projects/${project.id}/articles/`}><Localized en="Browse articles" zh="直接看文章" /> <span aria-hidden="true">↗</span></a></div><p class="project-orientation"><Localized en="New to the topic? Start with a small example. Already familiar? Go straight to the articles." zh="第一次接触，先跑一个小例子；已有基础，直接进入文章。" /></p></div>
+    <aside class="project-start-preview"><p class="eyebrow"><Localized en="Your first read" zh="推荐第一篇" /></p>{first && <><span class="preview-step">01</span><h3><a href={`/guides/${first.id}/?project=${project.id}`}><Localized en={first.data.title} zh={first.data.titleZh} /> →</a></h3><p><Localized en={first.data.description} zh={first.data.descriptionZh} /></p><a class="project-preview-link" href={`/projects/${project.id}/start/`}><Localized en="See the reading path →" zh="查看完整阅读顺序 →" /></a></>}</aside>
+  </section>
+  <section class="project-contents-map" aria-label="Inside this project"><div><span class="map-count">{starts.length.toString().padStart(2, '0')}</span><a href={`/projects/${project.id}/start/`}><Localized en="Starting points" zh="入门起点" /> →</a></div><div><span class="map-count">{items.length.toString().padStart(2, '0')}</span><a href={`/projects/${project.id}/articles/`}><Localized en="Articles & investigations" zh="文章与研究记录" /> →</a></div><div><span class="map-count">↗</span><a href={`/projects/${project.id}/resources/`}><Localized en="Code & original materials" zh="代码与原始材料" /> →</a></div></section>
+  {recommendation && <section class="project-featured-read"><div><p class="eyebrow"><Localized en="From the project repository" zh="来自项目仓库" /></p><h2><a href={recommendation.href}><Localized en={recommendation.title} zh={recommendation.titleZh} /> ↗</a></h2></div><p><Localized en="Read the original methods and conditions alongside the results." zh="结合原始方法与条件阅读结果。" /></p></section>}
+  <details class="project-evidence"><summary><Localized en="Scope & current evidence" zh="研究边界与当前证据" /><span class="project-evidence-hint"><Localized en="Read before applying a result" zh="应用结论前请留意" /></span></summary><p><Localized en={project.boundary} zh={project.boundaryZh} /></p><p><Localized en={project.role} zh={project.roleZh} /> · {outlines.length} <Localized en="working outlines" zh="篇研究提纲" /></p></details>
+</ProjectLayout>

@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import Localized from './Localized.astro';
+import { projects } from '@/data/projects';
+interface Props { guideId: string; position: 'top' | 'next' }
+const { guideId, position } = Astro.props;
+const guides = await getCollection('guides', ({ data }) => !data.draft);
+const contexts = projects.filter(project => project.start.some(id => id === guideId)).map(project => {
+  const index = project.start.findIndex(id => id === guideId);
+  const next = guides.find(guide => guide.id === project.start[index + 1]);
+  return { project, index, next };
+});
+---
+{contexts.length > 0 && <div class:list={['guide-project-context', { 'shell': position === 'top', 'guide-project-context--next': position === 'next' }]} data-guide-context data-context-position={position} hidden>{contexts.map(({ project, index, next }) => <div data-context-project={project.id} hidden>{position === 'top' ? <div class="guide-context-bar"><a href={`/projects/${project.id}/start/`}>← {project.title} · <Localized en="Reading path" zh="阅读路线" /></a><span><Localized en="Step" zh="第" /> {index + 1} / {project.start.length} <span data-lang="zh">步</span></span></div> : <a class="guide-context-next" href={next ? `/guides/${next.id}/?project=${project.id}` : `/projects/${project.id}/articles/`}><span class="eyebrow">{project.title} · <Localized en="Continue reading" zh="接着读" /></span><strong><Localized en={next?.data.title ?? 'Continue into the project'} zh={next?.data.titleZh ?? '进入项目文章'} /> →</strong><span><Localized en={next ? 'Next step in this reading path' : 'Explore the experiments, investigations and design'} zh={next ? '阅读路线中的下一步' : '继续查看实验、排障与设计'} /></span></a>}</div>)}</div>}
+<script>
+  const project = new URLSearchParams(location.search).get('project');
+  let contextual = false;
+  if (project) document.querySelectorAll<HTMLElement>('[data-guide-context]').forEach(root => {
+    const match = [...root.querySelectorAll<HTMLElement>('[data-context-project]')].find(item => item.dataset.contextProject === project);
+    if (!match) return;
+    root.hidden = false;
+    match.hidden = false;
+    contextual = true;
+  });
+  if (contextual) document.querySelector<HTMLElement>('[data-guide-return]')?.setAttribute('hidden', '');
+</script>
