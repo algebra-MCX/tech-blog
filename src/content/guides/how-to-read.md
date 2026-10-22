@@ -10,7 +10,7 @@ tags: [Start Here, Project-driven Learning]
 ---
 **Knowledge keeps growing. What is truly scarce is a learning path that is short and clear without sacrificing depth.**
 
-The LLM field moves fast. Infrastructure, model algorithms, GPU architecture, agents and data bring new papers and frameworks almost every day. You set out to learn inference, discover a new attention mechanism the next day, and then find another kernel library for Blackwell. Good resources are abundant, yet it is easy to study for a long time without knowing what you have actually mastered or what to do next. More troublingly, some people hand the most important thinking over to a coding agent.
+The LLM field moves fast, making it easy to learn in fragments without knowing what you understand or where to go next. Be wary of handing your core thinking over to a coding agent.
 
 Zhang Yiming has spoken about understanding as a core competitive advantage—something others must ultimately find valuable. Depth of understanding does not come from collecting more technologies. It comes from knowing which problems matter most in a field and developing your own thinking about them. That is why I started this blog.
 
@@ -46,9 +46,7 @@ After working through a minimal inference engine, for example, you should be abl
 
 Understanding one kernel, attention mechanism or runtime in isolation is not enough. Why does a model architecture change the design of an inference system? Why does a GPU's memory hierarchy affect algorithm choices? Why do some methods that theoretically reduce computation turn out to be slower in practice? No single field offers a complete answer.
 
-Once the individual routes are more complete, I plan to write a cross-field overview connecting all five. It will be an expandable map rather than a checklist to memorize, accompanied by **Nano Projects**: minimal versions of larger systems.
-
-The aim is to see the forest and still be able to take each tree apart yourself.
+Once the individual routes are more complete, I plan to write a cross-field overview connecting all five.
 
 ## 05. Open code and experiments
 
