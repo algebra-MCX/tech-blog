@@ -2,10 +2,12 @@
 import Icon from './Icon.astro';
 import Localized from './Localized.astro';
 import { noteMap } from '@/data/library';
+import { site } from '@/data/site';
 const path = Astro.url.pathname;
 const id = path.split('/').filter(Boolean).slice(1).join('/');
 const projectArticle = path.startsWith('/writing/') || (path.startsWith('/notes/') && noteMap[id] && !noteMap[id].noteCategory);
 const nav = [
+  { href: site.homepage, en: 'Homepage ↗', zh: '个人主页 ↗', active: false },
   { href: '/projects/', en: 'Projects', zh: '项目', active: path.startsWith('/projects/') || projectArticle },
   { href: '/guides/', en: 'Guides', zh: '指南', active: path.startsWith('/guides/') },
   { href: '/notes/', en: 'Notes', zh: '思考', active: path.startsWith('/notes/') && !projectArticle },
