@@ -1,6 +1,6 @@
 ---
 import '@/styles/global.css';
-import '@fontsource-variable/newsreader/wght.css';
+import 'katex/dist/katex.min.css';
 import '@fontsource-variable/inter';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
@@ -14,7 +14,7 @@ interface Props {
   article?: boolean;
 }
 const {
-  title = 'MCX — Systems Research & Engineering',
+  title = 'Blog — Chenxi Ma',
   description = 'Technical writing on AI systems, GPU performance, and distributed inference.',
   image = '/og-default.svg',
   article = false
@@ -22,16 +22,16 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-language="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f3f2ed" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#111517" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#d4dce0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131820" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" type="application/rss+xml" title="MCX Writing" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Chenxi Ma — Writing" href="/rss.xml" />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -39,13 +39,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <meta property="og:image" content={new URL(image, Astro.site ?? Astro.url)} />
     <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script is:inline>
       (() => {
-        const saved = localStorage.getItem('mcx-theme');
+        let saved, savedLanguage;
+        try { saved = localStorage.getItem('mcx-theme'); savedLanguage = localStorage.getItem('mcx-language'); } catch {}
         const theme = saved === 'dark' || saved === 'light' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
-        const language = localStorage.getItem('mcx-language') === 'zh' ? 'zh' : 'en';
+        const language = savedLanguage === 'zh' ? 'zh' : 'en';
         document.documentElement.dataset.language = language;
         document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
       })();
@@ -54,6 +58,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
   </head>
   <body id="top">
     <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="interaction-ripples" aria-hidden="true"></div>
     <Header />
     <main id="main-content"><slot /></main>
     <Footer />
@@ -62,11 +67,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
         document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
           if (button.dataset.ready) return;
           button.dataset.ready = 'true';
+          button.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === 'dark'));
           button.addEventListener('click', () => {
             const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
             document.documentElement.dataset.theme = next;
             document.documentElement.style.colorScheme = next;
-            localStorage.setItem('mcx-theme', next);
+            try { localStorage.setItem('mcx-theme', next); } catch {}
+            button.setAttribute('aria-pressed', String(next === 'dark'));
           });
         });
       };
@@ -80,7 +87,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
             const next = document.documentElement.dataset.language === 'zh' ? 'en' : 'zh';
             document.documentElement.dataset.language = next;
             document.documentElement.lang = next === 'zh' ? 'zh-CN' : 'en';
-            localStorage.setItem('mcx-language', next);
+            try { localStorage.setItem('mcx-language', next); } catch {}
             window.dispatchEvent(new CustomEvent('mcx:language-change', { detail: next }));
           });
         });

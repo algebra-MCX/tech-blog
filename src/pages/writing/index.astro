@@ -10,19 +10,22 @@ const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort
 const tags = [...new Set(entries.flatMap((entry) => entry.data.tags))].sort();
 const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullYear()))].sort((a, b) => b - a);
 ---
-<BaseLayout title="Writing — MCX" description="Technical articles on AI systems, GPU performance, and distributed inference.">
+<BaseLayout title="Writing — Chenxi Ma" description="Technical articles on AI systems, GPU performance, and distributed inference.">
   <header class="page-intro shell reveal">
     <p class="eyebrow"><Localized en="Research archive" zh="研究归档" /> · {entries.length.toString().padStart(2, '0')} <Localized en="entries" zh="篇" /></p>
     <h1><Localized en="Writing" zh="文章" /></h1>
-    <p><Localized en="Technical articles on AI systems, GPU performance, and distributed inference. Organized as an archive, not a feed." zh="关于 AI 系统、GPU 性能与分布式推理的技术文章。以研究档案而非信息流的方式组织。" /></p>
+    <p><Localized en="Technical articles on AI systems, GPU performance, and distributed inference." zh="关于 AI 系统、GPU 性能与分布式推理的技术文章。" /></p>
   </header>
 
   <section class="archive shell" id="archive" aria-label="Writing archive">
     <div class="archive-tools">
-      <div class="filters" role="group" aria-label="Filter writing by topic">
-        <button class="filter active" type="button" data-filter="all" aria-pressed="true"><Localized en="All" zh="全部" /></button>
-        {tags.map((tag) => <button class="filter" type="button" data-filter={tag.toLowerCase()} aria-pressed="false">{tag}</button>)}
-      </div>
+      <label class="topic-filter">
+        <span class="sr-only"><Localized en="Filter by topic" zh="按主题筛选" /></span>
+        <select data-topic>
+          <option value="all" data-topic-all>All topics</option>
+          {tags.map((tag) => <option value={tag.toLowerCase()}>{tag}</option>)}
+        </select>
+      </label>
       <label class="archive-search">
         <span class="sr-only">Search writing</span><Icon name="search" />
         <input type="search" placeholder="Search / 搜索" autocomplete="off" data-search />
@@ -43,15 +46,15 @@ const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullY
     const root = document.querySelector<HTMLElement>('.archive');
     if (!root || root.dataset.ready) return;
     root.dataset.ready = 'true';
-    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const topic = root.querySelector<HTMLSelectElement>('[data-topic]');
     const rows = [...root.querySelectorAll<HTMLElement>('[data-writing-row]')];
     const search = root.querySelector<HTMLInputElement>('[data-search]');
     const empty = root.querySelector<HTMLElement>('[data-no-results]');
     const requested = new URLSearchParams(location.search).get('tag')?.toLowerCase();
-    let selected = requested && buttons.some((button) => button.dataset.filter === requested) ? requested : 'all';
-    if (selected !== 'all') buttons.forEach((button) => { const active = button.dataset.filter === selected; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
+    if (topic && requested && [...topic.options].some((option) => option.value === requested)) topic.value = requested;
     const update = () => {
       const query = search?.value.trim().toLowerCase() ?? '';
+      const selected = topic?.value ?? 'all';
       let shown = 0;
       rows.forEach((row) => {
         const matchesTag = selected === 'all' || (row.dataset.tags ?? '').split('|').includes(selected);
@@ -64,40 +67,18 @@ const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullY
       });
       if (empty) empty.hidden = shown !== 0;
     };
-    buttons.forEach((button) => button.addEventListener('click', () => {
-      selected = button.dataset.filter ?? 'all';
-      buttons.forEach((item) => { const active = item === button; item.classList.toggle('active', active); item.setAttribute('aria-pressed', String(active)); });
-      update();
-    }));
+    topic?.addEventListener('change', update);
+    const translateControls = () => {
+      const zh = document.documentElement.dataset.language === 'zh';
+      const all = root.querySelector('[data-topic-all]');
+      if (all) all.textContent = zh ? '全部主题' : 'All topics';
+      if (search) search.placeholder = zh ? '搜索文章' : 'Search writing';
+    };
+    window.addEventListener('mcx:language-change', translateControls);
+    translateControls();
     search?.addEventListener('input', update);
     update();
   };
   setupArchive(); document.addEventListener('astro:page-load', setupArchive);
 </script>
 
-<style>
-  .archive { padding-top: clamp(2rem, 4vw, 3.5rem); }
-  .archive-tools { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
-  .filters { display: flex; flex-wrap: wrap; gap: .45rem; }
-  .filter { min-height: 1.9rem; padding: .4rem .7rem; border: 1px solid var(--line-soft); border-radius: 999px; background: transparent; color: var(--ink-soft); font-size: .63rem; line-height: 1; cursor: pointer; transition: color .2s ease, background .2s ease, border-color .2s ease; }
-  .filter:hover { color: var(--ink); border-color: var(--line); }
-  .filter.active { color: var(--bg); background: var(--ink); border-color: var(--ink); }
-  .archive-search { flex: 0 0 auto; width: 10rem; display: flex; align-items: center; gap: .45rem; border-bottom: 1px solid var(--line); color: var(--ink-faint); }
-  .archive-search :global(svg) { width: .8rem; }
-  .archive-search input { width: 100%; padding: .35rem 0; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: .68rem; }
-  .archive-search input::placeholder { color: var(--ink-faint); }
-  .year-group { display: grid; grid-template-columns: 8rem 1fr; gap: 2rem; padding-top: 3.2rem; }
-  .year-group h2 { position: sticky; top: 2rem; align-self: start; margin: 0; font: 510 1.4rem/1 var(--serif); }
-  .year-group > div { border-top: 1px solid var(--line); }
-  .no-results { padding: 3rem 0; color: var(--ink-soft); }
-  [hidden] { display: none !important; }
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-  @media (max-width: 760px) {
-    .archive-tools { display: block; }
-    .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .8rem; scrollbar-width: none; }
-    .filters::-webkit-scrollbar { display: none; }
-    .archive-search { width: 100%; margin-top: 1rem; }
-    .year-group { grid-template-columns: 1fr; gap: 1rem; }
-    .year-group h2 { position: static; }
-  }
-</style>

@@ -17,7 +17,7 @@ const { Content } = await render(note);
 const translated = translation ? await render(translation) : null;
 const ContentZh = translated?.Content;
 ---
-<BaseLayout title={`${note.data.title} — Notes — MCX`} description={`A technical note about ${note.data.topic}.`}>
+<BaseLayout title={`${note.data.title} — Notes — Chenxi Ma`} description={`A technical note about ${note.data.topic}.`}>
   <article class="note shell">
     <header>
       <a class="back" href="/notes/">← <Localized en="Notes" zh="笔记" /></a>
@@ -27,12 +27,3 @@ const ContentZh = translated?.Content;
     <div class="note-body"><div data-lang="en"><Content /></div>{ContentZh && <div data-lang="zh"><ContentZh /></div>}</div>
   </article>
 </BaseLayout>
-<style is:global>
-  .note { max-width: 850px; padding-top: clamp(4rem, 9vw, 8rem); }
-  .note .back { color: var(--ink-faint); font: .65rem/1 var(--mono); }
-  .note .back:hover { color: var(--accent); }
-  .note-meta { display: flex; align-items: center; gap: 1rem; margin-top: 4rem; color: var(--ink-faint); font: .63rem/1.4 var(--mono); }
-  .note h1 { margin: 1.2rem 0 3.5rem; max-width: 800px; font: 460 clamp(3rem, 7vw, 5.8rem)/.95 var(--serif); letter-spacing: -.05em; }
-  .note-body { max-width: 700px; color: var(--ink-soft); font-size: 1.04rem; line-height: 1.8; }
-  .note-body p { margin: 0 0 1.4rem; }
-</style>

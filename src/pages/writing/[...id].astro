@@ -15,7 +15,7 @@ const { Content, headings } = await render(entry);
 const translated = translation ? await render(translation) : null;
 const ContentZh = translated?.Content;
 ---
-<ArticleLayout entry={entry} headings={headings}>
+<ArticleLayout entry={entry} headings={headings} headingsZh={translated?.headings}>
   <div data-lang="en"><Content /></div>
   {ContentZh && <div data-lang="zh"><ContentZh /></div>}
 </ArticleLayout>

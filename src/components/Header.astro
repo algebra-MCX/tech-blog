@@ -4,50 +4,26 @@ import Localized from './Localized.astro';
 import { site } from '@/data/site';
 const path = Astro.url.pathname;
 const nav = [
-  { href: '/projects/', en: 'Work', zh: '项目' },
-  { href: '/writing/', en: 'Writing', zh: '文章' },
-  { href: '/notes/', en: 'Notes', zh: '笔记' },
-  { href: '/about/', en: 'About', zh: '关于' }
+  { href: '/', en: 'Blog', zh: '博客', active: path === '/' },
+  { href: '/writing/', en: 'Writing', zh: '文章', active: path.startsWith('/writing/') },
+  { href: '/notes/', en: 'Notes', zh: '笔记', active: path.startsWith('/notes/') },
+  { href: site.homepage, en: 'Home ↗', zh: '个人主页 ↗', active: false }
 ];
 ---
-<header class="site-header" data-header>
-  <div class="header-inner shell">
-    <a class="wordmark" href="/" aria-label="MCX home">MCX<span class="wordmark-dot">.</span></a>
-    <nav class="primary-nav" aria-label="Primary navigation" id="primary-navigation">
-      {nav.map((item) => <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
-    </nav>
-    <div class="header-actions">
-      <a class="icon-button search-link" href="/writing/#archive" aria-label="Search writing"><Icon name="search" /></a>
-      <button class="icon-button theme-toggle" type="button" aria-label="Switch color theme" data-theme-toggle>
-        <span class="theme-icon theme-icon--sun"><Icon name="sun" /></span>
-        <span class="theme-icon theme-icon--moon"><Icon name="moon" /></span>
-      </button>
-      <button class="language-toggle" type="button" aria-label="切换中英文 / Switch language" data-language-toggle><span data-lang="en">中</span><span data-lang="zh">EN</span></button>
-      <a class="icon-button github-link" href={site.github} aria-label="GitHub"><Icon name="github" /></a>
-      <button class="icon-button menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation" data-menu-toggle>
-        <span class="menu-open"><Icon name="menu" /></span><span class="menu-close"><Icon name="close" /></span>
-      </button>
-    </div>
+<header class="site-header shell glass-surface">
+  <a class="wordmark" href="/">Chenxi Ma</a>
+  <nav class="primary-nav" aria-label="Main navigation">
+    <span class="nav-lens" aria-hidden="true"></span>
+    {nav.map((item) => <a href={item.href} aria-current={item.active ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
+  </nav>
+  <div class="header-actions">
+    <button class="language-toggle glass-control" type="button" aria-label="切换中英文 / Switch language" data-language-toggle><span data-lang="en">中文</span><span data-lang="zh">English</span></button>
+    <button class="icon-button theme-toggle glass-control" type="button" aria-label="Switch color theme" data-theme-toggle>
+      <span class="theme-icon theme-icon--sun"><Icon name="sun" /></span>
+      <span class="theme-icon theme-icon--moon"><Icon name="moon" /></span>
+    </button>
   </div>
 </header>
-
 <script>
-  const setupHeader = () => {
-    const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-    const nav = document.querySelector<HTMLElement>('#primary-navigation');
-    if (toggle && nav && !toggle.dataset.ready) {
-      toggle.dataset.ready = 'true';
-      toggle.addEventListener('click', () => {
-        const open = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!open));
-        nav.dataset.open = String(!open);
-        document.body.classList.toggle('nav-open', !open);
-      });
-      nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-        toggle.setAttribute('aria-expanded', 'false'); nav.dataset.open = 'false'; document.body.classList.remove('nav-open');
-      }));
-    }
-  };
-  setupHeader();
-  document.addEventListener('astro:page-load', setupHeader);
+  import '@/scripts/glass.js';
 </script>
