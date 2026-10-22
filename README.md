@@ -32,7 +32,7 @@ Writing supports Markdown and MDX, syntax highlighting, KaTeX math, Mermaid diag
 
 ## Adjust the structure
 
-Navigation is Start here / Quickstarts / Projects / Notes / Home. The blog root and the personal homepage's blog links open `/guides/how-to-read/`. This reading guide has a simple reading layout, without a promotional landing page. Home returns to the personal homepage (including the language-aware CV icon); legacy About URLs do the same. Search indexes both languages and filters by type, project and domain. The small brand avatar is optimized into 32/64px WebP assets at build time.
+Navigation is Start here / Quickstarts / Projects / Notes / Home. The blog root and the personal homepage's blog links open `/guides/how-to-read/`. The concise reading guide uses the same article layout as other guides and focuses on entry points, project reading order and evidence. Home returns to the personal homepage (including the language-aware CV icon); legacy About URLs do the same. Search indexes both languages and filters by type, project and domain. The small brand avatar is optimized into 32/64px WebP assets at build time.
 
 Both sites use a fixed dark appearance. Theme controls and saved/system light-mode preferences are removed; language switching remains available.
 

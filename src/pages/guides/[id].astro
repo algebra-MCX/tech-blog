@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '@/layouts/ArticleLayout.astro';
-import ReadingGuideLayout from '@/layouts/ReadingGuideLayout.astro';
 export async function getStaticPaths() {
   const entries = await getCollection('guides', ({ data }) => !data.draft);
   const translations = await getCollection('guidesZh');
@@ -11,8 +10,7 @@ const { entry, translation } = Astro.props;
 const { Content, headings } = await render(entry);
 const translated = translation ? await render(translation) : null;
 const ContentZh = translated?.Content;
-const Layout = entry.id === 'how-to-read' ? ReadingGuideLayout : ArticleLayout;
 ---
-<Layout entry={entry} headings={headings} headingsZh={translated?.headings}>
+<ArticleLayout entry={entry} headings={headings} headingsZh={translated?.headings}>
   <div data-lang="en"><Content /></div>{ContentZh && <div data-lang="zh"><ContentZh /></div>}
-</Layout>
+</ArticleLayout>
