@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Localized from '@/components/Localized.astro';
+import Icon from '@/components/Icon.astro';
+import { projects, projectById } from '@/data/projects';
+import { domains, writingMap, noteMap, guideSections } from '@/data/library';
+const writing = await getCollection('writing', ({ data }) => !data.draft);
+const notes = await getCollection('notes', ({ data }) => !data.draft);
+const guides = await getCollection('guides', ({ data }) => !data.draft);
+const translations = [...await getCollection('writingZh'), ...await getCollection('notesZh'), ...await getCollection('guidesZh')];
+const translatedBody = (id: string) => translations.find(t => t.data.source === id)?.body ?? '';
+const rows = [
+  ...projects.map(p => ({ title: p.title, titleZh: p.titleZh, description: p.summary, descriptionZh: p.summaryZh, href: `/projects/${p.id}/`, type: 'project', label: 'Project', labelZh: '项目', project: p.id, domains: p.domains.join('|'), body: '' })),
+  ...writing.map(e => { const project = projectById(writingMap[e.id]?.project); return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.description, descriptionZh: e.data.descriptionZh, href: `/writing/${e.id}/`, type: 'article', label: 'Working outline', labelZh: '研究提纲', project: project?.id ?? '', domains: project?.domains.join('|') ?? '', body: (e.body ?? '') + translatedBody(e.id) }; }),
+  ...notes.map(e => { const assignment = noteMap[e.id]; const project = projectById(assignment?.project); return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.topic, descriptionZh: e.data.topicZh, href: `/notes/${e.id}/`, type: assignment?.noteCategory ? 'note' : 'article', label: assignment?.noteCategory ? 'Perspective' : 'Working outline', labelZh: assignment?.noteCategory ? '技术观点' : '研究提纲', project: project?.id ?? '', domains: project?.domains.join('|') ?? '', body: (e.body ?? '') + translatedBody(e.id) }; }),
+  ...guides.map(e => { const section = guideSections.find(s => s.id === e.data.category)!; return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.description, descriptionZh: e.data.descriptionZh, href: `/guides/${e.id}/`, type: 'guide', label: section.en, labelZh: section.zh, project: '', domains: e.data.domains.join('|'), body: (e.body ?? '') + translatedBody(e.id) }; })
+];
+---
+<BaseLayout title="Search — Chenxi Ma" description="Search projects, guides, perspectives and working articles in English and Chinese.">
+  <header class="page-intro shell"><h1><Localized en="Search" zh="搜索" /></h1><p><Localized en="Find a project, a specific problem or an idea. Search works in English and Chinese." zh="查找项目、具体问题或观点，支持中英文搜索。" /></p></header>
+  <section class="library-section shell" data-filter-list>
+    <label class="search-large reading-glass"><span class="sr-only"><Localized en="Search all content" zh="搜索全部内容" /></span><Icon name="search" /><input type="search" data-filter="query" placeholder="Search / 搜索" autocomplete="off" /></label>
+    <div class="filter-bar">
+      <label><span><Localized en="Type" zh="类型" /></span><select data-filter="type"><option value="all">All / 全部</option><option value="project">Projects / 项目</option><option value="guide">Guides / 指南</option><option value="note">Notes / 思考</option><option value="article">Project articles / 项目文章</option></select></label>
+      <label><span><Localized en="Project" zh="项目" /></span><select data-filter="project"><option value="all">All / 全部</option>{projects.map(p => <option value={p.id}>{p.title}</option>)}</select></label>
+      <label><span><Localized en="Domain" zh="领域" /></span><select data-filter="domain"><option value="all">All / 全部</option>{domains.map(d => <option value={d.id}>{d.en} / {d.zh}</option>)}</select></label>
+      <span class="filter-count" aria-live="polite"><span data-filter-count>{rows.length}</span> <Localized en="results" zh="项结果" /></span>
+    </div>
+    <div class="search-results">{rows.map(row => <article class="entry-card search-result" data-filter-row data-type={row.type} data-project={row.project} data-domain={row.domains} data-search={`${row.title} ${row.titleZh} ${row.description} ${row.descriptionZh} ${row.body}`}><p class="eyebrow"><Localized en={row.label} zh={row.labelZh} />{row.project && <> · {projectById(row.project)?.title}</>}</p><h2><a href={row.href}><Localized en={row.title} zh={row.titleZh} /> →</a></h2><p><Localized en={row.description} zh={row.descriptionZh} /></p></article>)}</div>
+    <p class="empty-state" data-filter-empty hidden><Localized en="No matching content. Try a broader query or clear a filter." zh="没有匹配内容，可以换个关键词或清除筛选。" /></p>
+  </section>
+</BaseLayout>
+<script>import '@/scripts/filters';</script>

@@ -4,6 +4,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Tag from '@/components/Tag.astro';
 import Localized from '@/components/Localized.astro';
 import { formatDate, formatDateZh } from '@/lib/content';
+import { noteMap, noteSections } from '@/data/library';
+import { projectById } from '@/data/projects';
 export async function getStaticPaths() {
   const notes = await getCollection('notes', ({ data }) => !data.draft);
   const translations = await getCollection('notesZh');
@@ -16,14 +18,20 @@ const { note, translation } = Astro.props;
 const { Content } = await render(note);
 const translated = translation ? await render(translation) : null;
 const ContentZh = translated?.Content;
+const assignment = noteMap[note.id];
+const project = projectById(assignment?.project);
+const category = noteSections.find(s => s.id === assignment?.noteCategory);
+const parentHref = category ? `/notes/sections/${category.id}/` : project ? `/projects/${project.id}/` : '/notes/';
 ---
 <BaseLayout title={`${note.data.title} — Notes — Chenxi Ma`} description={`A technical note about ${note.data.topic}.`}>
   <article class="note shell">
     <header class="note-header reading-glass">
-      <a class="back" href="/notes/">← <Localized en="Notes" zh="笔记" /></a>
+      <a class="back" href={parentHref}>← <Localized en={category?.en ?? project?.title ?? 'Notes'} zh={category?.zh ?? project?.titleZh ?? '思考'} /></a>
       <div class="note-meta"><time datetime={note.data.publishDate.toISOString()}><Localized en={formatDate(note.data.publishDate, 'long')} zh={formatDateZh(note.data.publishDate, 'long')} /></time><span data-lang="en"><Tag text={note.data.topic} /></span><span data-lang="zh"><Tag text={note.data.topicZh} /></span></div>
       <h1><Localized en={note.data.title} zh={note.data.titleZh} /></h1>
+      {assignment?.state === 'outline' && <p class="reading-status"><Localized en="Working outline. Reproduction and evidence are still being collected." zh="研究提纲：复现过程与证据仍在收集中。" /></p>}
+      {project && category && <p class="note-context"><Localized en="Related project" zh="相关项目" /> · <a class="text-link" href={`/projects/${project.id}/`}>{project.title}</a></p>}
     </header>
-    <div class="note-body reading-glass"><div data-lang="en"><Content /></div>{ContentZh && <div data-lang="zh"><ContentZh /></div>}</div>
+    <div class="note-body reading-glass"><div data-lang="en"><Content /></div>{ContentZh && <div data-lang="zh"><ContentZh /></div>}<nav class="article-return"><a href={parentHref}><Localized en="← Continue exploring" zh="← 继续阅读" /></a></nav></div>
   </article>
 </BaseLayout>

@@ -1,0 +1,10 @@
+---
+import Localized from './Localized.astro';
+interface Props { href: string; title: string; titleZh: string; description?: string; descriptionZh?: string; label?: string; labelZh?: string; external?: boolean }
+const { href, title, titleZh, description, descriptionZh, label, labelZh, external = false } = Astro.props;
+---
+<article class="entry-card">
+  {label && <p class="eyebrow"><Localized en={label} zh={labelZh ?? label} /></p>}
+  <h3><a href={href}><Localized en={title} zh={titleZh} /><span aria-hidden="true"> {external ? '↗' : '→'}</span></a></h3>
+  {description && <p><Localized en={description} zh={descriptionZh ?? description} /></p>}
+</article>

@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Localized from '@/components/Localized.astro';
+import EntryCard from '@/components/EntryCard.astro';
+import { projects } from '@/data/projects';
+import { projectSections, writingMap, noteMap } from '@/data/library';
+export function getStaticPaths() { return projects.map(project => ({ params: { id: project.id }, props: { project } })); }
+const { project } = Astro.props;
+const writing = await getCollection('writing', ({ data }) => !data.draft);
+const notes = await getCollection('notes', ({ data }) => !data.draft);
+const guides = await getCollection('guides', ({ data }) => !data.draft);
+const entries = [
+  ...writing.filter(e => writingMap[e.id]?.project === project.id).map(e => ({ ...e, assignment: writingMap[e.id], href: `/writing/${e.id}/` })),
+  ...notes.filter(e => noteMap[e.id]?.project === project.id && !noteMap[e.id]?.noteCategory).map(e => ({ ...e, assignment: noteMap[e.id], href: `/notes/${e.id}/` }))
+];
+const sections = projectSections.filter(section => ['overview', 'start', 'resources'].includes(section.id) || entries.some(e => e.assignment.section === section.id) || project.resources.some(r => r.section === section.id));
+---
+<BaseLayout title={`${project.title} — Projects — Chenxi Ma`} description={project.summary}>
+  <header class="page-intro shell project-hero"><a class="back-link" href="/projects/"><Localized en="← Projects" zh="← 项目" /></a><p class="eyebrow"><Localized en={project.role} zh={project.roleZh} /></p><h1>{project.title}</h1><p><Localized en={project.summary} zh={project.summaryZh} /></p><a class="text-link repository-link" href={project.repository}>GitHub ↗</a></header>
+  <div class="project-workspace shell">
+    <nav class="project-sidebar reading-glass" aria-label="Project sections">{sections.map(section => <a href={`#${section.id}`}><Localized en={section.en} zh={section.zh} /></a>)}</nav>
+    <div class="project-chapters">
+      <section id="overview" class="chapter reading-glass"><p class="eyebrow">01 · <Localized en="Overview" zh="概览" /></p><h2><Localized en="The question & its boundaries" zh="问题与边界" /></h2><p><Localized en={project.scope} zh={project.scopeZh} /></p><div class="boundary-note"><strong><Localized en="Current evidence" zh="当前证据" /></strong><p><Localized en={project.boundary} zh={project.boundaryZh} /></p></div><p class="chapter-caption"><Localized en="Suggested order: start with the guides, then read the experiments and investigations below." zh="建议先阅读入门指南，再进入下方实验与研究记录。" /></p></section>
+      <section id="start" class="chapter reading-glass"><p class="eyebrow">02 · Start Here</p><h2><Localized en="A small starting point" zh="从一个小例子开始" /></h2>{project.start.map(id => { const entry = guides.find(g => g.id === id); return entry && <EntryCard href={`/guides/${entry.id}/`} title={entry.data.title} titleZh={entry.data.titleZh} description={entry.data.description} descriptionZh={entry.data.descriptionZh} />; })}</section>
+      {sections.filter(s => ['experiments', 'debugging', 'design'].includes(s.id)).map(section => <section id={section.id} class="chapter reading-glass"><p class="eyebrow"><Localized en={section.en} zh={section.zh} /></p><h2><Localized en={section.en} zh={section.zh} /></h2>{entries.filter(e => e.assignment.section === section.id).map(e => <EntryCard href={e.href} title={e.data.title} titleZh={e.data.titleZh} label="Working outline" labelZh="研究提纲" />)}{project.resources.filter(r => r.section === section.id).map(resource => <EntryCard href={resource.url} title={resource.title} titleZh={resource.titleZh} label="Repository document" labelZh="仓库文档" external />)}</section>)}
+      <section id="resources" class="chapter reading-glass"><p class="eyebrow"><Localized en="Resources" zh="代码与材料" /></p><h2><Localized en="Follow the source" zh="查看原始材料" /></h2><EntryCard href={project.repository} title={project.repository.replace('https://github.com/', '')} titleZh={project.repository.replace('https://github.com/', '')} label="GitHub" external />{project.resources.filter(r => ['overview', 'resources'].includes(r.section)).map(resource => <EntryCard href={resource.url} title={resource.title} titleZh={resource.titleZh} external />)}<p class="chapter-caption"><Localized en="Repository documents may evolve. Record the exact commit when reproducing a result." zh="仓库文档会持续更新；复现结果时，请记录具体 Commit。" /></p></section>
+    </div>
+  </div>
+</BaseLayout>

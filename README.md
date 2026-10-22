@@ -1,6 +1,6 @@
 # MCX systems notebook
 
-Chenxi Ma’s technical blog, built with Astro. A quiet article list, rounded typography, soft blue backgrounds, and a transparent glass navigation match the personal homepage at https://algebra-mcx.github.io/. English is the default, with Chinese and dark-mode toggles.
+Chenxi Ma’s technical blog, built with Astro. Project notebooks, practical guides and technical perspectives across algorithms, data and infrastructure. Rounded typography, soft blue backgrounds and liquid glass match https://algebra-mcx.github.io/. English is the default, with Chinese and dark-mode toggles.
 
 ## Run locally
 
@@ -18,15 +18,27 @@ npm run preview
 
 ## Content
 
-- Long-form writing: `src/content/writing/`
-- Short notes: `src/content/notes/`
+- Project articles (original URLs retained): `src/content/writing/`
+- Guides and translations: `src/content/guides/`, `src/content/guides-zh/`
+- Perspectives and legacy technical notes: `src/content/notes/`
 - Project metadata: `src/data/projects.ts`
+- Article ownership, sections and note categories: `src/data/library.ts`
 - Site/contact metadata: `src/data/site.ts` via `.env`
 - Shared design tokens: `src/styles/global.css`
 - Shared navigation interactions: `src/scripts/glass.js`
 - Blog: https://tech-blog-chi.vercel.app/
 
 Writing supports Markdown and MDX, syntax highlighting, KaTeX math, Mermaid diagrams, responsive tables, and breakout figures. Set `draft: true` in frontmatter to exclude an entry from routes, archives, RSS, and the sitemap.
+
+## Adjust the structure
+
+Navigation is Projects / Guides / Notes / About. The wordmark returns home. Search indexes both languages and filters by type, project and domain.
+
+Each project has Overview, Start Here and Resources. Experiments, Debugging and Design appear when they contain entries or repository documents. Add a project in `projects.ts`, then assign articles in `writingMap` or legacy notes in `noteMap`. Repository links describe study/research context, not an implied upstream contribution.
+
+Guides use `category: concepts | quickstarts | playbooks | learning-paths` and applicable `domains: [algorithms, data, infra]`. Chinese entries use `source: <English entry id>`. Python quickstarts require only the standard library.
+
+Notes use `noteCategory: perspectives | decisions | questions` in `noteMap`. Omit it for a technical investigation that belongs inside a project. Existing URLs remain available. Update outline status only when the underlying evidence is ready. Reading times are computed from actual text.
 
 ## Required personalization
 

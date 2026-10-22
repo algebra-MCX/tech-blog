@@ -22,3 +22,10 @@ export const formatCompactDateZh = (date: Date) =>
   new Intl.DateTimeFormat('zh-CN', { month: '2-digit', day: '2-digit' }).format(date);
 
 export type WritingEntry = CollectionEntry<'writing'>;
+
+export const readingMinutes = (body = '') => {
+  const text = body.replace(/```[\s\S]*?```/g, '').replace(/<[^>]*>/g, '').replace(/https?:\/\/\S+/g, '');
+  const chinese = (text.match(/[\u3400-\u9fff]/g) ?? []).length;
+  const words = (text.replace(/[\u3400-\u9fff]/g, '').match(/[\p{L}\p{N}]+/gu) ?? []).length;
+  return Math.max(1, Math.ceil(words / 220 + chinese / 350));
+};

@@ -1,13 +1,15 @@
 ---
 import Icon from './Icon.astro';
 import Localized from './Localized.astro';
-import { site } from '@/data/site';
+import { noteMap } from '@/data/library';
 const path = Astro.url.pathname;
+const id = path.split('/').filter(Boolean).slice(1).join('/');
+const projectArticle = path.startsWith('/writing/') || (path.startsWith('/notes/') && noteMap[id] && !noteMap[id].noteCategory);
 const nav = [
-  { href: '/', en: 'Blog', zh: '博客', active: path === '/' },
-  { href: '/writing/', en: 'Writing', zh: '文章', active: path.startsWith('/writing/') },
-  { href: '/notes/', en: 'Notes', zh: '笔记', active: path.startsWith('/notes/') },
-  { href: site.homepage, en: 'Home ↗', zh: '个人主页 ↗', active: false }
+  { href: '/projects/', en: 'Projects', zh: '项目', active: path.startsWith('/projects/') || projectArticle },
+  { href: '/guides/', en: 'Guides', zh: '指南', active: path.startsWith('/guides/') },
+  { href: '/notes/', en: 'Notes', zh: '思考', active: path.startsWith('/notes/') && !projectArticle },
+  { href: '/about/', en: 'About', zh: '关于', active: path.startsWith('/about/') }
 ];
 ---
 <header class="site-header shell glass-surface">
@@ -17,6 +19,7 @@ const nav = [
     {nav.map((item) => <a href={item.href} aria-current={item.active ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
   </nav>
   <div class="header-actions">
+    <a class="icon-button glass-control" href="/search/" aria-label="Search / 搜索"><Icon name="search" /></a>
     <button class="language-toggle glass-control" type="button" aria-label="切换中英文 / Switch language" data-language-toggle><span data-lang="en">中文</span><span data-lang="zh">English</span></button>
     <button class="icon-button theme-toggle glass-control" type="button" aria-label="Switch color theme" data-theme-toggle>
       <span class="theme-icon theme-icon--sun"><Icon name="sun" /></span>

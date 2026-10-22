@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Localized from './Localized.astro';
-import { formatCompactDate, formatCompactDateZh } from '@/lib/content';
+import { formatCompactDate, formatCompactDateZh, readingMinutes } from '@/lib/content';
 interface Props { entry: CollectionEntry<'writing'>; compact?: boolean }
 const { entry, compact = false } = Astro.props;
 ---
@@ -12,6 +12,6 @@ const { entry, compact = false } = Astro.props;
   </div>
   <div class="writing-meta">
     <time datetime={entry.data.publishDate.toISOString()}><Localized en={formatCompactDate(entry.data.publishDate)} zh={formatCompactDateZh(entry.data.publishDate)} /></time>
-    <span>{entry.data.readingTime} <Localized en="min read" zh="分钟阅读" /></span>
+    <span>{readingMinutes(entry.body)} <Localized en="min read" zh="分钟阅读" /></span>
   </div>
 </article>

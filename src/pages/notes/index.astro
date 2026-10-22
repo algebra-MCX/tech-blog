@@ -1,27 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Tag from '@/components/Tag.astro';
 import Localized from '@/components/Localized.astro';
-import { byNewest, formatDate, formatDateZh } from '@/lib/content';
-const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(byNewest);
+import EntryCard from '@/components/EntryCard.astro';
+import { noteMap, noteSections } from '@/data/library';
+import { byNewest } from '@/lib/content';
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).filter(n => noteMap[n.id]?.noteCategory).sort(byNewest);
 ---
-<BaseLayout title="Notes — Chenxi Ma" description="Short technical observations, experiments, and findings.">
-  <header class="page-intro shell reveal">
-    <p class="eyebrow"><Localized en="Laboratory notebook" zh="实验室笔记" /> · {notes.length.toString().padStart(2, '0')} <Localized en="entries" zh="则" /></p>
-    <h1><Localized en="Notes" zh="笔记" /></h1>
-    <p><Localized en="Short technical observations, experiments, and findings. Small enough to remain specific." zh="简短的技术观察、实验与发现；保持具体，不作空泛延伸。" /></p>
-  </header>
-  <section class="notes shell" aria-label="Technical notes">
-    <div class="notes-head"><span><Localized en="Date" zh="日期" /></span><span><Localized en="Observation" zh="观察" /></span><span><Localized en="Topic" zh="主题" /></span><span></span></div>
-    {notes.map((note) => (
-      <article class="note-row">
-        <time datetime={note.data.publishDate.toISOString()}><Localized en={formatDate(note.data.publishDate)} zh={formatDateZh(note.data.publishDate)} /></time>
-        <h2><a href={`/notes/${note.id}/`}><Localized en={note.data.title} zh={note.data.titleZh} /></a></h2>
-        <span data-lang="en"><Tag text={note.data.topic} /></span><span data-lang="zh"><Tag text={note.data.topicZh} /></span>
-        <a class="note-arrow" href={`/notes/${note.id}/`} aria-label={`Read ${note.data.title}`}><span aria-hidden="true">→</span></a>
-      </article>
-    ))}
-  </section>
+<BaseLayout title="Notes — Chenxi Ma" description="Technical perspectives, decisions and open questions, with explicit assumptions and boundaries.">
+  <header class="page-intro shell"><p class="eyebrow"><Localized en="Thinking in public" zh="记录思考的过程" /></p><h1><Localized en="Notes" zh="思考" /></h1><p><Localized en="Positions, choices and questions about algorithms, data and systems. Keep the assumptions visible; leave room to change a view." zh="记录对算法、数据和系统的观点、选择与疑问，写清成立条件，也为修订判断留出空间。" /></p></header>
+  <section class="library-section shell"><div class="route-cards">{noteSections.map(s => <a class="route-card reading-glass" href={`/notes/sections/${s.id}/`}><h2><Localized en={s.en} zh={s.zh} /> <span aria-hidden="true">→</span></h2><p><Localized en={s.description} zh={s.descriptionZh} /></p><span class="eyebrow">{notes.filter(n => noteMap[n.id].noteCategory === s.id).length} <Localized en="notes" zh="则" /></span></a>)}</div><div class="section-heading section-spaced"><h2><Localized en="Recent perspectives" zh="近期观点" /></h2></div><div class="reading-glass chapter">{notes.map(n => <EntryCard href={`/notes/${n.id}/`} title={n.data.title} titleZh={n.data.titleZh} label={n.data.topic} labelZh={n.data.topicZh} />)}</div><p class="section-description"><Localized en="Experiment outlines and technical investigations live with their projects." zh="实验提纲与具体排障记录归入各自项目。" /> <a class="text-link" href="/projects/"><Localized en="Browse projects →" zh="查看项目 →" /></a></p></section>
 </BaseLayout>
-

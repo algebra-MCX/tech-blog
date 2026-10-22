@@ -1,22 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import WritingRow from '@/components/WritingRow.astro';
 import Localized from '@/components/Localized.astro';
+import EntryCard from '@/components/EntryCard.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { projects } from '@/data/projects';
+import { domains, noteMap } from '@/data/library';
 import { byNewest } from '@/lib/content';
-const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort(byNewest);
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).filter(n => noteMap[n.id]?.noteCategory).sort(byNewest);
+const guides = await getCollection('guides', ({ data }) => !data.draft);
 ---
-<BaseLayout title="Blog — Chenxi Ma">
-  <header class="page-intro shell">
-    <h1><Localized en="Blog" zh="博客" /></h1>
-    <p><Localized en="Writing and working notes on LLM inference, GPU programming, and systems optimization." zh="记录大模型推理、GPU 编程与系统优化中的思考、实验和学习笔记。" /></p>
-  </header>
-  <section class="recent shell" aria-labelledby="recent-writing">
-    <div class="section-heading">
-      <h2 id="recent-writing"><Localized en="Recent Writing" zh="近期文章" /></h2>
-      <a href="/writing/"><Localized en="All writing ↗" zh="全部文章 ↗" /></a>
-    </div>
-    <div class="writing-list">{writing.slice(0, 6).map((entry) => <WritingRow entry={entry} />)}</div>
-    <p class="notes-link"><a href="/notes/"><Localized en="Browse short notes ↗" zh="浏览简短笔记 ↗" /></a></p>
-  </section>
+<BaseLayout title="Chenxi Ma — Algorithms, Data & Infrastructure" description="Project notebooks, practical guides and technical judgment across algorithms, data and infrastructure.">
+  <header class="page-intro shell home-intro"><p class="eyebrow">Chenxi Ma · <Localized en="An open technical notebook" zh="公开技术档案" /></p><h1><span data-lang="en">Ideas, tested<br />through building.</span><span data-lang="zh">在实践中，<br />把问题研究清楚。</span></h1><p><Localized en="Exploring how algorithms, data and systems shape the quality, efficiency and reliability of AI." zh="研究算法、数据与系统如何共同决定 AI 的效果、效率与可靠性。" /></p><div class="hero-links"><a class="pill-link glass-control" href="/projects/"><Localized en="Explore projects →" zh="进入项目 →" /></a><a class="text-link" href="/guides/"><Localized en="Start with a guide" zh="从指南开始" /></a></div></header>
+  <section class="library-section shell"><div class="section-heading"><h2><Localized en="Selected projects" zh="精选项目" /></h2><a href="/projects/"><Localized en="All projects →" zh="全部项目 →" /></a></div><div class="project-cards">{projects.map(project => <ProjectCard project={project} />)}</div></section>
+  <section class="library-section shell"><div class="section-heading"><h2><Localized en="Find your starting point" zh="找到你的起点" /></h2></div><div class="route-cards">{domains.map(d => <a class="route-card reading-glass" href={`/guides/?domain=${d.id}`}><p class="eyebrow">{d.id === 'algorithms' ? '01' : d.id === 'data' ? '02' : '03'}</p><h2><Localized en={d.en} zh={d.zh} /> →</h2><p><Localized en={d.id === 'algorithms' ? 'Models, mechanisms and small experiments.' : d.id === 'data' ? 'Data quality, splits and trustworthy evaluation.' : 'Execution, measurement and system behavior.'} zh={d.id === 'algorithms' ? '模型、机制与小型实验。' : d.id === 'data' ? '数据质量、划分与可信评测。' : '执行、测量与系统行为。'} /></p></a>)}</div></section>
+  <section class="library-section shell"><div class="section-heading"><h2><Localized en="Start small" zh="从小处动手" /></h2><a href="/guides/sections/quickstarts/"><Localized en="Quickstarts →" zh="最简入门 →" /></a></div><div class="guide-cards">{guides.filter(g => g.data.category === 'quickstarts').map(g => <div class="reading-glass guide-card"><EntryCard href={`/guides/${g.id}/`} title={g.data.title} titleZh={g.data.titleZh} description={g.data.description} descriptionZh={g.data.descriptionZh} label="Python · no extra packages" labelZh="Python · 无需额外依赖" /></div>)}</div></section>
+  <section class="library-section shell"><div class="section-heading"><h2><Localized en="Recent perspectives" zh="近期思考" /></h2><a href="/notes/"><Localized en="Notes →" zh="全部思考 →" /></a></div><div class="chapter reading-glass">{notes.slice(0, 3).map(n => <EntryCard href={`/notes/${n.id}/`} title={n.data.title} titleZh={n.data.titleZh} label={n.data.topic} labelZh={n.data.topicZh} />)}</div></section>
 </BaseLayout>

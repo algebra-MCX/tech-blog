@@ -3,10 +3,12 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Tag from '@/components/Tag.astro';
 import Localized from '@/components/Localized.astro';
-import { formatDate, formatDateZh } from '@/lib/content';
+import { formatDate, formatDateZh, readingMinutes } from '@/lib/content';
+import { writingMap, guideSections, projectSections } from '@/data/library';
+import { projectById } from '@/data/projects';
 
 interface Props {
-  entry: CollectionEntry<'writing'>;
+  entry: CollectionEntry<'writing'> | CollectionEntry<'guides'>;
   headings: { depth: number; slug: string; text: string }[];
   headingsZh?: { depth: number; slug: string; text: string }[];
 }
@@ -14,20 +16,28 @@ const { entry, headings, headingsZh = [] } = Astro.props;
 const toc = headings.filter((heading) => heading.depth === 2);
 const tocZh = headingsZh.filter((heading) => heading.depth === 2);
 const contents = [{ language: 'en', headings: toc }, { language: 'zh', headings: tocZh }];
+const assignment = entry.collection === 'writing' ? writingMap[entry.id] : undefined;
+const project = projectById(assignment?.project);
+const guideSection = entry.collection === 'guides' ? guideSections.find(s => s.id === entry.data.category) : undefined;
+const section = projectSections.find(s => s.id === assignment?.section);
+const parentHref = project ? `/projects/${project.id}/` : guideSection ? `/guides/sections/${guideSection.id}/` : '/writing/';
+const parentEn = project?.title ?? guideSection?.en ?? 'All articles';
+const parentZh = project?.titleZh ?? guideSection?.zh ?? '全部文章';
 ---
 <BaseLayout title={`${entry.data.title} — Chenxi Ma`} description={entry.data.description} article>
   <article class="article">
     <header class="article-header shell reading-glass">
       <div class="article-meta reveal">
-        <nav aria-label="Breadcrumb"><a href="/writing/"><Localized en="Writing" zh="文章" /></a><span>›</span><span aria-current="page"><Localized en="Analysis" zh="分析" /></span></nav>
-        <p><time datetime={entry.data.publishDate.toISOString()}><Localized en={formatDate(entry.data.publishDate)} zh={formatDateZh(entry.data.publishDate)} /></time><span>·</span>{entry.data.readingTime} <Localized en="min read" zh="分钟阅读" /></p>
+        <nav aria-label="Breadcrumb"><a href={entry.collection === 'guides' ? '/guides/' : '/projects/'}><Localized en={entry.collection === 'guides' ? 'Guides' : 'Projects'} zh={entry.collection === 'guides' ? '指南' : '项目'} /></a><span>›</span><a href={parentHref}><Localized en={parentEn} zh={parentZh} /></a>{section && <><span>›</span><span><Localized en={section.en} zh={section.zh} /></span></>}</nav>
+        <p><time datetime={entry.data.publishDate.toISOString()}><Localized en={formatDate(entry.data.publishDate)} zh={formatDateZh(entry.data.publishDate)} /></time><span>·</span>{readingMinutes(entry.body)} <Localized en="min read" zh="分钟阅读" /></p>
       </div>
       <div class="article-hero">
         <div class="article-title reveal reveal--2">
-          {entry.data.eyebrow && <p class="eyebrow"><Localized en={entry.data.eyebrow} zh={entry.data.eyebrowZh ?? entry.data.eyebrow} /></p>}
+          {'eyebrow' in entry.data && entry.data.eyebrow && <p class="eyebrow"><Localized en={entry.data.eyebrow} zh={entry.data.eyebrowZh ?? entry.data.eyebrow} /></p>}
           <h1><Localized en={entry.data.title} zh={entry.data.titleZh} /></h1>
           <p class="dek"><Localized en={entry.data.description} zh={entry.data.descriptionZh} /></p>
-          <div class="article-tags">{entry.data.tags.map((tag) => <Tag text={tag} href={`/writing/?tag=${encodeURIComponent(tag)}`} />)}</div>
+          <div class="article-tags">{entry.data.tags.map((tag) => <Tag text={tag} href={entry.collection === 'guides' ? `/search/?type=guide&query=${encodeURIComponent(tag)}` : `/writing/?tag=${encodeURIComponent(tag)}`} />)}</div>
+          {assignment?.state === 'outline' && <p class="reading-status"><strong><Localized en="Working outline" zh="研究提纲" /></strong> · <Localized en="Hypotheses and measurement plans; verified results are still being attached." zh="包含假设与测量计划，经验证的结果仍在补充中。" /></p>}
         </div>
       </div>
     </header>
@@ -44,7 +54,7 @@ const contents = [{ language: 'en', headings: toc }, { language: 'zh', headings:
         <p><Localized en="Contents" zh="目录" /></p>
         {contents.map((list) => <ol data-lang={list.language}>{list.headings.map((heading, index) => <li><a href={`#${heading.slug}`} data-toc-link><span>{String(index + 1).padStart(2, '0')}.</span><span>{heading.text}</span></a></li>)}</ol>)}
       </aside>
-      <div class="prose reading-glass"><slot /></div>
+      <div class="prose reading-glass"><slot /><nav class="article-return" aria-label="Continue reading"><a href={parentHref}><Localized en={`← Back to ${parentEn}`} zh={`← 返回${parentZh}`} /></a>{project && <a href={`/projects/${project.id}/#start`}><Localized en="Reading path →" zh="阅读路线 →" /></a>}</nav></div>
     </div>
   </article>
 </BaseLayout>
