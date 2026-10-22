@@ -1,6 +1,6 @@
 ---
-title: "How to read this blog"
-titleZh: "如何阅读这个博客"
+title: "Before we begin"
+titleZh: "写在开始之前"
 description: "Project-driven learning: a short path in, a working mental model, and the ability to explore independently."
 descriptionZh: "以项目驱动学习：尽快入门，建立可运行的心智模型，具备独立探索的能力。"
 publishDate: 2026-10-22
