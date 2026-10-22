@@ -14,7 +14,7 @@ The LLM field moves fast. Infrastructure, model algorithms, GPU architecture, ag
 
 Zhang Yiming has spoken about understanding as a core competitive advantage—something others must ultimately find valuable. Depth of understanding does not come from collecting more technologies. It comes from knowing which problems matter most in a field and developing your own thinking about them. That is why I started this blog.
 
-## 01. Get started as quickly as possible
+## 01. Learning approach
 
 Getting started should be fast, but the foundations must hold. I believe the first pass should take no more than a week: a short, concentrated effort with one test of understanding—can you reconstruct the core principles from a blank whiteboard?
 
@@ -22,7 +22,7 @@ For LLM infrastructure, for example, you do not need to spend two months learnin
 
 This is the method behind the whole blog: **project-driven learning**.
 
-## 02. One short entry path for each field
+## 02. Five fields
 
 I plan to build a concise route into each major field, paired with a small project:
 
@@ -34,7 +34,7 @@ I plan to build a concise route into each major field, paired with a small proje
 
 You do not need to begin with tens of thousands of lines of framework source. Build the essential mechanism first.
 
-## 03. What counts as being ready to explore?
+## 03. Readiness criteria
 
 I do not measure understanding by the number of articles read or hours spent studying. For each field, I will provide three things: **a minimal implementation, a few key experiments, and a set of practical checks**—modify the implementation, explain what happens and analyze the bottlenecks.
 
@@ -42,7 +42,7 @@ After working through a minimal inference engine, for example, you should be abl
 
 **The goal of an introduction is not to learn everything. It is to become capable of continuing on your own.**
 
-## 04. Connect the parts to the whole
+## 04. A systems perspective
 
 Understanding one kernel, attention mechanism or runtime in isolation is not enough. Why does a model architecture change the design of an inference system? Why does a GPU's memory hierarchy affect algorithm choices? Why do some methods that theoretically reduce computation turn out to be slower in practice? No single field offers a complete answer.
 
@@ -50,19 +50,19 @@ Once the individual routes are more complete, I plan to write a cross-field over
 
 The aim is to see the forest and still be able to take each tree apart yourself.
 
-## 05. Open code and experiments
+## 05. Open code and reproducibility
 
 I will gradually open-source the small projects, core experiments and practical checks on GitHub so that others can run, modify, question and reproduce them. For each experiment, I will try to record the version, environment, measurement method, comparison conditions and known limitations. Failed experiments, mistaken hypotheses and debugging records deserve a place too. Unverified conclusions will be marked explicitly; conjectures will remain conjectures.
 
-## 06. Perhaps we can research together
+## 06. Research exchange
 
 If the opportunity arises, I would like to organize small study groups around these projects: reading papers, reproducing experiments and discussing designs. An impressive background is not required. What matters is a willingness to build, think carefully and let experimental results test your views. This is still an idea; I hope it can gradually take shape.
 
-## Where to begin
+## Start here
 
 - **New to a field**: start with [Quickstarts](/guides/sections/quickstarts/), then work through a first Nano Project and its core experiments as the routes develop.
 - **Already have the foundations**: go straight to [Projects](/projects/), source code and performance analysis. There is no need to read everything in order.
-- **Interested in my judgment**: read [Notes](/notes/) for why I choose a direction, abandon an approach or interpret an experimental result.
+- **Personal writing**: read [Notes](/notes/) for personal essays and predictions about the future.
 
 Find a question you truly care about and follow it deeper. Spend less time preparing without direction, and more time building and thinking.
 
