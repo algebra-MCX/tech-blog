@@ -46,7 +46,7 @@ After working through a minimal inference engine, for example, you should be abl
 
 Understanding one kernel, attention mechanism or runtime in isolation is not enough. Why does a model architecture change the design of an inference system? Why does a GPU's memory hierarchy affect algorithm choices? Why do some methods that theoretically reduce computation turn out to be slower in practice? No single field offers a complete answer.
 
-Once the individual routes are more complete, I plan to write a cross-field overview connecting all five.
+I plan to develop this blog from the fundamentals to deeper ideas, weaving in my own thinking.
 
 ## 05. Open code and experiments
 
