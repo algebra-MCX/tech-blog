@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Localized from '@/components/Localized.astro';
+import EntryCard from '@/components/EntryCard.astro';
+import { noteMap, noteSections, noteTopics } from '@/data/library';
+import { byNewest } from '@/lib/content';
+export function getStaticPaths() { return noteTopics.map(topic => ({ params: { topic: topic.id }, props: { topic } })); }
+const { topic } = Astro.props;
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).filter(n => noteMap[n.id]?.noteCategory && noteMap[n.id]?.noteTopic === topic.id).sort(byNewest);
+---
+<BaseLayout title={`${topic.en} — Notes — Chenxi Ma`} description={topic.description}>
+  <header class="page-intro shell"><a class="back-link" href="/notes/"><Localized en="← Notes" zh="← 想法" /></a><h1><Localized en={topic.en} zh={topic.zh} /></h1><p><Localized en={topic.description} zh={topic.descriptionZh} /></p></header>
+  <section class="library-section shell" data-filter-list>
+    <nav class="section-tabs" aria-label="Note topics">{noteTopics.map(t => <a href={`/notes/topics/${t.id}/`} aria-current={topic.id === t.id ? 'page' : undefined}><Localized en={t.en} zh={t.zh} /></a>)}</nav>
+    {notes.length ? <><div class="filter-bar"><label><span><Localized en="Type of note" zh="想法类型" /></span><select data-filter="kind"><option value="all">All / 全部</option>{noteSections.map(s => <option value={s.id}>{s.en} / {s.zh}</option>)}</select></label><span class="filter-count"><span data-filter-count>{notes.length}</span> <Localized en="notes" zh="则" /></span></div><div class="chapter reading-glass note-topic-list" data-filter-group>{notes.map(n => { const type = noteSections.find(s => s.id === noteMap[n.id].noteCategory)!; return <div data-filter-row data-kind={type.id}><EntryCard href={`/notes/${n.id}/`} title={n.data.title} titleZh={n.data.titleZh} label={type.en} labelZh={type.zh} /></div>; })}</div><p class="empty-state" data-filter-empty hidden><Localized en="No notes of this type in this topic yet." zh="这个主题暂时没有此类型的想法。" /></p></> : <div class="empty-state reading-glass"><h2><Localized en="No notes published here yet" zh="这个主题尚未发布想法" /></h2><p><Localized en="This space will grow with personal observations and experience. You can browse the existing research perspectives in the meantime." zh="这里会随着个人观察与经历逐步补充。目前可以先阅读已有的科研认识。" /></p><a class="text-link" href="/notes/topics/research/"><Localized en="Read research notes →" zh="阅读科研想法 →" /></a></div>}
+  </section>
+</BaseLayout>
+<script>import '@/scripts/filters';</script>

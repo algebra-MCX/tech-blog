@@ -19,7 +19,14 @@ export const noteSections = [
   { id: 'decisions', en: 'Decisions', zh: '技术取舍', description: 'Choices made under explicit constraints.', descriptionZh: '在明确约束下作出的选择。' },
   { id: 'questions', en: 'Questions', zh: '开放问题', description: 'Questions that still need better evidence.', descriptionZh: '仍需更多证据回答的问题。' }
 ] as const;
-export type Assignment = { project: string; section: 'experiments' | 'debugging' | 'design'; state: 'outline' | 'perspective'; noteCategory?: 'perspectives' | 'decisions' | 'questions' };
+export const noteTopics = [
+  { id: 'research', en: 'Research', zh: '科研', description: 'Questions, evidence and the practice of research.', descriptionZh: '研究问题、证据，以及科研过程中的认识。' },
+  { id: 'learning', en: 'Learning', zh: '学习', description: 'How understanding is built, tested and revised.', descriptionZh: '理解如何建立、验证与修订。' },
+  { id: 'investing', en: 'Investing', zh: '投资', description: 'Personal reflections on value, uncertainty and investment decisions.', descriptionZh: '关于价值、不确定性与投资决策的个人认识。' },
+  { id: 'life', en: 'Life', zh: '生活', description: 'Observations about time, choices and everyday life.', descriptionZh: '关于时间、选择与日常生活的观察。' },
+  { id: 'personal-finance', en: 'Personal Finance', zh: '理财', description: 'Personal thinking about budgets, saving and financial planning.', descriptionZh: '关于预算、储蓄和财务规划的个人思考。' }
+] as const;
+export type Assignment = { project?: string; section?: 'experiments' | 'debugging' | 'design'; state: 'outline' | 'perspective'; noteCategory?: 'perspectives' | 'decisions' | 'questions'; noteTopic?: typeof noteTopics[number]['id'] };
 export const writingMap: Record<string, Assignment> = {
   'cuda-graph-fallback': { project: 'vllm', section: 'debugging', state: 'outline' },
   'benchmarking-moe': { project: 'moeflow', section: 'experiments', state: 'outline' },
@@ -30,10 +37,10 @@ export const writingMap: Record<string, Assignment> = {
   'irregular-moe-execution': { project: 'vllm', section: 'design', state: 'outline' }
 };
 export const noteMap: Record<string, Assignment> = {
-  'nsight-metrics': { project: 'cuda-study', section: 'debugging', state: 'perspective', noteCategory: 'perspectives' },
-  'stream-priorities': { project: 'cuda-study', section: 'design', state: 'perspective', noteCategory: 'perspectives' },
-  'triton-configurations': { project: 'cuda-study', section: 'experiments', state: 'perspective', noteCategory: 'perspectives' },
-  'visualize-expert-load': { project: 'moeflow', section: 'design', state: 'perspective', noteCategory: 'perspectives' },
+  'nsight-metrics': { project: 'cuda-study', section: 'debugging', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
+  'stream-priorities': { project: 'cuda-study', section: 'design', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
+  'triton-configurations': { project: 'cuda-study', section: 'experiments', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
+  'visualize-expert-load': { project: 'moeflow', section: 'design', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
   'why-2x64': { project: 'cuda-study', section: 'experiments', state: 'outline' },
   'rank-nccl': { project: 'moeflow', section: 'debugging', state: 'outline' }
 };

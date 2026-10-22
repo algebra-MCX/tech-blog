@@ -3,5 +3,9 @@
   "public": true,
   "framework": "astro",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/about", "destination": "https://algebra-mcx.github.io/", "permanent": true },
+    { "source": "/about/", "destination": "https://algebra-mcx.github.io/", "permanent": true }
+  ]
 }

@@ -3,19 +3,20 @@ import Icon from './Icon.astro';
 import Localized from './Localized.astro';
 import { noteMap } from '@/data/library';
 import { site } from '@/data/site';
+import { Image } from 'astro:assets';
+import avatar from '@/assets/chenxi-avatar.png';
 const path = Astro.url.pathname;
 const id = path.split('/').filter(Boolean).slice(1).join('/');
 const projectArticle = path.startsWith('/writing/') || (path.startsWith('/notes/') && noteMap[id] && !noteMap[id].noteCategory);
 const nav = [
-  { href: site.homepage, en: 'Homepage ↗', zh: '个人主页 ↗', active: false },
+  { href: site.homepage, en: 'Home ↗', zh: '个人主页 ↗', active: false },
   { href: '/projects/', en: 'Projects', zh: '项目', active: path.startsWith('/projects/') || projectArticle },
   { href: '/guides/', en: 'Guides', zh: '指南', active: path.startsWith('/guides/') },
-  { href: '/notes/', en: 'Notes', zh: '思考', active: path.startsWith('/notes/') && !projectArticle },
-  { href: '/about/', en: 'About', zh: '关于', active: path.startsWith('/about/') }
+  { href: '/notes/', en: 'Notes', zh: '想法', active: path.startsWith('/notes/') && !projectArticle }
 ];
 ---
 <header class="site-header shell glass-surface">
-  <a class="wordmark" href="/">Chenxi Ma</a>
+  <a class="wordmark" href="/"><span class="brand-avatar-frame" aria-hidden="true"><Image class="brand-avatar" src={avatar} width={32} height={32} densities={[1, 2]} format="webp" quality={85} alt="" /></span><span>Chenxi Ma</span></a>
   <nav class="primary-nav" aria-label="Main navigation">
     <span class="nav-lens" aria-hidden="true"></span>
     {nav.map((item) => <a href={item.href} aria-current={item.active ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
