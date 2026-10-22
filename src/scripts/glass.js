@@ -2,7 +2,7 @@
   "use strict";
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
-  const surfaces = [...document.querySelectorAll(".glass-surface, .glass-control")];
+  const surfaces = [...document.querySelectorAll(".glass-surface, .glass-control, .reading-glass")];
 
   surfaces.forEach(surface => {
     let frame = 0;

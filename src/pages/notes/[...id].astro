@@ -19,11 +19,11 @@ const ContentZh = translated?.Content;
 ---
 <BaseLayout title={`${note.data.title} — Notes — Chenxi Ma`} description={`A technical note about ${note.data.topic}.`}>
   <article class="note shell">
-    <header>
+    <header class="note-header reading-glass">
       <a class="back" href="/notes/">← <Localized en="Notes" zh="笔记" /></a>
       <div class="note-meta"><time datetime={note.data.publishDate.toISOString()}><Localized en={formatDate(note.data.publishDate, 'long')} zh={formatDateZh(note.data.publishDate, 'long')} /></time><span data-lang="en"><Tag text={note.data.topic} /></span><span data-lang="zh"><Tag text={note.data.topicZh} /></span></div>
       <h1><Localized en={note.data.title} zh={note.data.titleZh} /></h1>
     </header>
-    <div class="note-body"><div data-lang="en"><Content /></div>{ContentZh && <div data-lang="zh"><ContentZh /></div>}</div>
+    <div class="note-body reading-glass"><div data-lang="en"><Content /></div>{ContentZh && <div data-lang="zh"><ContentZh /></div>}</div>
   </article>
 </BaseLayout>

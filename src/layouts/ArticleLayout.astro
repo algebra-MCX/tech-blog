@@ -17,7 +17,7 @@ const contents = [{ language: 'en', headings: toc }, { language: 'zh', headings:
 ---
 <BaseLayout title={`${entry.data.title} — Chenxi Ma`} description={entry.data.description} article>
   <article class="article">
-    <header class="article-header shell">
+    <header class="article-header shell reading-glass">
       <div class="article-meta reveal">
         <nav aria-label="Breadcrumb"><a href="/writing/"><Localized en="Writing" zh="文章" /></a><span>›</span><span aria-current="page"><Localized en="Analysis" zh="分析" /></span></nav>
         <p><time datetime={entry.data.publishDate.toISOString()}><Localized en={formatDate(entry.data.publishDate)} zh={formatDateZh(entry.data.publishDate)} /></time><span>·</span>{entry.data.readingTime} <Localized en="min read" zh="分钟阅读" /></p>
@@ -33,18 +33,18 @@ const contents = [{ language: 'en', headings: toc }, { language: 'zh', headings:
     </header>
 
     <div class="mobile-toc shell">
-      <details>
+      <details class="reading-glass">
         <summary><Localized en="Contents" zh="目录" /> <span>{toc.length.toString().padStart(2, '0')} <Localized en="sections" zh="节" /></span></summary>
         {contents.map((list) => <ol data-lang={list.language}>{list.headings.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol>)}
       </details>
     </div>
 
     <div class="article-grid shell">
-      <aside class="toc" aria-label="Table of contents">
+      <aside class="toc reading-glass" aria-label="Table of contents">
         <p><Localized en="Contents" zh="目录" /></p>
         {contents.map((list) => <ol data-lang={list.language}>{list.headings.map((heading, index) => <li><a href={`#${heading.slug}`} data-toc-link><span>{String(index + 1).padStart(2, '0')}.</span><span>{heading.text}</span></a></li>)}</ol>)}
       </aside>
-      <div class="prose"><slot /></div>
+      <div class="prose reading-glass"><slot /></div>
     </div>
   </article>
 </BaseLayout>
