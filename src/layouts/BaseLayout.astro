@@ -22,14 +22,14 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 <!doctype html>
-<html lang="en" data-theme="light" data-language="en">
+<html lang="en" data-theme="dark" data-language="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#d4dce0" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#131820" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#131820" />
+    <meta name="color-scheme" content="dark" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title="Chenxi Ma — Writing" href="/rss.xml" />
     <meta property="og:type" content={article ? 'article' : 'website'} />
@@ -44,11 +44,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script is:inline>
       (() => {
-        let saved, savedLanguage;
-        try { saved = localStorage.getItem('mcx-theme'); savedLanguage = localStorage.getItem('mcx-language'); } catch {}
-        const theme = saved === 'dark' || saved === 'light' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.dataset.theme = theme;
-        document.documentElement.style.colorScheme = theme;
+        let savedLanguage;
+        try { savedLanguage = localStorage.getItem('mcx-language'); } catch {}
         const language = savedLanguage === 'zh' ? 'zh' : 'en';
         document.documentElement.dataset.language = language;
         document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
@@ -63,22 +60,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <main id="main-content"><slot /></main>
     <Footer />
     <script>
-      const setupTheme = () => {
-        document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
-          if (button.dataset.ready) return;
-          button.dataset.ready = 'true';
-          button.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === 'dark'));
-          button.addEventListener('click', () => {
-            const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-            document.documentElement.dataset.theme = next;
-            document.documentElement.style.colorScheme = next;
-            try { localStorage.setItem('mcx-theme', next); } catch {}
-            button.setAttribute('aria-pressed', String(next === 'dark'));
-          });
-        });
-      };
-      setupTheme();
-      document.addEventListener('astro:page-load', setupTheme);
       const setupLanguage = () => {
         document.querySelectorAll<HTMLButtonElement>('[data-language-toggle]').forEach((button) => {
           if (button.dataset.ready) return;

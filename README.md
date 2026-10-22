@@ -34,6 +34,8 @@ Writing supports Markdown and MDX, syntax highlighting, KaTeX math, Mermaid diag
 
 Navigation is Start here / Quickstarts / Projects / Notes / Home. The blog root and the personal homepage's blog links open `/guides/how-to-read/`. This reading guide has a simple reading layout, without a promotional landing page. Home returns to the personal homepage (including the language-aware CV icon); legacy About URLs do the same. Search indexes both languages and filters by type, project and domain. The small brand avatar is optimized into 32/64px WebP assets at build time.
 
+Both sites use a fixed dark appearance. Theme controls and saved/system light-mode preferences are removed; language switching remains available.
+
 The project directory opens directly on two counted categories: My projects and Open-source contributions. Set `kind: own | contributor` in `projects.ts`. Upstream PR records and their last verified states are in `github-contributions.json`; authoring a proposed PR is distinguished from a merged contribution. PRs live under Code, while Articles retains the project's reading materials.
 
 Repository star badges have a verified static fallback in `github-repositories.json`. They request the current public GitHub repository count when visible, and refresh every five minutes while the page is visible. Successful values are cached locally as a fallback; rate limits or network failures retain an available count. Contribution projects use the upstream repository's stars. No access token is shipped to the browser.
