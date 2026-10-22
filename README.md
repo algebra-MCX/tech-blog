@@ -32,7 +32,11 @@ Writing supports Markdown and MDX, syntax highlighting, KaTeX math, Mermaid diag
 
 ## Adjust the structure
 
-Navigation is Projects / Guides / Notes / Home. Home returns to the personal homepage (including bilingual resumes); the wordmark returns to the blog index. Legacy About URLs redirect to the personal homepage. Search indexes both languages and filters by type, project and domain. The small brand avatar is optimized into 32/64px WebP assets at build time.
+Navigation is Start here / Quickstarts / Projects / Notes / Home. The blog root and the personal homepage's blog links open `/guides/how-to-read/`. This reading guide has a simple reading layout, without a promotional landing page. Home returns to the personal homepage (including the language-aware CV icon); legacy About URLs do the same. Search indexes both languages and filters by type, project and domain. The small brand avatar is optimized into 32/64px WebP assets at build time.
+
+The project directory opens directly on two counted categories: My projects and Open-source contributions. Set `kind: own | contributor` in `projects.ts`. Upstream PR records and their last verified states are in `github-contributions.json`; authoring a proposed PR is distinguished from a merged contribution. PRs live under Code, while Articles retains the project's reading materials.
+
+Repository star badges have a verified static fallback in `github-repositories.json`. They request the current public GitHub repository count when visible, and refresh every five minutes while the page is visible. Successful values are cached locally as a fallback; rate limits or network failures retain an available count. Contribution projects use the upstream repository's stars. No access token is shipped to the browser.
 
 Each project has four fixed navigation links on separate pages: Overview (`/projects/:id/`), Start (`start/`), Articles (`articles/`) and Code (`resources/`). Articles has counted filters for Experiments, Debugging and Design, plus bilingual search. Start links carry `?project=:id` into guides so readers retain their project context and get a next step. Legacy section hashes redirect to their corresponding pages. Add a project in `projects.ts`, then assign articles in `writingMap` or legacy notes in `noteMap`. Repository links describe study/research context, not an implied upstream contribution.
 

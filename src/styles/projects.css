@@ -1,4 +1,7 @@
-.project-directory-intro { padding-bottom: 32px; }
+.project-directory { padding-top: 32px; }
+.project-card .project-card-title { align-items: center; margin-top: 20px; }
+.project-card .project-card-title h2 { margin: 0 0 3px; }
+.project-ownership-nav button { min-height: 48px; padding-inline: 18px; font-size: 17px; }
 .directory-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 28px; }
 .directory-count { flex-shrink: 0; font-size: 14px; color: var(--ink-faint); }
 .project-kind-nav { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -8,9 +11,6 @@
 .project-kind-nav button > span:last-child:not([data-lang]) { font-size: 12px; color: var(--ink-faint); }
 .project-catalogue { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .project-catalogue .project-card { padding: 30px; box-shadow: inset 0 1px 0 var(--glass-edge); }
-.project-catalogue .project-card:first-child { grid-column: 1 / -1; padding: 34px; }
-.project-catalogue .project-card:first-child h2 { font-size: 40px; }
-.project-catalogue .project-card:first-child > p:not(.project-subtitle):not(.project-card-inventory) { max-width: 650px; font-size: 19px; }
 .project-catalogue .project-card .project-links { margin-top: 0; }
 .project-desk { --project-nav-top: 102px; padding-top: 28px; }
 .project-context-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 28px; }
@@ -88,6 +88,12 @@
 .repository-feature strong { font-size: 24px; font-weight: 600; overflow-wrap: anywhere; }
 .repository-feature > span:last-child { font-size: 26px; }
 .project-source-list { margin-top: 24px; }
+.project-pull-requests { margin-top: 36px; }
+.project-pull-requests h3 { font-size: 23px; margin: 0; }
+.project-pull-requests .project-source-list { margin-top: 10px; }
+.project-pull-requests .project-source-list a { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+.pr-state { color: var(--ink-faint); font-size: 13px; white-space: nowrap; }
+.pr-state--merged { color: var(--accent); }
 .project-source-list a { display: flex; align-items: center; justify-content: space-between; gap: 22px; min-height: 64px; padding-block: 16px; border-bottom: 1px solid var(--line); font-size: 18px; }
 @media (max-width: 850px) {
   .project-overview { gap: 28px; }
@@ -99,9 +105,7 @@
   .project-kind-nav { gap: 4px; }
   .project-kind-nav button { padding-inline: 11px; font-size: 14px; }
   .project-catalogue { grid-template-columns: 1fr; gap: 16px; }
-  .project-catalogue .project-card, .project-catalogue .project-card:first-child { grid-column: auto; padding: 24px; }
-  .project-catalogue .project-card:first-child h2 { font-size: 34px; }
-  .project-catalogue .project-card:first-child > p:not(.project-subtitle):not(.project-card-inventory) { font-size: 17px; }
+  .project-catalogue .project-card { grid-column: auto; padding: 24px; }
   .project-desk { padding-top: 22px; }
   .project-context-bar { padding-bottom: 22px; gap: 10px; }
   .project-back { font-size: 14px; gap: 6px; }

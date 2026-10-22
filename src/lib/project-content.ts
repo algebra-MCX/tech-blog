@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import type { Project } from '@/data/projects';
+import { type Project, projectContributions } from '@/data/projects';
 import { writingMap, noteMap } from '@/data/library';
 
 export const projectViews = [
@@ -12,7 +12,7 @@ export type ProjectView = typeof projectViews[number]['id'];
 export type ProjectItem = {
   id: string; href: string; title: string; titleZh: string;
   description?: string; descriptionZh?: string;
-  kind: string; source: 'outline' | 'repository';
+  kind: string; source: 'outline' | 'repository' | 'pull-request'; state?: string;
 };
 export async function getProjectContent(project: Project) {
   const [writing, notes, guides] = await Promise.all([
@@ -31,5 +31,6 @@ export async function getProjectContent(project: Project) {
       .map(entry => ({ id: entry.id, href: `/notes/${entry.id}/`, title: entry.data.title, titleZh: entry.data.titleZh, kind: noteMap[entry.id].section ?? 'design', source: 'outline' as const }))
   ];
   const starts = project.start.flatMap(id => { const entry = guides.find(guide => guide.id === id); return entry ? [entry] : []; });
-  return { items: [...originals, ...outlines], originals, outlines, starts };
+  const prs: ProjectItem[] = projectContributions(project).map(pr => ({ id: pr.url, href: pr.url, title: `#${pr.number} · ${pr.title}`, titleZh: `#${pr.number} · ${pr.title}`, kind: 'design', source: 'pull-request', state: pr.state }));
+  return { items: [...originals, ...outlines], originals, outlines, starts, prs };
 }

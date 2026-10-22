@@ -1,0 +1,128 @@
+[
+  {
+    "repository": "deepseek-ai/DeepInfer",
+    "number": 99,
+    "title": "Add an NVLink Engram fetch for single-node runs without NCCL GIN",
+    "url": "https://github.com/deepseek-ai/DeepInfer/pull/99",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63111,
+    "title": "[MRV2] Select synchronized active DBO microbatch counts",
+    "url": "https://github.com/vllm-project/vllm/pull/63111",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63110,
+    "title": "[EP] Keep NIXL and shared expert state for multiple ubatches",
+    "url": "https://github.com/vllm-project/vllm/pull/63110",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63109,
+    "title": "[EP] Hand NIXL DBO operations across communication streams",
+    "url": "https://github.com/vllm-project/vllm/pull/63109",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63108,
+    "title": "[EP] Size NIXL dispatch from synchronized execution slices",
+    "url": "https://github.com/vllm-project/vllm/pull/63108",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63107,
+    "title": "[MRV2] Preserve routed expert rows after DBO staging",
+    "url": "https://github.com/vllm-project/vllm/pull/63107",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 62430,
+    "title": "[MRV2] Stage decode tokens across captured DBO regions",
+    "url": "https://github.com/vllm-project/vllm/pull/62430",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 57184,
+    "title": "[Prototype][MRV2] Stage DeepSeek decode tokens for imbalanced DBO graph replay",
+    "url": "https://github.com/vllm-project/vllm/pull/57184",
+    "author": "algebra-MCX",
+    "state": "closed",
+    "mergedAt": null
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 33355,
+    "title": "[torch.compile] Avoid graph fragmentation in unified_kv_cache_update",
+    "url": "https://github.com/vllm-project/vllm/pull/33355",
+    "author": "algebra-MCX",
+    "state": "closed",
+    "mergedAt": null
+  },
+  {
+    "repository": "uw-syfi/TraceLab",
+    "number": 11,
+    "title": "Add SGLang backend adapter",
+    "url": "https://github.com/uw-syfi/TraceLab/pull/11",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  },
+  {
+    "repository": "uw-syfi/TraceLab",
+    "number": 10,
+    "title": "Add SGLang backend adapter",
+    "url": "https://github.com/uw-syfi/TraceLab/pull/10",
+    "author": "algebra-MCX",
+    "state": "closed",
+    "mergedAt": null
+  },
+  {
+    "repository": "uw-syfi/TraceLab",
+    "number": 1,
+    "title": "Add session-aware vLLM workload runner",
+    "url": "https://github.com/uw-syfi/TraceLab/pull/1",
+    "author": "algebra-MCX",
+    "state": "merged",
+    "mergedAt": "2026-06-21T14:43:21Z"
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 33185,
+    "title": "[Core] Add VLLM_NIXL_DISAGGREGATION_BACKEND env var for NIXL backend selection",
+    "url": "https://github.com/vllm-project/vllm/pull/33185",
+    "author": "algebra-MCX",
+    "state": "closed",
+    "mergedAt": null
+  },
+  {
+    "repository": "Jittor/JittorInfer",
+    "number": 7,
+    "title": "Feature/qwen2.5ge",
+    "url": "https://github.com/Jittor/JittorInfer/pull/7",
+    "author": "algebra-MCX",
+    "state": "open",
+    "mergedAt": null
+  }
+]

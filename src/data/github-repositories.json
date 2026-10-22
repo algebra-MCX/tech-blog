@@ -1,0 +1,30 @@
+{
+  "algebra-MCX/MoEFlow": {
+    "stars": 1,
+    "checkedAt": "2026-10-22"
+  },
+  "algebra-MCX/CUDA-study": {
+    "stars": 0,
+    "checkedAt": "2026-10-22"
+  },
+  "algebra-MCX/mini-DeepInfer": {
+    "stars": 1,
+    "checkedAt": "2026-10-22"
+  },
+  "vllm-project/vllm": {
+    "stars": 95132,
+    "checkedAt": "2026-10-22"
+  },
+  "deepseek-ai/DeepInfer": {
+    "stars": 19679,
+    "checkedAt": "2026-10-22"
+  },
+  "uw-syfi/TraceLab": {
+    "stars": 153,
+    "checkedAt": "2026-10-22"
+  },
+  "Jittor/JittorInfer": {
+    "stars": 84,
+    "checkedAt": "2026-10-22"
+  }
+}

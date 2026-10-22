@@ -1,0 +1,17 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Localized from '@/components/Localized.astro';
+---
+<BaseLayout title="Start here — Chenxi Ma" description="How to read this project-driven blog: quickstarts, projects and personal notes.">
+  <article class="reading-guide shell">
+    <header class="reading-guide-header"><h1><Localized en="How to read this blog" zh="如何阅读这个博客" /></h1></header>
+    <div class="prose reading-glass reading-guide-body"><slot /></div>
+  </article>
+</BaseLayout>
+<style>
+  .reading-guide { max-width: 860px; padding-top: 40px; }
+  .reading-guide-header { padding-bottom: 26px; }
+  .reading-guide-header h1 { font-size: clamp(30px, 4vw, 40px); line-height: 1.4; margin: 0; }
+  .reading-guide-body { padding: 32px 40px; }
+  @media (max-width: 600px) { .reading-guide { padding-top: 28px; } .reading-guide-header { padding-bottom: 22px; } .reading-guide-body { padding: 24px; } }
+</style>

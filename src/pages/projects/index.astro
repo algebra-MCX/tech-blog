@@ -3,15 +3,18 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Localized from '@/components/Localized.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import { projects } from '@/data/projects';
-import { domains } from '@/data/library';
 import '@/styles/projects.css';
+const groups = [
+  { id: 'own', en: 'My projects', zh: '自己的项目' },
+  { id: 'contributor', en: 'Contributions', zh: '开源贡献' }
+];
 ---
-<BaseLayout title="Projects — Chenxi Ma" description="Choose a project, start with a small example, then explore its experiments, investigations and code.">
-  <header class="page-intro shell project-directory-intro"><p class="eyebrow"><Localized en="A question. A project. A path through it." zh="一个问题，一个项目，一条清楚的阅读路线。" /></p><h1><Localized en="Projects" zh="项目" /></h1><p><Localized en="Pick a project. Start with a small example, or go straight to the work behind it." zh="选择一个项目，从小例子入门，或直接翻阅它的实验与研究。" /></p></header>
-  <section class="library-section shell project-directory" data-filter-list>
-    <div class="directory-toolbar"><input type="hidden" data-filter="domain" value="all" /><div class="project-kind-nav" role="group" aria-label="Project domain / 项目领域"><button type="button" data-filter-pick="domain" data-value="all" aria-pressed="true"><Localized en="All projects" zh="全部项目" /></button>{domains.map(domain => <button type="button" data-filter-pick="domain" data-value={domain.id} aria-pressed="false"><Localized en={domain.en} zh={domain.zh} /></button>)}</div><span class="directory-count"><span data-filter-count>{projects.length}</span> <Localized en="projects" zh="个项目" /></span></div>
-    <div class="project-catalogue">{projects.map(project => <ProjectCard project={project} />)}</div>
-    <div class="empty-state" data-filter-empty hidden><h2><Localized en="No project notebook in this area yet" zh="这个领域还没有项目档案" /></h2><p><Localized en="You can start with a guide in this area instead." zh="可以先从这个领域的指南开始。" /></p><a class="text-link" href="/guides/"><Localized en="Explore guides →" zh="查看指南 →" /></a></div>
+<BaseLayout title="Projects — Chenxi Ma" description="Personal projects and upstream open-source contributions, with GitHub stars and links to the work.">
+  <section class="library-section shell project-directory" data-filter-list aria-label="Projects / 项目">
+    <h1 class="sr-only"><Localized en="Projects" zh="项目" /></h1>
+    <div class="directory-toolbar"><input type="hidden" data-filter="kind" value="own" /><div class="project-kind-nav project-ownership-nav" role="group" aria-label="Project ownership / 项目归属">{groups.map(group => <button type="button" data-filter-pick="kind" data-value={group.id} aria-pressed={group.id === 'own' ? 'true' : 'false'}><Localized en={group.en} zh={group.zh} /><span>{projects.filter(project => project.kind === group.id).length}</span></button>)}</div></div>
+    <div class="project-catalogue">{projects.map(project => <ProjectCard project={project} hidden={project.kind !== 'own'} />)}</div>
+    <p class="empty-state" data-filter-empty hidden><Localized en="No projects in this category yet." zh="这个分类暂时没有项目。" /></p>
   </section>
 </BaseLayout>
 <script>import '@/scripts/filters';</script>

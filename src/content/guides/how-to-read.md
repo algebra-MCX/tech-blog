@@ -12,7 +12,7 @@ tags: [Start Here, Reading Path]
 
 This blog grows around projects. A concrete question leads to code, an experiment, an unexpected result, a debugging session, and sometimes a different judgment. The project page brings those pieces together so you can follow the work in context.
 
-There are three ways into the content: **Projects** for the work, **Guides** for learning and reusable methods, and **Notes** for personal thinking. You can enter at the level that fits your question.
+Use the navigation in order: **Start here** explains the reading approach; **Quickstarts** offers small runnable examples; **Projects** collects the work; **Notes** records personal thinking. You can enter at the level that fits your question.
 
 ## If you are starting from zero
 
@@ -28,6 +28,8 @@ A starting example is [checking train/test overlap](/guides/data-leakage/). It a
 ## Follow a project when you want depth
 
 Choose a project from [Projects](/projects/), then use its sections:
+
+The directory separates **My projects** from **Open-source contributions**. Contribution records link to upstream PRs and distinguish merged work from proposals still in review. The star badge belongs to the linked GitHub repository; contribution badges use the upstream repository's stars.
 
 - **Overview** explains the question, scope, current evidence and limits.
 - **Start** gives you an ordered reading route, with a next step after each guide.

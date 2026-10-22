@@ -5,9 +5,9 @@ import { projects } from '@/data/projects';
 import { getProjectContent } from '@/lib/project-content';
 export function getStaticPaths() { return projects.map(project => ({ params: { id: project.id }, props: { project } })); }
 const { project } = Astro.props;
-const { items, starts, originals, outlines } = await getProjectContent(project);
+const { items, starts, originals, outlines, prs } = await getProjectContent(project);
 const first = starts[0];
-const recommendation = originals[0];
+const recommendation = originals[0] ?? prs.find(pr => pr.state === 'merged') ?? prs.find(pr => pr.state === 'open');
 ---
 <ProjectLayout project={project} view="overview" count={items.length}>
   <section class="project-overview" aria-labelledby="project-question">
@@ -15,6 +15,6 @@ const recommendation = originals[0];
     <aside class="project-start-preview"><p class="eyebrow"><Localized en="Your first read" zh="推荐第一篇" /></p>{first && <><span class="preview-step">01</span><h3><a href={`/guides/${first.id}/?project=${project.id}`}><Localized en={first.data.title} zh={first.data.titleZh} /> →</a></h3><p><Localized en={first.data.description} zh={first.data.descriptionZh} /></p><a class="project-preview-link" href={`/projects/${project.id}/start/`}><Localized en="See the reading path →" zh="查看完整阅读顺序 →" /></a></>}</aside>
   </section>
   <section class="project-contents-map" aria-label="Inside this project"><div><span class="map-count">{starts.length.toString().padStart(2, '0')}</span><a href={`/projects/${project.id}/start/`}><Localized en="Starting points" zh="入门起点" /> →</a></div><div><span class="map-count">{items.length.toString().padStart(2, '0')}</span><a href={`/projects/${project.id}/articles/`}><Localized en="Articles & investigations" zh="文章与研究记录" /> →</a></div><div><span class="map-count">↗</span><a href={`/projects/${project.id}/resources/`}><Localized en="Code & original materials" zh="代码与原始材料" /> →</a></div></section>
-  {recommendation && <section class="project-featured-read"><div><p class="eyebrow"><Localized en="From the project repository" zh="来自项目仓库" /></p><h2><a href={recommendation.href}><Localized en={recommendation.title} zh={recommendation.titleZh} /> ↗</a></h2></div><p><Localized en="Read the original methods and conditions alongside the results." zh="结合原始方法与条件阅读结果。" /></p></section>}
+  {recommendation && <section class="project-featured-read"><div><p class="eyebrow"><Localized en={recommendation.source === 'pull-request' ? 'Selected contribution' : 'From the project repository'} zh={recommendation.source === 'pull-request' ? '代表贡献' : '来自项目仓库'} /></p><h2><a href={recommendation.href}><Localized en={recommendation.title} zh={recommendation.titleZh} /> ↗</a></h2></div><p><Localized en={recommendation.source === 'pull-request' ? 'Open the original PR for the implementation, review and current status.' : 'Read the original methods and conditions alongside the results.'} zh={recommendation.source === 'pull-request' ? '查看原始 PR，了解实现、审阅过程与当前状态。' : '结合原始方法与条件阅读结果。'} /></p></section>}
   <details class="project-evidence"><summary><Localized en="Scope & current evidence" zh="研究边界与当前证据" /><span class="project-evidence-hint"><Localized en="Read before applying a result" zh="应用结论前请留意" /></span></summary><p><Localized en={project.boundary} zh={project.boundaryZh} /></p><p><Localized en={project.role} zh={project.roleZh} /> · {outlines.length} <Localized en="working outlines" zh="篇研究提纲" /></p></details>
 </ProjectLayout>

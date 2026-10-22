@@ -5,6 +5,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "redirects": [
+    { "source": "/", "destination": "/guides/how-to-read/", "permanent": true },
     { "source": "/about", "destination": "https://algebra-mcx.github.io/", "permanent": true },
     { "source": "/about/", "destination": "https://algebra-mcx.github.io/", "permanent": true }
   ]

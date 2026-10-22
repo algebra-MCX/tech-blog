@@ -1,0 +1,9 @@
+---
+import snapshot from '@/data/github-repositories.json';
+interface Props { repository: string }
+const { repository } = Astro.props;
+const value = (snapshot as Record<string, { stars: number; checkedAt: string }>)[repository]?.stars;
+const formatted = value === undefined ? '—' : new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
+---
+<a class="repository-stars" href={`https://github.com/${repository}/stargazers`} data-repository-stars={repository} data-stars-state="snapshot" title={`GitHub stars · ${repository}`} aria-label={`GitHub stars · ${repository}${value === undefined ? '' : ` · ${value}`}`}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.3.9-4.6 4.4 1.1 6.3-5.6-3-5.6 3 1.1-6.3L3 9.6l6.2-.9Z"/></svg><span data-stars-count>{formatted}</span></a>
+<script>import '@/scripts/repository-stars';</script>
