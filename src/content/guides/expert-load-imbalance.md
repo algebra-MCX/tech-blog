@@ -6,6 +6,7 @@ descriptionZh: "固定总分配数，只改变分布。仅需 Python 标准库�
 publishDate: 2026-10-22
 category: quickstarts
 primaryCategory: algorithms
+researchAreas: [attention-moe]
 technicalTags: [moe, performance-analysis, python]
 domains: [algorithms, infra]
 tags: [MoE, Python]

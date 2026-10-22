@@ -6,6 +6,7 @@ descriptionZh: "使用明确的规范化规则，检查训练集与测试集重�
 publishDate: 2026-10-22
 category: quickstarts
 primaryCategory: data
+researchAreas: [data-quality]
 technicalTags: [data-quality, evaluation, python]
 domains: [data]
 tags: [Evaluation, Python]

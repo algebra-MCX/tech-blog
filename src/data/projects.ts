@@ -1,8 +1,8 @@
 import contributions from './github-contributions.json';
-import type { ResearchCategory, TechnicalTag } from './research';
+import { researchAreas, type ResearchCategory, type ResearchArea, type TechnicalTag } from './research';
 export interface Project {
   id: string; title: string; titleZh: string; kind: 'own' | 'contributor';
-  primaryCategory: ResearchCategory; technicalTags: TechnicalTag[];
+  primaryCategory: ResearchCategory; researchAreas: ResearchArea[]; technicalTags: TechnicalTag[];
   researchContribution: string; researchContributionZh: string;
   subtitle: string; subtitleZh: string; summary: string; summaryZh: string;
   domains: string[]; status: string; repository: string; starRepository?: string;
@@ -13,7 +13,7 @@ export interface Project {
 export const projects: readonly Project[] = [
   {
     id: 'moeflow', title: 'MoEFlow', titleZh: 'MoEFlow', kind: 'own',
-    primaryCategory: 'systems', technicalTags: ['co-design', 'moe', 'gpu-kernels', 'cuda-graphs', 'blackwell'],
+    primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "gpu-kernels", "communication-memory-systems", "performance-engineering"], technicalTags: ['co-design', 'moe', 'gpu-kernels', 'cuda-graphs', 'blackwell'],
     researchContribution: 'A fixed-capacity MoE execution path that combines expert-parallel communication and fused kernels under CUDA Graph constraints.',
     researchContributionZh: '在 CUDA Graph 约束下，联合设计专家并行通信与融合内核的固定容量 MoE 执行路径。',
     subtitle: 'Expert parallelism, routing & kernels', subtitleZh: '专家并行、路由与内核',
@@ -33,7 +33,7 @@ export const projects: readonly Project[] = [
   },
   {
     id: 'vllm', title: 'vLLM', titleZh: 'vLLM', kind: 'contributor', subtitle: 'Inference runtime contributions', subtitleZh: '推理运行时贡献',
-    primaryCategory: 'systems', technicalTags: ['runtime', 'cuda-graphs', 'distributed-systems', 'moe'],
+    primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "distributed-training-inference", "runtime-scheduling"], technicalTags: ['runtime', 'cuda-graphs', 'distributed-systems', 'moe'],
     researchContribution: 'Proposed runtime changes to keep imbalanced data-parallel decode compatible with captured microbatches and logical output ordering.',
     researchContributionZh: '提出运行时修改，使不均衡的数据并行解码兼容已捕获的微批布局，并保持逻辑输出顺序。',
     summary: 'A reading and research notebook on irregular execution, CUDA Graph policies, memory and communication in LLM serving.', summaryZh: '围绕大模型服务中的不规则执行、CUDA Graph 策略、内存与通信展开的阅读及研究档案。',
@@ -45,7 +45,7 @@ export const projects: readonly Project[] = [
   },
   {
     id: 'cuda-study', title: 'CUDA Study', titleZh: 'CUDA Study', kind: 'own', subtitle: 'GPU execution & kernel experiments', subtitleZh: 'GPU 执行与内核实验',
-    primaryCategory: 'systems', technicalTags: ['gpu-kernels', 'cuda', 'memory-systems', 'performance-analysis'],
+    primaryCategory: 'systems', researchAreas: ["gpu-kernels", "communication-memory-systems", "performance-engineering"], technicalTags: ['gpu-kernels', 'cuda', 'memory-systems', 'performance-analysis'],
     researchContribution: 'Incremental CUDA kernel implementations explore how tiling, memory access and double buffering shape execution.',
     researchContributionZh: '通过逐步演进的 CUDA 内核实现，研究分块、内存访问与双缓冲如何影响执行。',
     summary: 'Kernel-level questions about grouped computation, scheduling and useful work under uneven loads.', summaryZh: '从内核层面研究分组计算、调度，以及不均衡负载下的有效工作。',
@@ -57,7 +57,7 @@ export const projects: readonly Project[] = [
   },
   {
     id: 'mini-deepinfer', title: 'mini-DeepInfer', titleZh: 'mini-DeepInfer', kind: 'own',
-    primaryCategory: 'systems', technicalTags: ['inference', 'runtime', 'moe', 'memory-systems'],
+    primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "runtime-scheduling", "communication-memory-systems", "distributed-training-inference"], technicalTags: ['inference', 'runtime', 'moe', 'memory-systems'],
     researchContribution: 'A compact inference-engine reimplementation makes request scheduling, model execution and cache-state management traceable.',
     researchContributionZh: '用精简的推理引擎重实现，串起可追踪的请求调度、模型执行与缓存状态管理。',
     subtitle: 'A readable inference engine', subtitleZh: '可阅读的推理引擎',
@@ -70,7 +70,7 @@ export const projects: readonly Project[] = [
   },
   {
     id: 'deepinfer', title: 'DeepInfer', titleZh: 'DeepInfer', kind: 'contributor',
-    primaryCategory: 'systems', technicalTags: ['co-design', 'inference', 'memory-systems', 'gpu-interconnects'],
+    primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "communication-memory-systems", "distributed-training-inference"], technicalTags: ['co-design', 'inference', 'memory-systems', 'gpu-interconnects'],
     researchContribution: 'An opt-in NVLink Engram-fetch proposal enables a single-node execution path when NCCL GIN is unavailable.',
     researchContributionZh: '提出可选的 NVLink Engram 读取方案，为无法使用 NCCL GIN 的节点提供单节点执行路径。',
     subtitle: 'Single-node Engram execution', subtitleZh: '单节点 Engram 执行',
@@ -83,7 +83,7 @@ export const projects: readonly Project[] = [
   },
   {
     id: 'tracelab', title: 'TraceLab', titleZh: 'TraceLab', kind: 'contributor',
-    primaryCategory: 'systems', technicalTags: ['workload-replay', 'inference', 'benchmarking', 'runtime'],
+    primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "performance-engineering"], technicalTags: ['workload-replay', 'inference', 'benchmarking', 'runtime'],
     researchContribution: 'A merged session-aware vLLM runner replays workload traces while preserving request order, arrival times and tool waits.',
     researchContributionZh: '已合并的会话级 vLLM 执行器，在重放负载轨迹时保留请求顺序、到达时间与工具等待。',
     subtitle: 'Workload runners & backend adapters', subtitleZh: '负载执行与后端适配',
@@ -96,7 +96,7 @@ export const projects: readonly Project[] = [
   },
   {
     id: 'jittorinfer', title: 'JittorInfer', titleZh: 'JittorInfer', kind: 'contributor',
-    primaryCategory: 'systems', technicalTags: ['inference', 'model-integration', 'ascend', 'runtime'],
+    primaryCategory: 'systems', researchAreas: ["llm-serving-inference"], technicalTags: ['inference', 'model-integration', 'ascend', 'runtime'],
     researchContribution: 'A Qwen2.5 integration proposal adds model-graph, tokenizer and execution-path support to the Ascend inference framework.',
     researchContributionZh: '通过 Qwen2.5 集成提案，为昇腾推理框架补充模型计算图、分词器与执行路径支持。',
     subtitle: 'Model support on Ascend', subtitleZh: '昇腾平台模型支持',
@@ -108,6 +108,11 @@ export const projects: readonly Project[] = [
     resources: [{ title: 'Upstream repository', titleZh: '上游仓库', url: 'https://github.com/Jittor/JittorInfer#readme', section: 'resources' }]
   }
 ];
+for (const project of projects) {
+  if (!project.researchAreas.length || project.researchAreas.some(id => researchAreas.find(area => area.id === id)?.category !== project.primaryCategory)) {
+    throw new Error(`Invalid secondary research areas for ${project.id}`);
+  }
+}
 export const projectById = (id?: string) => projects.find(project => project.id === id);
 export const repositoryName = (project: Project) => project.starRepository ?? new URL(project.repository).pathname.slice(1);
 export const projectContributions = (project: Project) => contributions.filter(pr => pr.repository === repositoryName(project));

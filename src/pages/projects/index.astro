@@ -11,7 +11,7 @@ import '@/styles/research.css';
     <h1 class="sr-only"><Localized en="Projects" zh="项目" /></h1>
     <ResearchFilters roles total={projects.length} noun="projects" />
     <div class="research-results-stage" data-research-stage>
-      <div class="research-grid" data-research-results>{projects.map(project => <ProjectCard project={project} featured={project.id === featuredResearch.projectId} />)}</div>
+      <div class="research-grid research-grid--projects" data-research-results>{projects.map(project => <ProjectCard project={project} featured={project.id === featuredResearch.projectId} />)}</div>
       <div class="research-empty" data-research-empty hidden><h2><Localized en="No projects here yet" zh="这个领域暂未收录项目" /></h2><p><Localized en="Try All or another field. Projects are classified by their primary contribution." zh="可以查看 All 或其他领域；项目按主要技术贡献归类。" /></p></div>
     </div>
   </section>

@@ -56,4 +56,22 @@ Upstream project stars are not author accomplishments. Upstream benchmark tables
 
 Project metadata lives in `src/data/projects.ts`. Canonical tags live in `src/data/research.ts`; reuse an existing tag instead of adding a synonym. Adding a primary category is deliberately outside this design. The featured evidence object includes an explicit report, revision, comparison baseline and boundary; update these together when evidence changes.
 
-Category state is shareable via `?category=systems` and relationship via `?kind=contributor`. Invalid values fall back to All. Filtering uses native buttons/select controls, live result counts, scoped animations and reduced-motion support. No-JavaScript rendering exposes all content and real links.
+Category state is shareable via `?category=systems`, secondary direction via `?area=gpu-kernels`, and relationship via `?kind=contributor`. Changing the primary category resets the secondary direction; invalid or mismatched directions fall back to All topics. Invalid values fall back to All. Filtering uses category buttons and a blue glass relationship menu with checked options, keyboard navigation, outside-click dismissal and viewport-aware placement. Live result counts, scoped animations and reduced-motion support remain available. No-JavaScript rendering exposes all content and real links.
+
+## Secondary directions (user-requested navigation update)
+
+The five primary categories are unchanged. Projects and Quickstarts now share the 31 requested secondary directions from `src/data/research.ts`. Only the selected primary category exposes its secondary strip; All shows the full collection. Secondary directions are actual filters, while technical tags remain descriptive. No new topic pages are created. English and Chinese labels refer to the same IDs.
+
+| Item | Secondary directions |
+| --- | --- |
+| MoEFlow | LLM Serving & Inference; GPU Kernels; Communication & Memory Systems; Performance Engineering |
+| vLLM | LLM Serving & Inference; Distributed Training & Inference; Runtime & Scheduling |
+| CUDA Study | GPU Kernels; Communication & Memory Systems; Performance Engineering |
+| mini-DeepInfer | LLM Serving & Inference; Distributed Training & Inference; Runtime & Scheduling; Communication & Memory Systems |
+| DeepInfer | LLM Serving & Inference; Distributed Training & Inference; Communication & Memory Systems |
+| TraceLab | LLM Serving & Inference; Performance Engineering |
+| JittorInfer | LLM Serving & Inference |
+| Expert-load quickstart | Attention & MoE (Algorithms) |
+| Exact-overlap quickstart | Data Quality (Data) |
+
+The mappings follow the implementation and contribution evidence above. Compilers and other empty directions remain available with honest empty states. A project can cover several directions inside its unique primary category. Project metadata and quickstart content validation reject directions outside that parent category.

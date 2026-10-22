@@ -10,19 +10,28 @@ const prs = projectContributions(project);
 const merged = prs.filter(pr => pr.state === 'merged').length;
 const evidence = featured && project.id === featuredResearch.projectId ? featuredResearch : undefined;
 ---
-<article class:list={['research-project', 'reading-glass', { 'research-project--featured': evidence }]} data-research-item data-primary-category={project.primaryCategory} data-kind={project.kind}>
+<article class:list={['research-project', 'reading-glass', { 'research-project--featured': evidence }]} data-research-item data-primary-category={project.primaryCategory} data-research-areas={project.researchAreas.join('|')} data-kind={project.kind}>
   <div class="research-project-body">
     <div class="research-card-kicker">{evidence && <span class="research-featured-label">Featured Research</span>}<span class="research-primary-category">{categoryLabel(project.primaryCategory)}</span></div>
-    <div class="research-card-title"><h2><a href={`/projects/${project.id}/`}>{project.title}</a></h2><RepositoryStars repository={repositoryName(project)} /></div>
-    <p class="research-contribution"><Localized en={project.researchContribution} zh={project.researchContributionZh} /></p>
-    <TechnicalTags tags={project.technicalTags} />
-    <div class="research-card-footer"><span class="research-relationship"><Localized en={project.kind === 'own' ? 'Personal project' : merged ? 'Contributor · merged PR' : 'PR author · in review'} zh={project.kind === 'own' ? '自己的项目' : merged ? '贡献者 · 已有 PR 合并' : 'PR 作者 · 审阅中'} /></span><a class="text-link" href={`/projects/${project.id}/`}><Localized en="Explore →" zh="查看项目 →" /></a></div>
+    <div class="research-card-identity" data-project-identity>
+      <div class="research-card-title"><h2><a href={`/projects/${project.id}/`}>{project.title}</a></h2></div>
+      <div class="research-identity-meta"><RepositoryStars repository={repositoryName(project)} /><span class="research-relationship"><Localized en={project.kind === 'own' ? 'Personal project' : merged ? 'Contributor · merged PR' : 'PR author · in review'} zh={project.kind === 'own' ? '自己的项目' : merged ? '贡献者 · 已有 PR 合并' : 'PR 作者 · 审阅中'} /></span></div>
+    </div>
+    <div class="research-card-summary" data-project-summary>
+      <p class="research-contribution"><Localized en={project.researchContribution} zh={project.researchContributionZh} /></p>
+      <TechnicalTags tags={project.technicalTags} />
+      <div class="research-card-footer"><a class="text-link" href={`/projects/${project.id}/`}><Localized en="Explore →" zh="查看项目 →" /></a></div>
+    </div>
   </div>
   {evidence && <aside class="research-evidence" aria-label="Recorded evidence / 已记录的证据">
+    <div>
     <p class="research-evidence-label"><Localized en="Recorded layer latency" zh="已记录的层级延迟" /></p>
     <p class="research-metric"><span>{evidence.baselineUs}</span><span class="research-metric-arrow" aria-hidden="true">→</span><strong>{evidence.fusedUs}<small> µs</small></strong></p>
     <p class="research-measurement-context">{evidence.context}<br /><Localized en="Own Torch ring → fused execution" zh="自身 Torch ring 基线 → 融合执行" /></p>
+    </div>
+    <div>
     <p class="research-evidence-boundary"><Localized en={evidence.boundary} zh={evidence.boundaryZh} /></p>
     <a class="text-link" href={evidence.report}><Localized en="Measurement report ↗" zh="测量报告 ↗" /></a>
+    </div>
   </aside>}
 </article>

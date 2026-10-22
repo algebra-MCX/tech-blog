@@ -13,7 +13,7 @@ const { entries } = Astro.props;
   <h1 class="sr-only"><Localized en="Quickstarts" zh="最简入门" /></h1>
   <ResearchFilters total={entries.length} noun="examples" />
   <div class="research-results-stage" data-research-stage>
-    <div class="research-grid" data-research-results>{entries.map(entry => <article class="reading-glass research-quickstart" data-research-item data-primary-category={entry.data.primaryCategory}>
+    <div class="research-grid" data-research-results>{entries.map(entry => <article class="reading-glass research-quickstart" data-research-item data-primary-category={entry.data.primaryCategory} data-research-areas={entry.data.researchAreas!.join('|')}>
       <span class="research-primary-category">{categoryLabel(entry.data.primaryCategory!)}</span>
       <h2><a href={`/guides/${entry.id}/`}><Localized en={entry.data.title} zh={entry.data.titleZh} /></a></h2>
       <p class="research-contribution"><Localized en={entry.data.description} zh={entry.data.descriptionZh} /></p>

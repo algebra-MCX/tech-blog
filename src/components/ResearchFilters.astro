@@ -1,17 +1,39 @@
 ---
 import Localized from './Localized.astro';
-import { researchCategories } from '@/data/research';
+import { researchCategories, researchAreas } from '@/data/research';
 interface Props { roles?: boolean; total: number; noun: 'projects' | 'examples' }
 const { roles = false, total, noun } = Astro.props;
+const relationships = [
+  { id: 'all', en: 'All work', zh: '全部工作' },
+  { id: 'own', en: 'My projects', zh: '自己的项目' },
+  { id: 'contributor', en: 'Contributions', zh: '开源贡献' }
+] as const;
 ---
 <div class="research-toolbar">
   <nav class="research-category-nav" aria-label="Research categories / 研究分类">
     <button type="button" data-research-category="all" aria-pressed="true">All</button>
     {researchCategories.map(category => <button type="button" data-research-category={category.id} aria-pressed="false">{category.label}</button>)}
   </nav>
+  <div class="research-area-navigation" data-research-area-navigation hidden>
+    {researchCategories.map(category => <nav class="research-area-nav" data-research-area-group={category.id} aria-label={`${category.label} topics / 二级方向`} hidden>
+      <button type="button" data-research-area="all" data-research-parent={category.id} aria-pressed="false"><Localized en="All topics" zh="全部方向" /></button>
+      {researchAreas.filter(area => area.category === category.id).map(area => <button type="button" data-research-area={area.id} data-research-parent={category.id} aria-pressed="false"><Localized en={area.label} zh={area.labelZh} /></button>)}
+    </nav>)}
+  </div>
   <div class="research-secondary-tools">
     <p class="research-result-count" role="status" aria-live="polite" aria-atomic="true"><span data-research-count>{total}</span> <Localized en={noun} zh={noun === 'projects' ? '个项目' : '个小例子'} /></p>
-    {roles && <label class="research-role"><span class="sr-only"><Localized en="Project relationship" zh="项目归属" /></span><select data-research-role aria-label="Project relationship / 项目归属"><option value="all" data-en="All work" data-zh="全部工作">All work</option><option value="own" data-en="My projects" data-zh="自己的项目">My projects</option><option value="contributor" data-en="Contributions" data-zh="开源贡献">Contributions</option></select></label>}
+    {roles && <div class="research-role-menu" data-research-role>
+      <button class="research-role-trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="project-role-menu" data-role-trigger>
+        <span>{relationships.map(relationship => <span data-role-current={relationship.id} hidden={relationship.id !== 'all'}><Localized en={relationship.en} zh={relationship.zh} /></span>)}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </button>
+      <div class="research-role-options" id="project-role-menu" role="menu" aria-label="Project relationship / 项目归属" data-role-menu hidden>
+        {relationships.map(relationship => <button type="button" role="menuitemradio" aria-checked={relationship.id === 'all' ? 'true' : 'false'} tabindex="-1" data-role-choice={relationship.id}>
+          <Localized en={relationship.en} zh={relationship.zh} />
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>)}
+      </div>
+    </div>}
   </div>
 </div>
 <script>import '@/scripts/research-filters';</script>
