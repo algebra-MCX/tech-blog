@@ -5,6 +5,8 @@ description: "Keep the total assignment count fixed and change only its distribu
 descriptionZh: "固定总分配数，只改变分布。仅需 Python 标准库，无需 GPU。"
 publishDate: 2026-10-22
 category: quickstarts
+primaryCategory: algorithms
+technicalTags: [moe, performance-analysis, python]
 domains: [algorithms, infra]
 tags: [MoE, Python]
 ---

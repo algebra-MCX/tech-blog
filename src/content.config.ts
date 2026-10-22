@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { researchCategoryIds, technicalTagIds } from './data/research';
 
 const writing = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/writing' }),
@@ -47,9 +48,15 @@ const guides = defineCollection({
     title: z.string(), titleZh: z.string(), description: z.string(), descriptionZh: z.string(),
     publishDate: z.coerce.date(),
     category: z.enum(['concepts', 'quickstarts', 'playbooks', 'learning-paths']),
+    primaryCategory: z.enum(researchCategoryIds).optional(),
+    technicalTags: z.array(z.enum(technicalTagIds)).optional(),
     domains: z.array(z.enum(['algorithms', 'data', 'infra'])),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false)
+  }).superRefine((guide, context) => {
+    if (guide.category !== 'quickstarts') return;
+    if (!guide.primaryCategory) context.addIssue({ code: 'custom', path: ['primaryCategory'], message: 'Quickstarts need one primary research category.' });
+    if (!guide.technicalTags?.length) context.addIssue({ code: 'custom', path: ['technicalTags'], message: 'Quickstarts need canonical technical tags.' });
   })
 });
 const guidesZh = defineCollection({

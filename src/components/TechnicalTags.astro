@@ -1,0 +1,6 @@
+---
+import { technicalTags, type TechnicalTag } from '@/data/research';
+interface Props { tags: readonly TechnicalTag[] }
+const { tags } = Astro.props;
+---
+<ul class="technical-tags" aria-label="Technical tags / 技术标签">{tags.map(tag => <li>{technicalTags[tag]}</li>)}</ul>

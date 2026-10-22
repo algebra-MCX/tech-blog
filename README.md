@@ -1,6 +1,6 @@
 # MCX systems notebook
 
-Chenxi Ma’s technical blog, built with Astro. Project notebooks, practical guides and technical perspectives across algorithms, data and infrastructure. Rounded typography, soft blue backgrounds and liquid glass match https://algebra-mcx.github.io/. English is the default, with Chinese and dark-mode toggles.
+Chenxi Ma’s technical blog, built with Astro. Project notebooks, practical guides and technical perspectives across algorithms, data and infrastructure. Rounded typography, soft blue backgrounds and liquid glass match https://algebra-mcx.github.io/. English is the default, with a Chinese language switch and a fixed dark appearance.
 
 ## Run locally
 
@@ -36,13 +36,13 @@ Navigation is Start here / Quickstarts / Projects / Notes / Home. The blog root 
 
 Both sites use a fixed dark appearance. Theme controls and saved/system light-mode preferences are removed; language switching remains available.
 
-The project directory opens directly on two counted categories: My projects and Open-source contributions. Set `kind: own | contributor` in `projects.ts`. Upstream PR records and their last verified states are in `github-contributions.json`; authoring a proposed PR is distinguished from a merged contribution. PRs live under Code, while Articles retains the project's reading materials.
+Projects and Quickstarts share All / Systems / Algorithms / Hardware / Agents / Data navigation, with All selected by default. Each project has one `primaryCategory`, canonical `technicalTags` and a bilingual `researchContribution`. The shared registry is `src/data/research.ts`. Project relationship remains a compact independent filter: set `kind: own | contributor` in `projects.ts`. See [classification decisions and evidence](docs/research-taxonomy.md) for the migration and featured measurement boundaries. Upstream PR records and their last verified states are in `github-contributions.json`; authoring a proposed PR is distinguished from a merged contribution. PRs live under Code, while Articles retains the project's reading materials.
 
 Repository star badges have a verified static fallback in `github-repositories.json`. They request the current public GitHub repository count when visible, and refresh every five minutes while the page is visible. Successful values are cached locally as a fallback; rate limits or network failures retain an available count. Contribution projects use the upstream repository's stars. No access token is shipped to the browser.
 
 Each project has four fixed navigation links on separate pages: Overview (`/projects/:id/`), Start (`start/`), Articles (`articles/`) and Code (`resources/`). Articles has counted filters for Experiments, Debugging and Design, plus bilingual search. Start links carry `?project=:id` into guides so readers retain their project context and get a next step. Legacy section hashes redirect to their corresponding pages. Add a project in `projects.ts`, then assign articles in `writingMap` or legacy notes in `noteMap`. Repository links describe study/research context, not an implied upstream contribution.
 
-Guides use `category: concepts | quickstarts | playbooks | learning-paths` and applicable `domains: [algorithms, data, infra]`. Chinese entries use `source: <English entry id>`. Python quickstarts require only the standard library.
+Guides use `category: concepts | quickstarts | playbooks | learning-paths` and applicable `domains: [algorithms, data, infra]`. Chinese entries use `source: <English entry id>`. Quickstarts additionally require a `primaryCategory` and nonempty canonical `technicalTags`, validated by the content schema. The current Python examples require only the standard library.
 
 Notes use `noteTopic: research | learning | investing | life | personal-finance` and `noteCategory: perspectives | decisions | questions` in `noteMap`. Personal notes need no project assignment. Omit `noteCategory` for a technical investigation that belongs inside a project. Existing URLs remain available. Update outline status only when the underlying evidence is ready. Reading times are computed from actual text.
 

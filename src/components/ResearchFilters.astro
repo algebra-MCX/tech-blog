@@ -1,0 +1,17 @@
+---
+import Localized from './Localized.astro';
+import { researchCategories } from '@/data/research';
+interface Props { roles?: boolean; total: number; noun: 'projects' | 'examples' }
+const { roles = false, total, noun } = Astro.props;
+---
+<div class="research-toolbar">
+  <nav class="research-category-nav" aria-label="Research categories / 研究分类">
+    <button type="button" data-research-category="all" aria-pressed="true">All</button>
+    {researchCategories.map(category => <button type="button" data-research-category={category.id} aria-pressed="false">{category.label}</button>)}
+  </nav>
+  <div class="research-secondary-tools">
+    <p class="research-result-count" role="status" aria-live="polite" aria-atomic="true"><span data-research-count>{total}</span> <Localized en={noun} zh={noun === 'projects' ? '个项目' : '个小例子'} /></p>
+    {roles && <label class="research-role"><span class="sr-only"><Localized en="Project relationship" zh="项目归属" /></span><select data-research-role aria-label="Project relationship / 项目归属"><option value="all" data-en="All work" data-zh="全部工作">All work</option><option value="own" data-en="My projects" data-zh="自己的项目">My projects</option><option value="contributor" data-en="Contributions" data-zh="开源贡献">Contributions</option></select></label>}
+  </div>
+</div>
+<script>import '@/scripts/research-filters';</script>

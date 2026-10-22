@@ -3,6 +3,9 @@ import BaseLayout from './BaseLayout.astro';
 import Localized from '@/components/Localized.astro';
 import { projects, type Project, repositoryName } from '@/data/projects';
 import RepositoryStars from '@/components/RepositoryStars.astro';
+import TechnicalTags from '@/components/TechnicalTags.astro';
+import { categoryLabel } from '@/data/research';
+import '@/styles/research.css';
 import { projectViews, type ProjectView } from '@/lib/project-content';
 import '@/styles/projects.css';
 interface Props { project: Project; view: ProjectView; count?: number }
@@ -17,6 +20,7 @@ const current = projectViews.find(item => item.id === view)!;
     </div>
     <header class="project-masthead"><div><p class="eyebrow"><Localized en={project.kind === 'own' ? 'Personal project' : 'Open-source contributions'} zh={project.kind === 'own' ? '自己的项目' : '开源贡献'} /></p><h1>{project.title}</h1></div><div class="project-repository-actions"><RepositoryStars repository={repositoryName(project)} /><a class="project-github" href={project.repository}>GitHub <span aria-hidden="true">↗</span></a></div></header>
     <nav class="project-view-nav glass-surface" aria-label="Project navigation / 项目导航">{projectViews.map(item => <a href={`/projects/${project.id}/${item.suffix}`} aria-current={view === item.id ? 'page' : undefined}><Localized en={item.en} zh={item.zh} />{item.id === 'articles' && count !== undefined && <span class="project-tab-count">{count}</span>}</a>)}</nav>
+    <div class="project-research-metadata"><span class="research-primary-category">{categoryLabel(project.primaryCategory)}</span><TechnicalTags tags={project.technicalTags} /></div>
     <div class="project-view-content" id="project-content"><slot /></div>
   </div>
 </BaseLayout>

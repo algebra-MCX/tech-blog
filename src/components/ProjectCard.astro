@@ -1,20 +1,28 @@
 ---
 import Localized from './Localized.astro';
-import { type Project, repositoryName, projectContributions } from '@/data/projects';
+import TechnicalTags from './TechnicalTags.astro';
+import { type Project, repositoryName, projectContributions, featuredResearch } from '@/data/projects';
+import { categoryLabel } from '@/data/research';
 import RepositoryStars from './RepositoryStars.astro';
-import { domains } from '@/data/library';
-import { getProjectContent } from '@/lib/project-content';
-interface Props { project: Project; hidden?: boolean }
-const { project, hidden = false } = Astro.props;
-const { items, starts } = await getProjectContent(project);
+interface Props { project: Project; featured?: boolean }
+const { project, featured = false } = Astro.props;
 const prs = projectContributions(project);
 const merged = prs.filter(pr => pr.state === 'merged').length;
+const evidence = featured && project.id === featuredResearch.projectId ? featuredResearch : undefined;
 ---
-<article class="project-card reading-glass" hidden={hidden} data-filter-row data-kind={project.kind} data-domain={project.domains.join('|')} data-status={project.status} data-search={`${project.title} ${project.summary} ${project.summaryZh}`}>
-  <div class="card-topline"><span class="project-relationship"><Localized en={project.kind === 'own' ? 'Personal project' : merged ? 'Contributor · merged PR' : 'PR author · in review'} zh={project.kind === 'own' ? '自己的项目' : merged ? '贡献者 · 已有 PR 合并' : 'PR 作者 · 审阅中'} /></span><span>{project.domains.map(id => { const domain = domains.find(d => d.id === id)!; return <span class="domain-label"><Localized en={domain.en} zh={domain.zh} /></span>; })}</span></div>
-  <div class="project-card-title"><h2><a href={`/projects/${project.id}/`}>{project.title}</a></h2><RepositoryStars repository={repositoryName(project)} /></div>
-  <p class="project-subtitle"><Localized en={project.subtitle} zh={project.subtitleZh} /></p>
-  <p><Localized en={project.scope} zh={project.scopeZh} /></p>
-  <p class="project-card-inventory">{project.kind === 'contributor' ? <>{prs.length} <Localized en="upstream PRs" zh="个上游 PR" />{merged > 0 && <> · {merged} <Localized en="merged" zh="个已合并" /></>}</> : <>{starts.length} <Localized en="starting points" zh="个入门起点" /> <span aria-hidden="true">·</span> {items.length} <Localized en="articles & records" zh="篇文章与记录" /></>}</p>
-  <div class="project-links"><a class="text-link" href={`/projects/${project.id}/`}><Localized en="Open notebook →" zh="打开项目档案 →" /></a></div>
+<article class:list={['research-project', 'reading-glass', { 'research-project--featured': evidence }]} data-research-item data-primary-category={project.primaryCategory} data-kind={project.kind}>
+  <div class="research-project-body">
+    <div class="research-card-kicker">{evidence && <span class="research-featured-label">Featured Research</span>}<span class="research-primary-category">{categoryLabel(project.primaryCategory)}</span></div>
+    <div class="research-card-title"><h2><a href={`/projects/${project.id}/`}>{project.title}</a></h2><RepositoryStars repository={repositoryName(project)} /></div>
+    <p class="research-contribution"><Localized en={project.researchContribution} zh={project.researchContributionZh} /></p>
+    <TechnicalTags tags={project.technicalTags} />
+    <div class="research-card-footer"><span class="research-relationship"><Localized en={project.kind === 'own' ? 'Personal project' : merged ? 'Contributor · merged PR' : 'PR author · in review'} zh={project.kind === 'own' ? '自己的项目' : merged ? '贡献者 · 已有 PR 合并' : 'PR 作者 · 审阅中'} /></span><a class="text-link" href={`/projects/${project.id}/`}><Localized en="Explore →" zh="查看项目 →" /></a></div>
+  </div>
+  {evidence && <aside class="research-evidence" aria-label="Recorded evidence / 已记录的证据">
+    <p class="research-evidence-label"><Localized en="Recorded layer latency" zh="已记录的层级延迟" /></p>
+    <p class="research-metric"><span>{evidence.baselineUs}</span><span class="research-metric-arrow" aria-hidden="true">→</span><strong>{evidence.fusedUs}<small> µs</small></strong></p>
+    <p class="research-measurement-context">{evidence.context}<br /><Localized en="Own Torch ring → fused execution" zh="自身 Torch ring 基线 → 融合执行" /></p>
+    <p class="research-evidence-boundary"><Localized en={evidence.boundary} zh={evidence.boundaryZh} /></p>
+    <a class="text-link" href={evidence.report}><Localized en="Measurement report ↗" zh="测量报告 ↗" /></a>
+  </aside>}
 </article>

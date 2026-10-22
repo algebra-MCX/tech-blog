@@ -5,6 +5,8 @@ description: "A small train/test overlap check with an explicit normalization ru
 descriptionZh: "使用明确的规范化规则，检查训练集与测试集重叠。仅需 Python。"
 publishDate: 2026-10-22
 category: quickstarts
+primaryCategory: data
+technicalTags: [data-quality, evaluation, python]
 domains: [data]
 tags: [Evaluation, Python]
 ---

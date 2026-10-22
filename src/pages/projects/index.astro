@@ -2,19 +2,17 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Localized from '@/components/Localized.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
-import { projects } from '@/data/projects';
-import '@/styles/projects.css';
-const groups = [
-  { id: 'own', en: 'My projects', zh: '自己的项目' },
-  { id: 'contributor', en: 'Contributions', zh: '开源贡献' }
-];
+import ResearchFilters from '@/components/ResearchFilters.astro';
+import { projects, featuredResearch } from '@/data/projects';
+import '@/styles/research.css';
 ---
-<BaseLayout title="Projects — Chenxi Ma" description="Personal projects and upstream open-source contributions, with GitHub stars and links to the work.">
-  <section class="library-section shell project-directory" data-filter-list aria-label="Projects / 项目">
+<BaseLayout title="Projects — Chenxi Ma" description="Research and engineering in AI systems, ML infrastructure and hardware–software co-design. Implementations, upstream contributions and scoped experimental evidence.">
+  <section class="library-section shell research-directory" data-research-browser aria-label="Projects / 项目">
     <h1 class="sr-only"><Localized en="Projects" zh="项目" /></h1>
-    <div class="directory-toolbar"><input type="hidden" data-filter="kind" value="own" /><div class="project-kind-nav project-ownership-nav" role="group" aria-label="Project ownership / 项目归属">{groups.map(group => <button type="button" data-filter-pick="kind" data-value={group.id} aria-pressed={group.id === 'own' ? 'true' : 'false'}><Localized en={group.en} zh={group.zh} /><span>{projects.filter(project => project.kind === group.id).length}</span></button>)}</div></div>
-    <div class="project-catalogue">{projects.map(project => <ProjectCard project={project} hidden={project.kind !== 'own'} />)}</div>
-    <p class="empty-state" data-filter-empty hidden><Localized en="No projects in this category yet." zh="这个分类暂时没有项目。" /></p>
+    <ResearchFilters roles total={projects.length} noun="projects" />
+    <div class="research-results-stage" data-research-stage>
+      <div class="research-grid" data-research-results>{projects.map(project => <ProjectCard project={project} featured={project.id === featuredResearch.projectId} />)}</div>
+      <div class="research-empty" data-research-empty hidden><h2><Localized en="No projects here yet" zh="这个领域暂未收录项目" /></h2><p><Localized en="Try All or another field. Projects are classified by their primary contribution." zh="可以查看 All 或其他领域；项目按主要技术贡献归类。" /></p></div>
+    </div>
   </section>
 </BaseLayout>
-<script>import '@/scripts/filters';</script>
