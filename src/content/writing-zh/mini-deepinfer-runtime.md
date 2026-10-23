@@ -19,7 +19,7 @@ source: mini-deepinfer-runtime
 
 ## 写代码之前的四个承诺
 
-[运行时设计文档](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/DEEPINFER_DESIGN.md)先于实现写成。它定下四个可观察的承诺，之后的每项优化都必须守住：
+[运行时设计文档](/writing/mini-deepinfer-design/)先于实现写成。它定下四个可观察的承诺，之后的每项优化都必须守住：
 
 1. **每个 step 都有明确的输入和输出。** 调度输出描述本轮 token 数、序列顺序、block table 和需要采样的行；设备执行不会背着 CPU 修改队列。
 2. **资源生命周期可以被证明。** KV block 和 V4.1 state slot 各自只有一个所有者；抢占、完成、取消都会同时释放两者。
@@ -161,7 +161,7 @@ token 比较到官方自身 top-2 差距小于容差的那一步为止：随机�
 | `models/deepseek_v41/` | DeepSeek 的 `inference/model.py`，改写为分页、批处理执行 |
 | `bench_prefill.py` | `examples/benchmark.py` + `examples/sweep/run_sweep.sh prefill` |
 
-运行方式：
+[技术说明](/writing/mini-deepinfer-technical-notes/)按模块逐段对应这份代码。运行方式：
 
 ```bash
 git clone https://github.com/algebra-MCX/mini-DeepInfer.git

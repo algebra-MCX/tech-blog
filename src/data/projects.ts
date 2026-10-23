@@ -54,15 +54,7 @@ export const projects: readonly Project[] = [
     scope: 'Paged KV blocks and state slots, prefill/decode scheduling with preemption, zero-overhead scheduling, deterministic sampling, EP × DP, and paired prefill measurements against official DeepInfer.', scopeZh: '分页 KV block 与 state slot、带抢占的 prefill/decode 调度、零开销调度、确定性采样、EP × DP，以及与官方 DeepInfer 的配对 prefill 测量。',
     boundary: 'A learning implementation, not a faster DeepInfer. Real-model prefill reaches 11.9% of the official engine in one paired run on 4 × B200; decode CUDA graphs were off for both and KV budgets were not forced equal.', boundaryZh: '这是学习型实现，不是更快的 DeepInfer。4 × B200 单轮配对测量中，真实模型 prefill 达到官方的 11.9%；两边均未开启 decode CUDA Graph，KV 预算也未强制相等。',
     role: 'Personal learning implementation', roleZh: '个人学习实现', start: ['useful-work', 'paired-benchmarks'],
-    resources: [
-      { title: 'Project overview & quick start', titleZh: '项目概览与快速开始', url: 'https://github.com/algebra-MCX/mini-DeepInfer#readme', section: 'overview' },
-      { title: 'Runtime design: boundaries & invariants', titleZh: '运行时设计：边界与不变量', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/DEEPINFER_DESIGN.md', section: 'design' },
-      { title: 'Technical notes on the current code', titleZh: '对应当前代码的技术说明', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/TECHNICAL.md', section: 'design' },
-      { title: 'Prefill benchmark: 4 × B200 vs. official', titleZh: 'Prefill 基准：4 × B200 对比官方', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/benchmarks/README.md', section: 'experiments' },
-      { title: 'Report A: sparse attention on tensor cores', titleZh: '报告 A：稀疏注意力改用 tensor core', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/A-tensor-core-sparse-attention.md', section: 'experiments' },
-      { title: 'Report B1: fused indexer scoring', titleZh: '报告 B1：融合 indexer 打分', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/B1-fused-index-scores.md', section: 'experiments' },
-      { title: 'Report C1: MoE combine over local rows', titleZh: '报告 C1：MoE 只合并本地行', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/C1-moe-combine.md', section: 'experiments' }
-    ]
+    resources: [{ title: 'Source code & README', titleZh: '源码与说明', url: 'https://github.com/algebra-MCX/mini-DeepInfer#readme', section: 'resources' }]
   },
   {
     id: 'deepinfer', title: 'DeepInfer', titleZh: 'DeepInfer', kind: 'contributor',

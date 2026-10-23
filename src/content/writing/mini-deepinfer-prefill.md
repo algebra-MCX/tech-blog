@@ -128,4 +128,14 @@ Of the 254 ms of other attention after C1, 182 ms is key concatenation (gather /
 - mini's optional non-expert weight cache was disabled.
 - Tiny-model single-GPU output throughput is a different workload and metric. On that suite the three changes moved goodput by +6%, −1.8% (within run-to-run noise) and +2.1%.
 
-Raw logs, profiles and job plans are in the repository: [benchmark documentation](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/benchmarks/README.md), and reports [A](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/A-tensor-core-sparse-attention.md), [B1](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/B1-fused-index-scores.md) and [C1](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/C1-moe-combine.md).
+The full per-change reports are [A](/writing/mini-deepinfer-report-a/), [B1](/writing/mini-deepinfer-report-b1/) and [C1](/writing/mini-deepinfer-report-c1/). Raw logs, profiles and job plans are in the repository under [`docs/benchmarks/profile-2026-10-22/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/); to rerun the measurement:
+
+```bash
+torchrun --nproc-per-node 4 bench_prefill.py \
+  --model /path/to/DeepSeek-V4.1-Flash \
+  --prefill_batch_size 4096 \
+  --no_cuda_graph \
+  --result_jsonl results.jsonl
+```
+
+Model loading and shared-prefix prefill initialization are not counted in the throughput measurement.

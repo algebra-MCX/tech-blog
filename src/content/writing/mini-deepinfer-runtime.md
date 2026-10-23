@@ -28,7 +28,7 @@ The project is not a faster DeepInfer. It is a version whose every state transit
 
 ## Four promises before any code
 
-The [runtime design document](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/DEEPINFER_DESIGN.md) was written before the implementation. It fixes four observable promises, and every later optimization has to keep them:
+The [runtime design document](/writing/mini-deepinfer-design/) was written before the implementation. It fixes four observable promises, and every later optimization has to keep them:
 
 1. **Every step has an explicit input and output.** The scheduler's output describes the token counts, sequence order, block tables and rows to sample. Device execution never changes CPU queues behind its back.
 2. **Resource lifetimes are provable.** KV blocks and V4.1 state slots each have exactly one owner; preemption, completion and cancellation release both.
@@ -170,7 +170,7 @@ Each module maps to a place in DeepInfer:
 | `models/deepseek_v41/` | DeepSeek's `inference/model.py`, rewritten for paged, batched execution |
 | `bench_prefill.py` | `examples/benchmark.py` + `examples/sweep/run_sweep.sh prefill` |
 
-To run it:
+The [technical notes](/writing/mini-deepinfer-technical-notes/) walk through the same code module by module. To run it:
 
 ```bash
 git clone https://github.com/algebra-MCX/mini-DeepInfer.git

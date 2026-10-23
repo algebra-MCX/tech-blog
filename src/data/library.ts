@@ -36,7 +36,12 @@ export const writingMap: Record<string, Assignment> = {
   'serving-lessons': { project: 'vllm', section: 'design', state: 'outline' },
   'irregular-moe-execution': { project: 'vllm', section: 'design', state: 'outline' },
   'mini-deepinfer-runtime': { project: 'mini-deepinfer', section: 'design', state: 'perspective' },
-  'mini-deepinfer-prefill': { project: 'mini-deepinfer', section: 'experiments', state: 'perspective' }
+  'mini-deepinfer-design': { project: 'mini-deepinfer', section: 'design', state: 'perspective' },
+  'mini-deepinfer-technical-notes': { project: 'mini-deepinfer', section: 'design', state: 'perspective' },
+  'mini-deepinfer-prefill': { project: 'mini-deepinfer', section: 'experiments', state: 'perspective' },
+  'mini-deepinfer-report-a': { project: 'mini-deepinfer', section: 'experiments', state: 'perspective' },
+  'mini-deepinfer-report-b1': { project: 'mini-deepinfer', section: 'experiments', state: 'perspective' },
+  'mini-deepinfer-report-c1': { project: 'mini-deepinfer', section: 'experiments', state: 'perspective' }
 };
 export const noteMap: Record<string, Assignment> = {
   'nsight-metrics': { section: 'debugging', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },

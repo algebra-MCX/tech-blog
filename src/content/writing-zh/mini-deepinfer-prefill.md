@@ -119,4 +119,14 @@ C1 之后"注意力其余"的 254 ms 中，182 ms 是 key 拼接（gather / cat 
 - mini 的可选非专家权重缓存未开启。
 - tiny 模型的单卡输出吞吐是另一种负载和指标。在那组测试上，三项改动对 goodput 的影响分别是 +6%、−1.8%（在运行间波动范围内）和 +2.1%。
 
-原始日志、profile 和作业配置都在仓库中：[benchmark 文档](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/benchmarks/README.md)，以及报告 [A](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/A-tensor-core-sparse-attention.md)、[B1](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/B1-fused-index-scores.md)、[C1](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/C1-moe-combine.md)。
+每项改动的完整报告见 [A](/writing/mini-deepinfer-report-a/)、[B1](/writing/mini-deepinfer-report-b1/)、[C1](/writing/mini-deepinfer-report-c1/)。原始日志、profile 和作业配置在仓库的 [`docs/benchmarks/profile-2026-10-22/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/) 下；复现这组测量：
+
+```bash
+torchrun --nproc-per-node 4 bench_prefill.py \
+  --model /path/to/DeepSeek-V4.1-Flash \
+  --prefill_batch_size 4096 \
+  --no_cuda_graph \
+  --result_jsonl results.jsonl
+```
+
+模型加载与共享前缀 prefill 的初始化耗时不计入吞吐测量。
