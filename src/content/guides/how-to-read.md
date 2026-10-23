@@ -50,7 +50,7 @@ I plan to develop this blog from the fundamentals to deeper ideas, weaving in my
 
 ## 05. Open code and experiments
 
-I will gradually open-source the small projects, core experiments and practical checks on GitHub so that others can run, modify, question and reproduce them. For each experiment, I will try to record the version, environment, measurement method, comparison conditions and known limitations. Failed experiments, mistaken hypotheses and debugging records deserve a place too. Unverified conclusions will be marked explicitly; conjectures will remain conjectures.
+I will gradually open-source the small projects, core experiments and practical checks on GitHub so that others can run, modify, question and reproduce them. For each experiment, I will try to record the version, environment, measurement method, comparison conditions and known limitations. Failed experiments, mistaken hypotheses and debugging records deserve a place too.
 
 ## 06. Perhaps we can research together
 
@@ -59,9 +59,9 @@ If the opportunity arises, I would like to organize small study groups around th
 ## Where to begin
 
 - **New to a field**: start with [Quickstarts](/guides/sections/quickstarts/), then work through a first Nano Project and its core experiments as the routes develop.
-- **Already have the foundations**: go straight to [Projects](/projects/), source code and performance analysis. There is no need to read everything in order.
-- **Personal writing**: read [Notes](/notes/) for personal essays and predictions about the future.
+- **Interested in my work**: explore my [projects and open-source contributions](/projects/). I would love to exchange ideas and experiences.
+- **Curious about my thinking**: read [Notes](/notes/) for my views on the future of technology, essays on everyday life, and lessons from different areas of experience.
 
-Find a question you truly care about and follow it deeper. Spend less time preparing without direction, and more time building and thinking.
+Spend less time on things that are not worth your attention, and more time developing your taste: recognizing which problems are worth solving and which work deserves a deeper look.
 
 — Chenxi Ma
