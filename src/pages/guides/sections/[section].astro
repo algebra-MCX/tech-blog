@@ -2,21 +2,12 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Localized from '@/components/Localized.astro';
-import EntryCard from '@/components/EntryCard.astro';
 import QuickstartIndex from '@/components/QuickstartIndex.astro';
 import { guideSections } from '@/data/library';
-export function getStaticPaths() { return guideSections.map(section => ({ params: { section: section.id }, props: { section } })); }
+export function getStaticPaths() { return guideSections.filter(section => section.id === 'quickstarts').map(section => ({ params: { section: section.id }, props: { section } })); }
 const { section } = Astro.props;
 const entries = (await getCollection('guides', ({ data }) => !data.draft)).filter(e => e.data.category === section.id);
-const symptoms = [
-  { en: 'CUDA Graph behavior changed', zh: 'CUDA Graph 行为发生变化', href: '/writing/cuda-graph-fallback/', label: 'vLLM' },
-  { en: 'Memory grows with context length', zh: '内存随上下文长度增长', href: '/writing/gpu-memory-long-context/', label: 'vLLM' },
-  { en: 'Communication overlap adds contention', zh: '通信重叠带来资源争用', href: '/writing/communication-overlap/', label: 'vLLM' },
-  { en: 'End-to-end measurements disagree', zh: '端到端测量结果方向不一致', href: 'https://github.com/algebra-MCX/MoEFlow/blob/development/docs/e2e_w1_order_control.md', label: 'MoEFlow ↗' }
-];
 ---
 <BaseLayout title={`${section.en} — Guides — Chenxi Ma`} description={section.description}>
-  {section.id !== 'quickstarts' && <header class="page-intro shell"><a class="back-link" href="/guides/"><Localized en="← Guides" zh="← 指南" /></a><h1><Localized en={section.en} zh={section.zh} /></h1><p><Localized en={section.description} zh={section.descriptionZh} /></p></header>}
-  {section.id === 'quickstarts' ? <QuickstartIndex entries={entries} /> : <section class="library-section shell"><nav class="section-tabs" aria-label="Guide categories">{guideSections.map(s => <a href={`/guides/sections/${s.id}/`} aria-current={section.id === s.id ? 'page' : undefined}><Localized en={s.en} zh={s.zh} /></a>)}</nav><div class="guide-cards">{entries.map(e => <div class="reading-glass guide-card"><EntryCard href={`/guides/${e.id}/`} title={e.data.title} titleZh={e.data.titleZh} description={e.data.description} descriptionZh={e.data.descriptionZh} /></div>)}</div></section>}
-  {section.id === 'playbooks' && <section class="library-section shell" id="debugging-map"><div class="section-heading"><h2><Localized en="Debugging map" zh="排障地图" /></h2></div><p class="section-description"><Localized en="Start with a symptom. Some linked investigations are still working outlines." zh="从症状出发查找记录，其中部分研究仍处于提纲阶段。" /></p><div class="guide-cards">{symptoms.map(s => <div class="reading-glass guide-card"><EntryCard href={s.href} title={s.en} titleZh={s.zh} label={s.label} /></div>)}</div></section>}
+  <QuickstartIndex entries={entries} />
 </BaseLayout>

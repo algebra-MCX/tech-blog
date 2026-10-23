@@ -22,11 +22,11 @@ const contents = [{ language: 'en', headings: toc }, { language: 'zh', headings:
 const tocLabel = (text: string) => entry.id === 'how-to-read' ? text.replace(/^\d{2}\.\s*/, '') : text;
 const assignment = entry.collection === 'writing' ? writingMap[entry.id] : undefined;
 const project = projectById(assignment?.project);
-const guideSection = entry.collection === 'guides' ? guideSections.find(s => s.id === entry.data.category) : undefined;
+const guideSection = entry.collection === 'guides' && entry.data.category === 'quickstarts' ? guideSections.find(s => s.id === entry.data.category) : undefined;
 const section = projectSections.find(s => s.id === assignment?.section);
-const parentHref = project ? `/projects/${project.id}/` : guideSection ? `/guides/sections/${guideSection.id}/` : '/writing/';
-const parentEn = project?.title ?? guideSection?.en ?? 'All articles';
-const parentZh = project?.titleZh ?? guideSection?.zh ?? '全部文章';
+const parentHref = project ? `/projects/${project.id}/` : guideSection ? `/guides/sections/${guideSection.id}/` : entry.collection === 'guides' ? '/guides/' : '/writing/';
+const parentEn = project?.title ?? guideSection?.en ?? (entry.collection === 'guides' ? 'Guides' : 'All articles');
+const parentZh = project?.titleZh ?? guideSection?.zh ?? (entry.collection === 'guides' ? '指南' : '全部文章');
 const projectWriting = project ? (await getCollection('writing', ({ data }) => !data.draft)).filter(item => writingMap[item.id]?.project === project.id).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()) : [];
 const nextArticle = projectWriting[projectWriting.findIndex(item => item.id === entry.id) + 1];
 ---
@@ -35,7 +35,7 @@ const nextArticle = projectWriting[projectWriting.findIndex(item => item.id === 
   <article class="article">
     <header class="article-header shell reading-glass">
       <div class="article-meta reveal">
-        <nav aria-label="Breadcrumb"><a href={entry.collection === 'guides' ? '/guides/' : '/projects/'}><Localized en={entry.collection === 'guides' ? 'Guides' : 'Projects'} zh={entry.collection === 'guides' ? '指南' : '项目'} /></a><span>›</span><a href={parentHref}><Localized en={parentEn} zh={parentZh} /></a>{section && project && <><span>›</span><a href={`/projects/${project.id}/articles/?kind=${section.id}`}><Localized en={section.en} zh={section.zh} /></a></>}</nav>
+        <nav aria-label="Breadcrumb"><a href={entry.collection === 'guides' ? '/guides/' : '/projects/'}><Localized en={entry.collection === 'guides' ? 'Guides' : 'Projects'} zh={entry.collection === 'guides' ? '指南' : '项目'} /></a>{!(entry.collection === 'guides' && !guideSection) && <><span>›</span><a href={parentHref}><Localized en={parentEn} zh={parentZh} /></a></>}{section && project && <><span>›</span><a href={`/projects/${project.id}/articles/?kind=${section.id}`}><Localized en={section.en} zh={section.zh} /></a></>}</nav>
         <p><time datetime={entry.data.publishDate.toISOString()}><Localized en={formatDate(entry.data.publishDate)} zh={formatDateZh(entry.data.publishDate)} /></time><span>·</span>{readingMinutes(entry.body)} <Localized en="min read" zh="分钟阅读" /></p>
       </div>
       <div class="article-hero">

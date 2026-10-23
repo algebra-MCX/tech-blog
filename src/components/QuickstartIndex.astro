@@ -4,7 +4,6 @@ import Localized from './Localized.astro';
 import ResearchFilters from './ResearchFilters.astro';
 import TechnicalTags from './TechnicalTags.astro';
 import { categoryLabel } from '@/data/research';
-import { guideSections } from '@/data/library';
 import '@/styles/research.css';
 interface Props { entries: CollectionEntry<'guides'>[] }
 const { entries } = Astro.props;
@@ -22,5 +21,4 @@ const { entries } = Astro.props;
     </article>)}</div>
     <div class="research-empty" data-research-empty hidden><h2><Localized en="No examples here yet" zh="这个领域暂未收录入门例子" /></h2><p><Localized en="Choose All or another field to find a starting point." zh="可以选择 All 或其他领域，找到一个动手起点。" /></p></div>
   </div>
-  <nav class="quickstart-guide-links" aria-label="More guides / 更多指南">{guideSections.filter(section => section.id !== 'quickstarts').map(section => <a href={`/guides/sections/${section.id}/`}><Localized en={section.en} zh={section.zh} /><span aria-hidden="true"> →</span></a>)}</nav>
 </section>
