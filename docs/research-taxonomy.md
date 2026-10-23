@@ -12,13 +12,12 @@ Classify the contribution presented in this portfolio, rather than every capabil
 | --- | --- | --- | --- |
 | MoEFlow | Systems | Fixed-capacity expert-parallel execution, graph-compatible routing and kernel fusion. Co-design applies to the joint execution/kernel/hardware constraints, not a separate category. | [README](https://github.com/algebra-MCX/MoEFlow/blob/main/README.md), [architecture](https://github.com/algebra-MCX/MoEFlow/blob/main/docs/architecture.md), [measurement report](https://github.com/algebra-MCX/MoEFlow/blob/main/docs/stage1_total_fusion_tables.md) |
 | vLLM | Systems | The showcased contribution concerns captured microbatch layouts, DP decode coordination and output ordering. It does not introduce a new model or training algorithm. | [PR #62430](https://github.com/vllm-project/vllm/pull/62430), including patch and validation limitations |
-| CUDA Study | Systems | Incremental CUDA implementations of reduction, SGEMM, attention and memory optimizations. GPU use does not establish a GPU architecture research contribution. | [SGEMM implementations](https://github.com/algebra-MCX/CUDA-study/tree/main/2_cuda_sgemm_study), [double-buffered implementation](https://github.com/algebra-MCX/CUDA-study/blob/main/2_cuda_sgemm_study/my_sgemm_v8_double_buffer.cu) |
-| mini-DeepInfer | Systems | A readable reimplementation of inference scheduling, model execution and cache-state management; not a novel model architecture. | [README and execution structure](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/README.md) |
+| mini-DeepInfer | Systems | A readable reimplementation of DeepInfer's scheduling, cache-state management and DeepSeek-V4.1 execution, with prefill kernels measured against the official engine; not a novel model architecture. | [README](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/README.md), [runtime design](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/DEEPINFER_DESIGN.md), [prefill benchmark](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/benchmarks/README.md) |
 | DeepInfer | Systems | The author's NVLink Engram-fetch proposal provides an execution path without NCCL GIN. Co-design describes the hardware-constrained memory/communication path. | [PR #99](https://github.com/deepseek-ai/DeepInfer/pull/99) |
 | TraceLab | Systems | The showcased work is a session-aware vLLM replay runner and backend adapter. Classify this execution contribution, rather than assigning the entire agent-trace repository to Agents/Data. | [merged runner PR #1](https://github.com/uw-syfi/TraceLab/pull/1), [adapter PR #11](https://github.com/uw-syfi/TraceLab/pull/11) |
 | JittorInfer | Systems | Qwen2.5 model integration: graph builders, tokenizer, tensor loading and Ascend execution paths. Integration is not an original model architecture or accelerator design. | [PR #7 and changed files](https://github.com/Jittor/JittorInfer/pull/7/files), [upstream README on master](https://github.com/Jittor/JittorInfer/blob/master/README.md) |
 
-All seven currently qualify as Systems. Empty categories are intentional; do not redistribute work just to populate the navigation. Own projects/contributions remain independently filterable by relationship, and contributor cards distinguish merged work from proposals. Existing `domains` fields are retained for legacy search/guide compatibility; they do not drive portfolio categories.
+All six currently qualify as Systems. Empty categories are intentional; do not redistribute work just to populate the navigation. Own projects/contributions remain independently filterable by relationship, and contributor cards distinguish merged work from proposals. Existing `domains` fields are retained for legacy search/guide compatibility; they do not drive portfolio categories.
 
 ## Quickstarts
 
@@ -46,7 +45,6 @@ Upstream project stars are not author accomplishments. Upstream benchmark tables
 
 ## Follow-up requiring author evidence
 
-- CUDA Study has no root README. Supply a scoped study/report if a Hardware classification or measured kernel result is intended; current classification follows the actual kernel implementations.
 - JittorInfer #7 has no PR description or reproducible validation report. Keep it marked as a proposal; confirm supported configurations/results before adding claims.
 - Keep the open vLLM/DeepInfer/JittorInfer proposals distinct from accepted work. New upstream state can be refreshed in the existing contribution records.
 - Publish MoEFlow's referenced raw paired-run artifact if independent reproduction should be advertised.
@@ -66,8 +64,7 @@ The five primary categories are unchanged. Projects and Quickstarts now share th
 | --- | --- |
 | MoEFlow | LLM Serving & Inference; GPU Kernels; Communication & Memory Systems; Performance Engineering |
 | vLLM | LLM Serving & Inference; Distributed Training & Inference; Runtime & Scheduling |
-| CUDA Study | GPU Kernels; Communication & Memory Systems; Performance Engineering |
-| mini-DeepInfer | LLM Serving & Inference; Distributed Training & Inference; Runtime & Scheduling; Communication & Memory Systems |
+| mini-DeepInfer | LLM Serving & Inference; Distributed Training & Inference; Runtime & Scheduling; Communication & Memory Systems; GPU Kernels; Performance Engineering |
 | DeepInfer | LLM Serving & Inference; Distributed Training & Inference; Communication & Memory Systems |
 | TraceLab | LLM Serving & Inference; Performance Engineering |
 | JittorInfer | LLM Serving & Inference |

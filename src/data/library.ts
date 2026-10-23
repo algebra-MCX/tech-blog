@@ -32,15 +32,17 @@ export const writingMap: Record<string, Assignment> = {
   'benchmarking-moe': { project: 'moeflow', section: 'experiments', state: 'outline' },
   'gpu-memory-long-context': { project: 'vllm', section: 'experiments', state: 'outline' },
   'communication-overlap': { project: 'vllm', section: 'design', state: 'outline' },
-  'grouped-gemm': { project: 'cuda-study', section: 'experiments', state: 'outline' },
+  'grouped-gemm': { section: 'experiments', state: 'outline' },
   'serving-lessons': { project: 'vllm', section: 'design', state: 'outline' },
-  'irregular-moe-execution': { project: 'vllm', section: 'design', state: 'outline' }
+  'irregular-moe-execution': { project: 'vllm', section: 'design', state: 'outline' },
+  'mini-deepinfer-runtime': { project: 'mini-deepinfer', section: 'design', state: 'perspective' },
+  'mini-deepinfer-prefill': { project: 'mini-deepinfer', section: 'experiments', state: 'perspective' }
 };
 export const noteMap: Record<string, Assignment> = {
-  'nsight-metrics': { project: 'cuda-study', section: 'debugging', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
-  'stream-priorities': { project: 'cuda-study', section: 'design', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
-  'triton-configurations': { project: 'cuda-study', section: 'experiments', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
+  'nsight-metrics': { section: 'debugging', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
+  'stream-priorities': { section: 'design', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
+  'triton-configurations': { section: 'experiments', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
   'visualize-expert-load': { project: 'moeflow', section: 'design', state: 'perspective', noteCategory: 'perspectives', noteTopic: 'research' },
-  'why-2x64': { project: 'cuda-study', section: 'experiments', state: 'outline' },
+  'why-2x64': { section: 'experiments', state: 'outline' },
   'rank-nccl': { project: 'moeflow', section: 'debugging', state: 'outline' }
 };

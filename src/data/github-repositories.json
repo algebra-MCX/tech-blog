@@ -3,21 +3,17 @@
     "stars": 1,
     "checkedAt": "2026-10-22"
   },
-  "algebra-MCX/CUDA-study": {
-    "stars": 0,
-    "checkedAt": "2026-10-22"
-  },
   "algebra-MCX/mini-DeepInfer": {
-    "stars": 1,
-    "checkedAt": "2026-10-22"
+    "stars": 8,
+    "checkedAt": "2026-10-23"
   },
   "vllm-project/vllm": {
     "stars": 95132,
     "checkedAt": "2026-10-22"
   },
   "deepseek-ai/DeepInfer": {
-    "stars": 19679,
-    "checkedAt": "2026-10-22"
+    "stars": 20687,
+    "checkedAt": "2026-10-23"
   },
   "uw-syfi/TraceLab": {
     "stars": 153,

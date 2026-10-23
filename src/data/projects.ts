@@ -44,29 +44,25 @@ export const projects: readonly Project[] = [
     resources: [{ title: 'Upstream code & documentation', titleZh: '上游代码与文档', url: 'https://github.com/vllm-project/vllm#readme', section: 'resources' }, { title: 'Personal development fork', titleZh: '个人开发 Fork', url: 'https://github.com/algebra-MCX/vllm', section: 'resources' }]
   },
   {
-    id: 'cuda-study', title: 'CUDA Study', titleZh: 'CUDA Study', kind: 'own', subtitle: 'GPU execution & kernel experiments', subtitleZh: 'GPU 执行与内核实验',
-    primaryCategory: 'systems', researchAreas: ["gpu-kernels", "communication-memory-systems", "performance-engineering"], technicalTags: ['gpu-kernels', 'cuda', 'memory-systems', 'performance-analysis'],
-    researchContribution: 'Incremental CUDA kernel implementations explore how tiling, memory access and double buffering shape execution.',
-    researchContributionZh: '通过逐步演进的 CUDA 内核实现，研究分块、内存访问与双缓冲如何影响执行。',
-    summary: 'Kernel-level questions about grouped computation, scheduling and useful work under uneven loads.', summaryZh: '从内核层面研究分组计算、调度，以及不均衡负载下的有效工作。',
-    domains: ['infra'], status: 'active', repository: 'https://github.com/algebra-MCX/CUDA-study',
-    scope: 'Small GPU programming studies and the assumptions behind kernel comparisons.', scopeZh: '小型 GPU 编程研究，以及内核对比背后的假设。',
-    boundary: 'The current article is a measurement plan. No kernel speedup is claimed without a recorded run.', boundaryZh: '当前文章是一份测量计划；缺少完整运行记录时，不作内核加速结论。',
-    role: 'Study repository and related working notes', roleZh: '学习仓库与相关工作记录', start: ['useful-work', 'paired-benchmarks'],
-    resources: [{ title: 'CUDA study repository', titleZh: 'CUDA 学习仓库', url: 'https://github.com/algebra-MCX/CUDA-study', section: 'resources' }]
-  },
-  {
     id: 'mini-deepinfer', title: 'mini-DeepInfer', titleZh: 'mini-DeepInfer', kind: 'own',
-    primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "runtime-scheduling", "communication-memory-systems", "distributed-training-inference"], technicalTags: ['inference', 'runtime', 'moe', 'memory-systems'],
-    researchContribution: 'A compact inference-engine reimplementation makes request scheduling, model execution and cache-state management traceable.',
-    researchContributionZh: '用精简的推理引擎重实现，串起可追踪的请求调度、模型执行与缓存状态管理。',
-    subtitle: 'A readable inference engine', subtitleZh: '可阅读的推理引擎',
-    summary: 'A minimal re-implementation for studying the core design of an inference engine.', summaryZh: '通过最小重实现，学习推理引擎的核心设计。',
+    primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "runtime-scheduling", "communication-memory-systems", "distributed-training-inference", "gpu-kernels", "performance-engineering"], technicalTags: ['inference', 'runtime', 'attention', 'moe', 'triton', 'blackwell'],
+    researchContribution: 'A readable PyTorch runtime serves the real DeepSeek-V4.1-Flash on 4 × B200 and matches the official reference within 0.05 logits across every scheduling mode.',
+    researchContributionZh: '用可读的 PyTorch 运行时在 4 × B200 上服务真实 DeepSeek-V4.1-Flash，在所有调度模式下与官方参考实现的 logits 差距小于 0.05。',
+    subtitle: 'A readable DeepSeek-V4.1 runtime', subtitleZh: '可阅读的 DeepSeek-V4.1 运行时',
+    summary: 'DeepInfer\'s engine design in about 2,000 lines of PyTorch: follow a request from the queue to its next sampled token.', summaryZh: '用约 2,000 行 PyTorch 读懂 DeepInfer 的引擎设计：从请求入队一路跟到下一个采样 token。',
     domains: ['algorithms', 'infra'], status: 'active', repository: 'https://github.com/algebra-MCX/mini-DeepInfer',
-    scope: 'Request scheduling, model execution and cache management in a compact inference engine.', scopeZh: '在精简的推理引擎中理解请求调度、模型执行与缓存管理。',
-    boundary: 'This is a learning implementation. The repository is the source for supported features and recorded results.', boundaryZh: '这是学习型实现，支持范围与实验结果以仓库记录为准。',
+    scope: 'Paged KV blocks and state slots, prefill/decode scheduling with preemption, zero-overhead scheduling, deterministic sampling, EP × DP, and paired prefill measurements against official DeepInfer.', scopeZh: '分页 KV block 与 state slot、带抢占的 prefill/decode 调度、零开销调度、确定性采样、EP × DP，以及与官方 DeepInfer 的配对 prefill 测量。',
+    boundary: 'A learning implementation, not a faster DeepInfer. Real-model prefill reaches 11.9% of the official engine in one paired run on 4 × B200; decode CUDA graphs were off for both and KV budgets were not forced equal.', boundaryZh: '这是学习型实现，不是更快的 DeepInfer。4 × B200 单轮配对测量中，真实模型 prefill 达到官方的 11.9%；两边均未开启 decode CUDA Graph，KV 预算也未强制相等。',
     role: 'Personal learning implementation', roleZh: '个人学习实现', start: ['useful-work', 'paired-benchmarks'],
-    resources: [{ title: 'Implementation & README', titleZh: '实现与说明', url: 'https://github.com/algebra-MCX/mini-DeepInfer#readme', section: 'resources' }]
+    resources: [
+      { title: 'Project overview & quick start', titleZh: '项目概览与快速开始', url: 'https://github.com/algebra-MCX/mini-DeepInfer#readme', section: 'overview' },
+      { title: 'Runtime design: boundaries & invariants', titleZh: '运行时设计：边界与不变量', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/DEEPINFER_DESIGN.md', section: 'design' },
+      { title: 'Technical notes on the current code', titleZh: '对应当前代码的技术说明', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/TECHNICAL.md', section: 'design' },
+      { title: 'Prefill benchmark: 4 × B200 vs. official', titleZh: 'Prefill 基准：4 × B200 对比官方', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/benchmarks/README.md', section: 'experiments' },
+      { title: 'Report A: sparse attention on tensor cores', titleZh: '报告 A：稀疏注意力改用 tensor core', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/A-tensor-core-sparse-attention.md', section: 'experiments' },
+      { title: 'Report B1: fused indexer scoring', titleZh: '报告 B1：融合 indexer 打分', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/B1-fused-index-scores.md', section: 'experiments' },
+      { title: 'Report C1: MoE combine over local rows', titleZh: '报告 C1：MoE 只合并本地行', url: 'https://github.com/algebra-MCX/mini-DeepInfer/blob/main/docs/perf-reports/C1-moe-combine.md', section: 'experiments' }
+    ]
   },
   {
     id: 'deepinfer', title: 'DeepInfer', titleZh: 'DeepInfer', kind: 'contributor',
