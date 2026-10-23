@@ -30,6 +30,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <meta name="description" content={description} />
     <meta name="theme-color" content="#131820" />
     <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title="Chenxi Ma — Writing" href="/rss.xml" />
     <meta property="og:type" content={article ? 'article' : 'website'} />
