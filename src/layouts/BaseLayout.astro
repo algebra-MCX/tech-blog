@@ -46,7 +46,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <script is:inline>
       (() => {
         let savedLanguage;
-        try { savedLanguage = localStorage.getItem('mcx-language'); } catch {}
+        try { savedLanguage = localStorage.getItem('mcx-language-v2'); } catch {}
         const language = savedLanguage === 'zh' ? 'zh' : 'en';
         document.documentElement.dataset.language = language;
         document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
@@ -69,7 +69,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
             const next = document.documentElement.dataset.language === 'zh' ? 'en' : 'zh';
             document.documentElement.dataset.language = next;
             document.documentElement.lang = next === 'zh' ? 'zh-CN' : 'en';
-            try { localStorage.setItem('mcx-language', next); } catch {}
+            try { localStorage.setItem('mcx-language-v2', next); } catch {}
             window.dispatchEvent(new CustomEvent('mcx:language-change', { detail: next }));
           });
         });
