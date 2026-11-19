@@ -26,6 +26,8 @@ export const noteTopics = [
   { id: 'life', en: 'Life', zh: '生活', description: 'Observations about time, choices and everyday life.', descriptionZh: '关于时间、选择与日常生活的观察。' },
   { id: 'personal-finance', en: 'Personal Finance', zh: '理财', description: 'Personal thinking about budgets, saving and financial planning.', descriptionZh: '关于预算、储蓄和财务规划的个人思考。' }
 ] as const;
+// Keep existing topic URLs available while these categories are hidden.
+export const visibleNoteTopics = noteTopics.filter(topic => topic.id !== 'research' && topic.id !== 'investing');
 export type Assignment = { project?: string; section?: 'experiments' | 'debugging' | 'design'; state: 'outline' | 'perspective'; noteCategory?: 'perspectives' | 'decisions' | 'questions'; noteTopic?: typeof noteTopics[number]['id'] };
 export const writingMap: Record<string, Assignment> = {
   'cuda-graph-fallback': { project: 'vllm', section: 'debugging', state: 'outline' },

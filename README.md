@@ -44,6 +44,8 @@ Each project has four fixed navigation links on separate pages: Overview (`/proj
 
 Guides use `category: concepts | quickstarts | playbooks | learning-paths` and applicable `domains: [algorithms, data, infra]`. Chinese entries use `source: <English entry id>`. Quickstarts additionally require a `primaryCategory`, nonempty matching `researchAreas`, and canonical `technicalTags`, validated by the content schema. The current Python examples require only the standard library.
 
+Notes currently show Learning, Life and Personal Finance through `visibleNoteTopics`; Research and Investing are hidden from cards and navigation, while existing articles and topic URLs remain available.
+
 Notes use `noteTopic: research | learning | investing | life | personal-finance` and `noteCategory: perspectives | decisions | questions` in `noteMap`. Personal notes need no project assignment. Omit `noteCategory` for a technical investigation that belongs inside a project. Existing URLs remain available. Update outline status only when the underlying evidence is ready. Reading times are computed from actual text.
 
 The pinned homepage reading guide is `src/content/guides/how-to-read.md`, with its Chinese translation in `guides-zh/how-to-read.md`.
