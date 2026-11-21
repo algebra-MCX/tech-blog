@@ -8,12 +8,11 @@ import avatar from '@/assets/chenxi-avatar.png';
 const path = Astro.url.pathname;
 const id = path.split('/').filter(Boolean).slice(1).join('/');
 const projectArticle = path.startsWith('/writing/') || (path.startsWith('/notes/') && noteMap[id] && !noteMap[id].noteCategory);
-const readingGuide = path === '/' || path === '/guides/how-to-read/';
 const nav = [
-  { href: '/guides/how-to-read/', en: 'Start here', zh: '先读这里', active: readingGuide },
-  { href: '/guides/sections/quickstarts/', en: 'Quickstarts', zh: '最简入门', active: path.startsWith('/guides/') && !readingGuide },
+  { href: '/writing/', en: 'Research', zh: '研究', active: path.startsWith('/writing/') },
   { href: '/projects/', en: 'Projects', zh: '项目', active: path.startsWith('/projects/') || projectArticle },
   { href: '/notes/', en: 'Notes', zh: '想法', active: path.startsWith('/notes/') && !projectArticle },
+  { href: site.learning, en: 'Learning ↗', zh: '学习资料 ↗', active: path.startsWith('/guides/') },
   { href: site.homepage, en: 'Home ↗', zh: '个人主页 ↗', active: false }
 ];
 ---
