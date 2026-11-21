@@ -1,0 +1,41 @@
+name: Validate research and learning sites
+on:
+  push:
+    branches: [feat/separate-learning-hub]
+  pull_request:
+    paths:
+      - 'learning/**'
+      - 'src/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        site: ['research', 'learning']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install research dependencies
+        if: matrix.site == 'research'
+        run: npm ci --no-audit --no-fund
+      - name: Install learning dependencies
+        if: matrix.site == 'learning'
+        working-directory: learning
+        run: npm install --no-audit --no-fund
+      - name: Build research blog
+        if: matrix.site == 'research'
+        run: npm run build
+      - name: Build learning hub
+        if: matrix.site == 'learning'
+        working-directory: learning
+        run: npm run build
