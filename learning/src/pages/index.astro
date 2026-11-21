@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+const entries = await getCollection('guides', ({data}) => !data.draft);
+const sections = [
+ {id:'learning-paths',en:'Learning Paths',zh:'学习路线',enDesc:'A short, rigorous route into each field.',zhDesc:'用简短且严谨的路线进入一个领域。'},
+ {id:'quickstarts',en:'Quickstarts',zh:'最简入门',enDesc:'Small experiments with clear success criteria.',zhDesc:'能直接运行、可以验证的最小实验。'},
+ {id:'concepts',en:'Core Concepts',zh:'核心概念',enDesc:'Essential models for algorithms and systems.',zhDesc:'理解算法与系统必备的心智模型。'},
+ {id:'playbooks',en:'Practical Playbooks',zh:'实践手册',enDesc:'Repeatable methods for measuring and building.',zhDesc:'可重复使用的实验和工程方法。'}
+];
+const mainBlog = import.meta.env.PUBLIC_MAIN_BLOG_URL || 'https://tech-blog-chi.vercel.app';
+---
+<BaseLayout title="AI Systems Learning Hub — Chenxi Ma" description="Curated bilingual learning paths, runnable examples and practical guides for AI systems.">
+  <section class="shell hub-hero">
+    <p class="eyebrow"><span data-lang="en">Curated · Project-driven · Bilingual</span><span data-lang="zh">精选资料 · 项目驱动 · 双语阅读</span></p>
+    <h1><span data-lang="en">Learn the essentials. Build the system.</span><span data-lang="zh">理解原理，再动手构建系统。</span></h1>
+    <p class="hub-lead">
+      <span data-lang="en">A short path into AI algorithms, data and infrastructure. Understand the core ideas, run a small experiment, then read the research that builds on them.</span>
+      <span data-lang="zh">面向 AI 算法、数据和基础设施的精简学习路径。理解核心概念，运行最小实验，再进入真正的系统研究。</span>
+    </p>
+    <div class="hub-actions">
+      <a class="hub-link" href="/guides/how-to-read/"><span data-lang="en">How to read this site →</span><span data-lang="zh">如何阅读本站 →</span></a>
+      <a class="hub-link" href="/guides/sections/quickstarts/"><span data-lang="en">Start a quick experiment →</span><span data-lang="zh">开始一个最简实验 →</span></a>
+      <a class="hub-link" href={mainBlog}><span data-lang="en">Original research ↗</span><span data-lang="zh">原创研究 ↗</span></a>
+    </div>
+  </section>
+  {sections.map(section => (
+    <section class="shell hub-section" id={section.id}>
+      <h2><span data-lang="en">{section.en}</span><span data-lang="zh">{section.zh}</span></h2>
+      <p class="hub-section-description"><span data-lang="en">{section.enDesc}</span><span data-lang="zh">{section.zhDesc}</span></p>
+      <div class="hub-grid">
+        {entries.filter(entry => entry.data.category === section.id).map(entry => (
+          <article class="reading-glass hub-card">
+            <p class="hub-category">{entry.data.domains.join(' · ')}</p>
+            <h3><a href={'/guides/'+entry.id+'/'}><span data-lang="en">{entry.data.title}</span><span data-lang="zh">{entry.data.titleZh}</span></a></h3>
+            <p><span data-lang="en">{entry.data.description}</span><span data-lang="zh">{entry.data.descriptionZh}</span></p>
+            <a class="text-link" href={'/guides/'+entry.id+'/'}><span data-lang="en">Read and try →</span><span data-lang="zh">阅读与实践 →</span></a>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+</BaseLayout>
