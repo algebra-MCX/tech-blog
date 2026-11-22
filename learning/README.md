@@ -10,8 +10,4 @@ npm --prefix learning ci
 node scripts/preview-sites.mjs
 ```
 
-In the existing learning project on Vercel, connect `algebra-MCX/tech-blog` on branch `main`. Set Root Directory to `learning` and enable **Include source files outside of the Root Directory in the Build Step**. The checked-in `learning/vercel.json` installs dependencies and builds to `dist` from that directory.
-
-Set `SITE_URL` in Production to the public learning URL. Both sites use `PUBLIC_HOMEPAGE_URL` for the personal homepage link, which defaults to https://algebra-mcx.github.io/.
-
-Keep existing research-blog guide URLs until the independent learning site is public and its replacement routes have been verified. Keep the research reading guide at `/guides/how-to-read/`.
+The production website publishes this app under `/learning/` in the [unified build](../README.md#website-build). Its public base and canonical origin are set by that build.

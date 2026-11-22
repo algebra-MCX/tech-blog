@@ -56,6 +56,15 @@ Copy `.env.example` to `.env` and replace the example domain, social URLs, and e
 
 The default canonical domain is `https://tech-blog-chi.vercel.app`; override it with `SITE_URL` only when changing the deployment domain.
 
-## Local research and learning previews
+## Website build
 
-Run `node scripts/preview-sites.mjs` to build and serve the research blog at http://localhost:4321/ and the independent learning site at http://localhost:4322/. Both link back to the personal homepage preview at http://localhost:4323/. See [learning site configuration](learning/README.md) for configuration and verification.
+The production build serves the personal homepage at `/`, the research blog at `/blog/`, and the reading guide and experiments at `/learning/`.
+
+```sh
+npm ci
+npm --prefix learning ci
+npm run build:site
+npm run preview -- --host 127.0.0.1 --port 4324
+```
+
+Set `SITE_URL` before building to override the canonical origin in links and sitemaps. Run `python3 scripts/check-links.py --unified` against the assembled website. Vercel builds the same `dist/` directory from the repository root.

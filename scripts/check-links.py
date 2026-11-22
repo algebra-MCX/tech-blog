@@ -1,10 +1,15 @@
 from pathlib import Path
+import os
+import sys
 from html.parser import HTMLParser
 from urllib.parse import urlsplit, unquote
 import json
 
 ROOT=Path(__file__).resolve().parents[1]
 SITES={'localhost:4321':ROOT/'dist','localhost:4322':ROOT/'learning/dist'}
+if '--unified' in sys.argv:
+    origin = urlsplit(os.environ.get('SITE_URL', 'https://tech-blog-chi.vercel.app')).netloc
+    SITES = {origin: ROOT/'dist'}
 class Links(HTMLParser):
     def __init__(self):super().__init__();self.links=[];self.ids=set()
     def handle_starttag(self,tag,attrs):
@@ -33,5 +38,6 @@ for (host,path),parser in parsed.items():
         elif u.fragment and target.suffix=='.html' and (target_host,target) in parsed and unquote(u.fragment) not in parsed[(target_host,target)].ids:
             broken.append({'from':str(path.relative_to(ROOT)),'href':href,'reason':'missing anchor'})
 print(json.dumps({'pages':len(parsed),'links_checked':checked,'broken':broken},ensure_ascii=False,indent=2))
+(ROOT/'artifacts').mkdir(exist_ok=True)
 (ROOT/'artifacts/link-results.json').write_text(json.dumps({'pages':len(parsed),'links_checked':checked,'broken':broken},indent=2))
 raise SystemExit(bool(broken))

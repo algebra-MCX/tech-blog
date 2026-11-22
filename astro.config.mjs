@@ -5,6 +5,8 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
+  base: process.env.PUBLIC_UNIFIED_SITE === 'true' ? '/blog/' : '/',
+  outDir: process.env.SITE_OUTPUT || './dist',
   cacheDir: './.astro/cache',
   site: process.env.SITE_URL ?? 'https://tech-blog-chi.vercel.app',
   integrations: [mdx(), sitemap()],

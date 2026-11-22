@@ -2,18 +2,49 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "public": true,
   "framework": "astro",
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build:site",
   "outputDirectory": "dist",
   "redirects": [
     {
       "source": "/about",
-      "destination": "https://algebra-mcx.github.io/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/about/",
-      "destination": "https://algebra-mcx.github.io/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/rss.xml",
+      "destination": "/blog/rss.xml",
+      "permanent": true
+    },
+    {
+      "source": "/projects/:path*",
+      "destination": "/blog/projects/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/writing/:path*",
+      "destination": "/blog/writing/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/guides/:path*",
+      "destination": "/blog/guides/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/notes/:path*",
+      "destination": "/blog/notes/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/search/:path*",
+      "destination": "/blog/search/:path*",
       "permanent": true
     }
-  ]
+  ],
+  "installCommand": "npm ci && npm --prefix learning ci"
 }

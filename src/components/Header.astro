@@ -1,34 +1,42 @@
 ---
 import Icon from './Icon.astro';
 import Localized from './Localized.astro';
-import { site } from '@/data/site';
+import { site, unifiedSite } from '@/data/site';
 import { Image } from 'astro:assets';
 import avatar from '@/assets/chenxi-avatar.png';
 interface Props { siteKind?: 'research' | 'learning' }
 const learning = Astro.props.siteKind === 'learning';
-const path = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
+const path = '/' + Astro.url.pathname.slice(base.length);
 const nav = learning ? [
   { href: '/', en: 'Learning', zh: '学习首页', active: path === '/', cross: false },
   { href: '/guides/sections/quickstarts/', en: 'Experiments', zh: '最小实验', active: path.includes('quickstarts'), cross: false },
   { href: '/guides/how-to-read/', en: 'Method', zh: '学习方法', active: path === '/guides/how-to-read/', cross: false },
-  { href: site.homepage, en: 'Homepage', zh: '个人主页', active: false, cross: true }
 ] : [
   { href: '/', en: 'Selected work', zh: '代表作', active: path === '/', cross: false },
   { href: '/projects/', en: 'Projects', zh: '项目', active: path.startsWith('/projects/'), cross: false },
   { href: '/writing/', en: 'Writing', zh: '文章', active: path.startsWith('/writing/'), cross: false },
   { href: '/guides/how-to-read/', en: 'Start here', zh: '阅读指南', active: path === '/guides/how-to-read/', cross: false },
-  { href: site.homepage, en: 'Homepage', zh: '个人主页', active: false, cross: true }
 ];
+const navItems = unifiedSite ? [
+  { href: '/#about', en: 'About me', zh: '关于我', active: false, cross: true },
+  { href: '/blog/', en: 'Blog', zh: '博客', active: !learning, cross: true },
+  { href: '/learning/', en: 'Learning', zh: '学习', active: learning, cross: true },
+  { href: '/#contributions', en: 'Contributions', zh: '贡献与致谢', active: false, cross: true }
+] : [...nav, { href: site.homepage, en: 'Homepage', zh: '个人主页', active: false, cross: true }];
 ---
 <header class="site-header shell glass-surface">
-  <a class="wordmark" href="/" aria-label={learning ? 'Learning · Chenxi Ma' : 'Chenxi Ma · Research'}><span class="brand-avatar-frame" aria-hidden="true"><Image class="brand-avatar" src={avatar} width={32} height={32} densities={[1,2]} format="webp" quality={85} alt="" /></span><span>Chenxi Ma{learning && <small class="site-edition"><Localized en="Learning" zh="学习" /></small>}</span></a>
+  <a class="wordmark" href="/" data-cross-site={unifiedSite || undefined} aria-label={learning ? 'Learning · Chenxi Ma' : 'Chenxi Ma · Research'}><span class="brand-avatar-frame" aria-hidden="true"><Image class="brand-avatar" src={avatar} width={32} height={32} densities={[1,2]} format="webp" quality={85} alt="" /></span><span>Chenxi Ma{learning && <small class="site-edition"><Localized en="Learning" zh="学习" /></small>}</span></a>
   <nav class="primary-nav" aria-label="Main navigation / 主导航">
     <span class="nav-lens" aria-hidden="true"></span>
-    {nav.map(item => <a href={item.href} data-cross-site={item.cross || undefined} aria-current={item.active ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
+    {navItems.map(item => <a href={item.href} data-cross-site={item.cross || undefined} aria-current={item.active ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
   </nav>
   <div class="header-actions">
     {!learning && <a class="icon-button glass-control" href="/search/" aria-label="Search / 搜索"><Icon name="search" /></a>}
     <button class="language-toggle glass-control" type="button" aria-label="切换中英文 / Switch language" data-language-toggle><span data-lang="en">中文</span><span data-lang="zh">English</span></button>
   </div>
 </header>
+{unifiedSite && <nav class="section-nav shell" aria-label={learning ? 'Learning / 学习栏目' : 'Blog / 博客栏目'}>
+  {nav.map(item => <a href={item.href} aria-current={item.active ? 'page' : undefined}><Localized en={item.en} zh={item.zh} /></a>)}
+</nav>}
 <script>import '@/scripts/glass.js';</script>
