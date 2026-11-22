@@ -294,7 +294,7 @@ main { min-height: calc(100svh - 245px); }
 .toc a[aria-current], .toc a:hover { color: var(--accent); font-weight: 600; }
 .toc a > span:first-child { font-size: 12px; padding-top: 2px; }
 .mobile-toc { display: none; }
-.prose, .note-body { min-width: 0; padding: 30px 32px; color: var(--ink); font-size: 19px; line-height: 1.95; }
+.prose, .note-body { min-width: 0; padding: 30px 32px; color: var(--ink); font-size: 21px; line-height: 1.85; }
 .prose h2, .prose h3, .note-body h2, .note-body h3 { scroll-margin-top: 120px; }
 .prose h2, .note-body h2 { margin: 42px 0 18px; font-size: 30px; }
 .prose h3, .note-body h3 { margin: 32px 0 16px; font-size: 24px; }
@@ -372,7 +372,7 @@ main { min-height: calc(100svh - 245px); }
   .about-hero { padding-top: 36px; }
   .interest-grid { grid-template-columns: 1fr; gap: 20px; }
   .article-title .dek { font-size: 18px; }
-  .prose, .note-body { padding: 24px 20px; font-size: 18px; }
+  .prose, .note-body { padding: 24px 20px; font-size: 20px; }
   .article-header, .note-header { padding: 22px 20px; }
   .article-header { margin-top: 24px; }
   .prose h2, .note-body h2 { font-size: 27px; }
