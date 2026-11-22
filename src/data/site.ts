@@ -6,3 +6,9 @@ export const site = {
   learning: import.meta.env.PUBLIC_LEARNING_URL || '/guides/',
   homepage: 'https://algebra-mcx.github.io/'
 } as const;
+
+// Old guide URLs stay usable until the separate learning deployment is verified.
+export const learningDestination = (path: string) => {
+  if (!/^https?:\/\//.test(site.learning)) return undefined;
+  return new URL(path, site.learning).href;
+};

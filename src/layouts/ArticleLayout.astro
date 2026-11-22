@@ -15,6 +15,7 @@ interface Props {
   headingsZh?: { depth: number; slug: string; text: string }[];
 }
 const { entry, headings, headingsZh = [] } = Astro.props;
+const isBlogIntro = Astro.url.pathname === '/about-this-blog/';
 const toc = headings.filter((heading) => heading.depth === 2);
 const tocZh = headingsZh.filter((heading) => heading.depth === 2);
 const contents = [{ language: 'en', headings: toc }, { language: 'zh', headings: tocZh }];
@@ -35,7 +36,7 @@ const nextArticle = projectWriting[projectWriting.findIndex(item => item.id === 
   <article class="article">
     <header class="article-header shell reading-glass">
       <div class="article-meta reveal">
-        <nav aria-label="Breadcrumb"><a href={entry.collection === 'guides' ? '/guides/' : '/projects/'}><Localized en={entry.collection === 'guides' ? 'Guides' : 'Projects'} zh={entry.collection === 'guides' ? '指南' : '项目'} /></a>{!(entry.collection === 'guides' && !guideSection) && <><span>›</span><a href={parentHref}><Localized en={parentEn} zh={parentZh} /></a></>}{section && project && <><span>›</span><a href={`/projects/${project.id}/articles/?kind=${section.id}`}><Localized en={section.en} zh={section.zh} /></a></>}</nav>
+        <nav aria-label="Breadcrumb"><a href={isBlogIntro ? '/' : entry.collection === 'guides' ? '/guides/' : '/projects/'}><Localized en={isBlogIntro ? 'Research' : entry.collection === 'guides' ? 'Guides' : 'Projects'} zh={isBlogIntro ? '研究' : entry.collection === 'guides' ? '指南' : '项目'} /></a>{!(entry.collection === 'guides' && !guideSection) && <><span>›</span><a href={parentHref}><Localized en={parentEn} zh={parentZh} /></a></>}{section && project && <><span>›</span><a href={`/projects/${project.id}/articles/?kind=${section.id}`}><Localized en={section.en} zh={section.zh} /></a></>}</nav>
         <p><time datetime={entry.data.publishDate.toISOString()}><Localized en={formatDate(entry.data.publishDate)} zh={formatDateZh(entry.data.publishDate)} /></time><span>·</span>{readingMinutes(entry.body)} <Localized en="min read" zh="分钟阅读" /></p>
       </div>
       <div class="article-hero">

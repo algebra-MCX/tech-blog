@@ -10,10 +10,10 @@
 .hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}
 .hub-card{padding:25px;min-width:0}.hub-card h3{margin:0 0 10px;font-size:21px}
 .hub-card p{color:var(--ink-soft);font-size:16px;line-height:1.7;margin:0 0 16px}
-.hub-card .hub-category{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:8px}
+.hub-card .hub-category{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:8px}
 .hub-card .text-link{font-size:14px}
 .hub-article{padding-top:35px}.hub-article-header{padding:clamp(24px,4vw,44px)}
-.hub-breadcrumb{display:flex;flex-wrap:wrap;gap:9px;color:var(--ink-faint);font-size:13px}
+.hub-breadcrumb{display:flex;flex-wrap:wrap;gap:9px;color:var(--ink-faint);font-size:14px}
 .hub-article-header h1{margin:18px 0 13px;font-size:clamp(32px,4.3vw,48px)}
 .hub-description{max-width:800px;color:var(--ink-soft);font-size:19px;line-height:1.7;margin:0}
 .hub-body{margin-top:22px;padding:clamp(22px,4vw,44px)}
@@ -29,4 +29,6 @@
 .hub-body td,.hub-body th{padding:9px 12px;border-bottom:1px solid var(--line-soft);text-align:left}
 .hub-body blockquote{border-left:3px solid var(--accent);margin-left:0;padding-left:20px;color:var(--ink-soft)}
 .hub-return{display:flex;margin:30px 0 50px;gap:20px;font-size:15px}
-@media(max-width:760px){.hub-grid{grid-template-columns:1fr}.hub-card{padding:21px}.site-header{flex-wrap:wrap;gap:7px;padding:10px}.site-header .wordmark{font-size:16px}.site-header .primary-nav{order:3;width:100%;justify-content:center;margin:0}.site-header .primary-nav a{font-size:13px;min-height:40px;padding:6px 9px}.site-header .language-toggle{margin-left:auto}}
+@media(max-width:760px){.hub-grid{grid-template-columns:1fr}.hub-card{padding:21px}.site-header{flex-wrap:wrap;gap:7px;padding:10px}.site-header .wordmark{font-size:16px}.site-header .primary-nav{order:3;width:100%;justify-content:center;margin:0}.site-header .primary-nav a{font-size:14px;min-height:40px;padding:6px 9px}.site-header .language-toggle{margin-left:auto}}
+
+.learning-first-path{padding-left:24px;font-size:17px}.learning-first-path li{padding:9px 0}.learning-first-path a{color:var(--accent);text-decoration:underline;text-underline-offset:4px}

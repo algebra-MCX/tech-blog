@@ -1,67 +1,59 @@
 ---
 title: "How to read this blog"
 titleZh: "如何阅读这个博客"
-description: "Project-driven learning: a short path in, a working mental model, and the ability to explore independently."
-descriptionZh: "以项目驱动学习：尽快入门，建立可运行的心智模型，具备独立探索的能力。"
+description: "Research questions, engineering decisions and reproducible experiments—with a project-driven path into the fundamentals."
+descriptionZh: "研究问题、工程取舍与可复现实验，以及从最小项目走向独立探索的学习路径。"
 publishDate: 2026-10-22
 category: learning-paths
 domains: [algorithms, data, infra]
-tags: [Start Here, Project-driven Learning]
+tags: [Start Here, Research, Project-driven Learning]
 ---
-**Knowledge keeps growing. What is truly scarce is a learning path that is short and clear without sacrificing depth.**
+**I build AI systems to understand them. This blog records the questions, engineering decisions and experiments that emerge along the way.**
 
-The LLM field moves fast, making it easy to learn in fragments without knowing what you understand or where to go next. Be wary of handing your core thinking over to a coding agent.
+My current work starts with LLM inference: runtime scheduling, distributed MoE execution and GPU performance. I am interested in how model architecture, hardware and workload behavior shape a system's design—and in which observations hold beyond a single implementation.
 
-Zhang Yiming has spoken about understanding as a core competitive advantage—something others must ultimately find valuable. Depth of understanding does not come from collecting more technologies. It comes from knowing which problems matter most in a field and developing your own thinking about them. That is why I started this blog.
+## Start with a question
 
-## 01. Get started as quickly as possible
+A useful article begins with a concrete problem. Why did a kernel speedup barely move throughput? Which dependency sets the critical path? What changes when routing becomes imbalanced?
 
-Getting started should be fast, but the foundations must hold. I believe the first pass should take no more than a week: a short, concentrated effort with one test of understanding—can you reconstruct the core principles from a blank whiteboard?
+I try to make the reasoning visible: the observation, constraints, alternatives, implementation, measurements and remaining questions. A failed hypothesis can be as useful as a successful optimization when it explains how the system behaves.
 
-For LLM infrastructure, for example, you do not need to spend two months learning all of PyTorch first. Learn the necessary concepts—tensors, autograd and GPU execution—then build a minimal inference program. Return to the principles when a concrete problem exposes a gap. Foundations should help you solve problems rather than become a barrier to starting.
+## Read the work at three depths
 
-This is the method behind the whole blog: **project-driven learning**.
+- **For the result:** start with the [prefill performance report](/writing/mini-deepinfer-prefill/). It traces three kernel improvements from 1,085 to 4,316 input tok/s/GPU and explains the remaining gap to the reference engine.
+- **For the mechanism:** follow [a request through mini-DeepInfer](/writing/mini-deepinfer-runtime/), then read the [design decisions](/writing/mini-deepinfer-design/).
+- **For the evidence:** inspect the linked code, configurations, profiles, correctness checks and experiment reports. The [project pages](/projects/) connect these records.
 
-## 02. One short entry path for each field
+The [research archive](/writing/) separates developed articles from working outlines. An outline records a question or measurement plan; it should be read as work in progress.
 
-I plan to build a concise route into each major field, paired with a small project:
+## What a measurement means
 
-- **Systems**: start with a minimal inference engine to understand runtime, scheduling, GPU kernels and distributed execution.
-- **Algorithms**: use mathematical intuition and minimal implementations to understand why model architectures work.
-- **Hardware**: begin with GPU execution and memory models to build intuition for hardware–software co-design.
-- **Agents**: start with a minimal tool-calling loop to understand planning, memory and state.
-- **Data**: build a runnable data pipeline to understand the central problems in data systems.
+A result needs context: software revision, hardware, workload, baseline, metric and measurement conditions. Kernel latency, layer execution time and serving throughput answer different questions.
 
-You do not need to begin with tens of thousands of lines of framework source. Build the essential mechanism first.
+For example, the mini-DeepInfer prefill report measures a real model on 4 × B200, with one paired run per stage. Its final throughput is 11.9% of the official reference. Decode CUDA graphs were off, and KV budgets were not forced equal. Those conditions belong beside the result.
 
-## 03. What counts as being ready to explore?
+For empirical work, I aim to link the implementation, reproduction commands, raw measurements and known limitations. For architectural arguments and research notes, I distinguish existing evidence from an interpretation or a hypothesis that still needs testing. Upstream PR status is recorded separately from experimental results.
 
-I do not measure understanding by the number of articles read or hours spent studying. For each field, I will provide three things: **a minimal implementation, a few key experiments, and a set of practical checks**—modify the implementation, explain what happens and analyze the bottlenecks.
+## Learn by building
 
-After working through a minimal inference engine, for example, you should be able to do more than run it. You should understand how requests are scheduled, how the KV cache is managed, where bottlenecks might arise, and how to test your judgment experimentally. That is what I mean by being ready to explore. It does not mean mastery; it means having a working mental model and the ability to keep going independently.
+The learning philosophy remains project-driven: build the essential mechanism, change one variable and explain what happens. The first goal is a working mental model and the ability to explore independently.
 
-**The goal of an introduction is not to learn everything. It is to become capable of continuing on your own.**
+The [learning hub](/guides/) and [Quickstarts](/guides/sections/quickstarts/) collect small starting points across systems, algorithms, hardware, agents and data. These routes will grow through minimal implementations, key experiments and practical checks.
 
-## 04. Connect the parts to the whole
+A minimal inference engine should help you reason about scheduling and KV lifetime. A small kernel experiment should help you predict how a change in shape or memory access affects execution. Return to the fundamentals when a concrete problem exposes a gap.
 
-Understanding one kernel, attention mechanism or runtime in isolation is not enough. Why does a model architecture change the design of an inference system? Why does a GPU's memory hierarchy affect algorithm choices? Why do some methods that theoretically reduce computation turn out to be slower in practice? No single field offers a complete answer.
+## Connect local mechanisms to the whole
 
-I plan to develop this blog from the fundamentals to deeper ideas, weaving in my own thinking.
+Model architecture changes memory and communication requirements. Hardware changes which algorithms are practical. Workload dependencies change what a serving system should optimize.
 
-## 05. Open code and experiments
+My inference work is a starting point for exploring those connections. Broader ideas will appear as research notes, with their assumptions and open questions made explicit, and evolve as implementation and experiments provide better evidence.
 
-I will gradually open-source the small projects, core experiments and practical checks on GitHub so that others can run, modify, question and reproduce them. For each experiment, I will try to record the version, environment, measurement method, comparison conditions and known limitations. Failed experiments, mistaken hypotheses and debugging records deserve a place too.
+## Reproduce, question, discuss
 
-## 06. Perhaps we can research together
+Corrections, reproductions and technical disagreements are welcome. A useful discussion can begin with a specific observation, a counterexample or a configuration under which a result changes.
 
-If the opportunity arises, I would like to organize small study groups around these projects: reading papers, reproducing experiments and discussing designs. An impressive background is not required. What matters is a willingness to build, think carefully and let experimental results test your views. This is still an idea; I hope it can gradually take shape.
+You can find the code through [Projects](/projects/) or [GitHub](https://github.com/algebra-MCX), or [email me](mailto:shannon20051127@gmail.com). [Notes](/notes/) also holds personal reflections on learning and life.
 
-## Where to begin
-
-- **New to a field**: start with [Quickstarts](/guides/sections/quickstarts/), then work through a first Nano Project and its core experiments as the routes develop.
-- **Interested in my work**: explore my [projects and open-source contributions](/projects/). I would love to exchange ideas and experiences.
-- **Curious about my thinking**: read [Notes](/notes/) for my views on the future of technology, essays on everyday life, and lessons from different areas of experience.
-
-Spend less time on things that are not worth your attention, and more time developing your taste: recognizing which problems are worth solving and which work deserves a deeper look.
+I hope this becomes a place where careful engineering leads to better questions, and where those questions can be investigated together.
 
 — Chenxi Ma
