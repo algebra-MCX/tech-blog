@@ -31,7 +31,7 @@ jobs:
       - name: Install learning dependencies
         if: matrix.site == 'learning'
         working-directory: learning
-        run: npm ci --no-audit --no-fund
+        run: npm install --no-audit --no-fund
       - name: Build research blog
         if: matrix.site == 'research'
         run: npm run build

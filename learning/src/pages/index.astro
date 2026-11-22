@@ -19,13 +19,12 @@ const mainBlog = import.meta.env.PUBLIC_MAIN_BLOG_URL || 'https://tech-blog-chi.
       <span data-lang="zh">面向 AI 算法、数据和基础设施的精简学习路径。理解核心概念，运行最小实验，再进入真正的系统研究。</span>
     </p>
     <div class="hub-actions">
-      <a class="hub-link" href="/guides/how-to-read/"><span data-lang="en">How to start</span><span data-lang="zh">从这里开始</span></a>
-      <a class="hub-link" href="/guides/sections/quickstarts/"><span data-lang="en">Try a small experiment</span><span data-lang="zh">运行最小实验</span></a>
-      <a class="hub-link" href={mainBlog}><span data-lang="en">Research blog</span><span data-lang="zh">研究博客</span></a>
+      <a class="hub-link" href="/guides/how-to-read/"><span data-lang="en">How to read this site →</span><span data-lang="zh">如何阅读本站 →</span></a>
+      <a class="hub-link" href="/guides/sections/quickstarts/"><span data-lang="en">Start a quick experiment →</span><span data-lang="zh">开始一个最简实验 →</span></a>
+      <a class="hub-link" href={mainBlog}><span data-lang="en">Original research ↗</span><span data-lang="zh">原创研究 ↗</span></a>
     </div>
   </section>
-  <section class="shell hub-section" aria-labelledby="first-path"><h2 id="first-path"><span data-lang="en">Your first path through the material</span><span data-lang="zh">第一条学习路线</span></h2><p class="hub-section-description"><span data-lang="en">New to systems? Begin with the vocabulary, run a tiny example, then learn how to test a claim. The current material starts with MoE; more entry paths will be added over time.</span><span data-lang="zh">初次接触系统？先理解术语，再运行小例子，最后学习如何检验一个判断。现有内容从 MoE 出发，其他方向的入门路线会逐步补充。</span></p><ol class="learning-first-path"><li><a href="/guides/useful-work/"><span data-lang="en">Understand useful work and the critical path</span><span data-lang="zh">理解有效工作与关键路径</span></a></li><li><a href="/guides/expert-load-imbalance/"><span data-lang="en">Run the expert-load experiment</span><span data-lang="zh">运行专家负载小实验</span></a></li><li><a href="/guides/paired-benchmarks/"><span data-lang="en">Design a paired comparison</span><span data-lang="zh">设计一次配对对比</span></a></li></ol></section>
-  {sections.filter(section => entries.some(entry => entry.data.category === section.id)).map(section => (
+  {sections.map(section => (
     <section class="shell hub-section" id={section.id}>
       <h2><span data-lang="en">{section.en}</span><span data-lang="zh">{section.zh}</span></h2>
       <p class="hub-section-description"><span data-lang="en">{section.enDesc}</span><span data-lang="zh">{section.zhDesc}</span></p>
@@ -35,7 +34,7 @@ const mainBlog = import.meta.env.PUBLIC_MAIN_BLOG_URL || 'https://tech-blog-chi.
             <p class="hub-category">{entry.data.domains.join(' · ')}</p>
             <h3><a href={'/guides/'+entry.id+'/'}><span data-lang="en">{entry.data.title}</span><span data-lang="zh">{entry.data.titleZh}</span></a></h3>
             <p><span data-lang="en">{entry.data.description}</span><span data-lang="zh">{entry.data.descriptionZh}</span></p>
-            <a class="text-link" href={'/guides/'+entry.id+'/'}><span data-lang="en">Read and try</span><span data-lang="zh">阅读与实践</span></a>
+            <a class="text-link" href={'/guides/'+entry.id+'/'}><span data-lang="en">Read and try →</span><span data-lang="zh">阅读与实践 →</span></a>
           </article>
         ))}
       </div>

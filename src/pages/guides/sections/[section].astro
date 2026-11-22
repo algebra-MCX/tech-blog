@@ -1,7 +1,4 @@
 ---
-import { learningDestination } from '@/data/site';
-const destination = learningDestination(Astro.url.pathname);
-if (destination) return Astro.redirect(destination, 301);
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Localized from '@/components/Localized.astro';

@@ -15,11 +15,6 @@ const current = Astro.url.pathname;
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="description" content={description} />
 <title>{title}</title>
-<meta name="theme-color" content="#131820" />
-<meta name="color-scheme" content="dark" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />}
 <script is:inline>
   (() => {
@@ -38,7 +33,7 @@ const current = Astro.url.pathname;
   <nav class="primary-nav" aria-label="Main navigation">
     <a href="/" aria-current={current === '/' ? 'page' : undefined}><span data-lang="en">Learning</span><span data-lang="zh">学习资料</span></a>
     <a href="/guides/sections/quickstarts/" aria-current={current.includes('quickstarts') ? 'page' : undefined}><span data-lang="en">Quickstarts</span><span data-lang="zh">最简入门</span></a>
-    <a href={mainBlog}><span data-lang="en">Research</span><span data-lang="zh">研究博客</span></a>
+    <a href={mainBlog}><span data-lang="en">Research ↗</span><span data-lang="zh">研究博客 ↗</span></a>
   </nav>
   <button class="language-toggle glass-control" type="button" aria-label="Switch language / 切换语言" data-language-toggle>
     <span data-lang="en">中文</span><span data-lang="zh">English</span>
@@ -46,7 +41,7 @@ const current = Astro.url.pathname;
 </header>
 <main id="main-content"><slot /></main>
 <footer class="site-footer shell"><p>© {new Date().getFullYear()} Chenxi Ma</p>
-<nav aria-label="Footer"><a href={mainBlog}>Research</a><a href="https://github.com/algebra-MCX">GitHub</a><a href="https://algebra-mcx.github.io/">Homepage</a></nav></footer>
+<nav aria-label="Footer"><a href={mainBlog}>Research ↗</a><a href="https://github.com/algebra-MCX">GitHub ↗</a><a href="https://algebra-mcx.github.io/">Homepage ↗</a></nav></footer>
 <script is:inline>
   (() => {
     const setup = () => document.querySelectorAll('[data-language-toggle]').forEach(button => {
