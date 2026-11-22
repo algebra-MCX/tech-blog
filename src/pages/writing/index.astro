@@ -10,15 +10,16 @@ const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort
 const tags = [...new Set(entries.flatMap((entry) => entry.data.tags))].sort();
 const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullYear()))].sort((a, b) => b - a);
 ---
-<BaseLayout title="Writing — Chenxi Ma" description="Technical articles on AI systems, GPU performance, and distributed inference.">
+<BaseLayout title="Research — Chenxi Ma" description="Technical articles on AI systems, GPU performance, and distributed inference.">
   <header class="page-intro shell reveal">
     <p class="eyebrow"><Localized en="Research archive" zh="研究归档" /> · {entries.length.toString().padStart(2, '0')} <Localized en="entries" zh="篇" /></p>
-    <h1><Localized en="Writing" zh="文章" /></h1>
-    <p><Localized en="Technical articles on AI systems, GPU performance, and distributed inference." zh="关于 AI 系统、GPU 性能与分布式推理的技术文章。" /></p>
+    <h1><Localized en="Research & engineering" zh="研究与工程" /></h1>
+    <p><Localized en="Experiments, runtime design and technical arguments. Working outlines are labeled separately so you can follow questions before results are ready." zh="实验、运行时设计与技术分析。研究提纲单独标注，便于跟进尚未形成结论的问题。" /></p>
   </header>
 
   <section class="archive shell" id="archive" aria-label="Writing archive">
-    <div class="archive-tools">
+    <div class="archive-tools research-archive-tools">
+      <label class="topic-filter"><span class="sr-only"><Localized en="Publication status" zh="内容状态" /></span><select data-status><option value="all" data-status-all>All work</option><option value="article" data-status-article>Articles & reports</option><option value="outline" data-status-outline>Working outlines</option></select></label>
       <label class="topic-filter">
         <span class="sr-only"><Localized en="Filter by topic" zh="按主题筛选" /></span>
         <select data-topic>
@@ -46,6 +47,7 @@ const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullY
     const root = document.querySelector<HTMLElement>('.archive');
     if (!root || root.dataset.ready) return;
     root.dataset.ready = 'true';
+    const status = root.querySelector<HTMLSelectElement>('[data-status]');
     const topic = root.querySelector<HTMLSelectElement>('[data-topic]');
     const rows = [...root.querySelectorAll<HTMLElement>('[data-writing-row]')];
     const search = root.querySelector<HTMLInputElement>('[data-search]');
@@ -59,7 +61,8 @@ const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullY
       rows.forEach((row) => {
         const matchesTag = selected === 'all' || (row.dataset.tags ?? '').split('|').includes(selected);
         const matchesQuery = !query || (row.textContent ?? '').toLowerCase().includes(query);
-        row.hidden = !(matchesTag && matchesQuery);
+        const matchesStatus = status?.value === 'all' || row.dataset.state === status?.value;
+        row.hidden = !(matchesTag && matchesQuery && matchesStatus);
         if (!row.hidden) shown++;
       });
       root.querySelectorAll<HTMLElement>('[data-year]').forEach((group) => {
@@ -68,9 +71,12 @@ const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullY
       if (empty) empty.hidden = shown !== 0;
     };
     topic?.addEventListener('change', update);
+    status?.addEventListener('change', update);
     const translateControls = () => {
       const zh = document.documentElement.dataset.language === 'zh';
       const all = root.querySelector('[data-topic-all]');
+      const statusLabels = { all: zh ? '全部内容' : 'All work', article: zh ? '文章与实验报告' : 'Articles & reports', outline: zh ? '研究提纲' : 'Working outlines' };
+      Object.entries(statusLabels).forEach(([key, label]) => { const option = root.querySelector(`[data-status-${key}]`); if (option) option.textContent = label; });
       if (all) all.textContent = zh ? '全部主题' : 'All topics';
       if (search) search.placeholder = zh ? '搜索文章' : 'Search writing';
     };
@@ -82,3 +88,5 @@ const years = [...new Set(entries.map((entry) => entry.data.publishDate.getFullY
   setupArchive(); document.addEventListener('astro:page-load', setupArchive);
 </script>
 
+
+<style>.research-archive-tools{flex-wrap:wrap}.research-archive-tools .topic-filter{flex:0 1 auto}.research-archive-tools .archive-search{flex:1 1 200px;min-width:0}</style>

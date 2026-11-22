@@ -1,4 +1,7 @@
 ---
+import { learningDestination } from '@/data/site';
+const destination = learningDestination(Astro.url.pathname);
+if (destination) return Astro.redirect(destination, 301);
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '@/layouts/ArticleLayout.astro';
 export async function getStaticPaths() {

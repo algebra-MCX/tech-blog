@@ -1,12 +1,14 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Localized from './Localized.astro';
+import { writingMap } from '@/data/library';
 import { formatCompactDate, formatCompactDateZh, readingMinutes } from '@/lib/content';
 interface Props { entry: CollectionEntry<'writing'>; compact?: boolean }
 const { entry, compact = false } = Astro.props;
 ---
-<article class="writing-row" data-writing-row data-tags={entry.data.tags.join('|').toLowerCase()}>
+<article class="writing-row" data-writing-row data-state={writingMap[entry.id]?.state === 'outline' ? 'outline' : 'article'} data-tags={entry.data.tags.join('|').toLowerCase()}>
   <div class="writing-main">
+    <p class="publication-kind"><Localized en={writingMap[entry.id]?.state === 'outline' ? 'Working outline · evidence pending' : entry.data.eyebrow ?? 'Engineering article'} zh={writingMap[entry.id]?.state === 'outline' ? '研究提纲 · 待补充验证' : entry.data.eyebrowZh ?? '工程分析'} /></p>
     <h3><a href={`/writing/${entry.id}/`}><Localized en={entry.data.title} zh={entry.data.titleZh} /></a></h3>
     {!compact && <p><Localized en={entry.data.description} zh={entry.data.descriptionZh} /></p>}
   </div>
@@ -15,3 +17,5 @@ const { entry, compact = false } = Astro.props;
     <span>{readingMinutes(entry.body)} <Localized en="min read" zh="分钟阅读" /></span>
   </div>
 </article>
+
+<style>.writing-main .publication-kind{font-size:14px;color:var(--ink-faint);margin:0 0 6px;font-family:var(--mono)}</style>
