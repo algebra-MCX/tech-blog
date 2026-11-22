@@ -13,7 +13,6 @@ interface Props {
   image?: string;
   article?: boolean;
   articleDetails?: { headline: string; published: Date; modified?: Date };
-  canonicalPath?: string;
   noindex?: boolean;
   siteKind?: 'research' | 'learning';
 }
@@ -23,11 +22,10 @@ const {
   image = '/og-inference.png',
   article = false,
   articleDetails,
-  canonicalPath,
   noindex = false,
   siteKind = 'research'
 } = Astro.props;
-const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site ?? Astro.url);
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 const socialImage = new URL(import.meta.env.BASE_URL + image.replace(/^\//, ''), canonical);
 const published = articleDetails?.published.toISOString();
 const modified = articleDetails?.modified?.toISOString();

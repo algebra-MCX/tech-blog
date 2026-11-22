@@ -119,6 +119,16 @@
       "source": "/search/:path+/",
       "destination": "/blog/search/:path+/",
       "permanent": true
+    },
+    {
+      "source": "/learning/guides/how-to-read",
+      "destination": "/learning/",
+      "permanent": true
+    },
+    {
+      "source": "/learning/guides/how-to-read/",
+      "destination": "/learning/",
+      "permanent": true
     }
   ],
   "installCommand": "npm ci && npm --prefix learning ci"

@@ -7,9 +7,7 @@ const base = process.env.PUBLIC_UNIFIED_SITE === 'true' ? '/learning/' : '/';
 export default defineConfig({
   publicDir: '../public',
   integrations: [sitemap({
-    filter: page => !['/guides/', '/guides/how-to-read/'].includes(
-      new URL(page).pathname.slice(base.length - 1)
-    )
+    filter: page => new URL(page).pathname !== base + 'guides/'
   })],
   base,
   outDir: process.env.SITE_OUTPUT || './dist',

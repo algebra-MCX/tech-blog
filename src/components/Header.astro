@@ -9,9 +9,8 @@ const learning = Astro.props.siteKind === 'learning';
 const base = import.meta.env.BASE_URL;
 const path = '/' + Astro.url.pathname.slice(base.length);
 const nav = learning ? [
-  { href: '/', en: 'Learning', zh: '学习首页', active: path === '/', cross: false },
+  { href: '/', en: 'Learning Guide', zh: '学习指南', active: path === '/', cross: false },
   { href: '/guides/sections/quickstarts/', en: 'Experiments', zh: '最小实验', active: path.includes('quickstarts'), cross: false },
-  { href: '/guides/how-to-read/', en: 'Method', zh: '学习方法', active: path === '/guides/how-to-read/', cross: false },
   { href: site.homepage, en: 'Homepage', zh: '个人主页', active: false, cross: true }
 ] : [
   { href: '/', en: 'Selected work', zh: '代表作', active: path === '/', cross: false },
