@@ -523,18 +523,3 @@ main { min-height: calc(100svh - 245px); }
 .evidence-status { display:inline-flex; font-size:14px; line-height:1.5; color:var(--accent); border:1px solid var(--glass-border); border-radius:8px; padding:4px 9px; background:var(--glass-fill); }
 .evidence-caption { color:var(--ink-faint); font-size:14px; line-height:1.75; }
 @media(max-width:900px) { .site-header { flex-wrap:wrap; } .primary-nav { order:3; width:100%; margin:0; overflow-x:auto; } .header-actions { margin-left:auto; } .primary-nav a { min-height:44px; font-size:14px; padding-inline:10px; } }
-
-.section-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 18px;
-  padding: 12px 0 0;
-  font-size: 15px;
-}
-.section-nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--ink-soft);
-}
-.section-nav a:hover, .section-nav a[aria-current='page'] { color: var(--accent); }
