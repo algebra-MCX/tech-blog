@@ -149,9 +149,9 @@ token = GumbelMax(logits / temperature, sample_seed)
 
 第 4、5 步都不能在没有基准和 reference 对照的情况下直接宣称“完成”。如果一个优化改变了 cache layout 或 scheduler contract，必须先更新本文件的映射表和不变量。
 
-第 4 步的 tiny checkpoint 验证见 PR [#13](https://github.com/algebra-MCX/mini-DeepInfer/pull/13)、
-[#14](https://github.com/algebra-MCX/mini-DeepInfer/pull/14)、[#15](https://github.com/algebra-MCX/mini-DeepInfer/pull/15)、
-[#16](https://github.com/algebra-MCX/mini-DeepInfer/pull/16)：包含空专家、EP 分片、压缩组边界和 graph padding 回归测试，
+第 4 步的 tiny checkpoint 验证见 PR [#13](https://github.com/algebra-MCX/DeepInfer-Lab/pull/13)、
+[#14](https://github.com/algebra-MCX/DeepInfer-Lab/pull/14)、[#15](https://github.com/algebra-MCX/DeepInfer-Lab/pull/15)、
+[#16](https://github.com/algebra-MCX/DeepInfer-Lab/pull/16)：包含空专家、EP 分片、压缩组边界和 graph padding 回归测试，
 以及官方 reference logits 对照（`LOGIT_ATOL=0.05`）。其中 1×B200 的 tiny 离线输出吞吐从 478 提升至
 2643 tok/s（3 次取中位数）；这不代表真实 checkpoint 的多卡 prefill 数据已更新。具体 workload、
 TTFT、TPOT、goodput 和 capture 开销以各 PR 的实验记录为准。

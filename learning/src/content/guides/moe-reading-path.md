@@ -26,7 +26,7 @@ Use the [paired benchmark playbook](/guides/paired-benchmarks/). Specify a corre
 
 ## Enter the project
 
-Open [MoEFlow](https://tech-blog-chi.vercel.app/projects/moeflow/). Start with its overview, then follow the repository validation and order-control reports. Keep local layer results distinct from end-to-end serving results.
+Open [MoEFlow](https://github.com/algebra-MCX/MoEFlow). Start with its overview, then follow the repository validation and order-control reports. Keep local layer results distinct from end-to-end serving results.
 
 ## A question to take away
 

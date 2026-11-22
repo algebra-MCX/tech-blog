@@ -12,17 +12,19 @@ interface Props {
   description?: string;
   image?: string;
   article?: boolean;
+  siteKind?: 'research' | 'learning';
 }
 const {
   title = 'Chenxi Ma — Algorithms, Data & Infrastructure',
-  description = 'Project notebooks, practical guides and technical judgment across algorithms, data and infrastructure.',
-  image = '/og-default.svg',
-  article = false
+  description = 'Original analysis, measured experiments and upstream engineering in LLM inference and GPU systems.',
+  image = '/og-inference.png',
+  article = false,
+  siteKind = 'research'
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 <!doctype html>
-<html lang="en" data-theme="dark" data-language="en">
+<html lang="en" data-theme="dark" data-language="en" data-site-kind={siteKind}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -32,12 +34,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" type="application/rss+xml" title="Chenxi Ma — Writing" href="/rss.xml" />
+    {siteKind === 'research' && <link rel="alternate" type="application/rss+xml" title="Chenxi Ma — Writing" href="/rss.xml" />}
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, Astro.site ?? Astro.url)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,7 +51,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
       (() => {
         let savedLanguage;
         try { savedLanguage = localStorage.getItem('mcx-language-v2'); } catch {}
-        const language = savedLanguage === 'zh' ? 'zh' : 'en';
+        const requested = new URLSearchParams(location.search).get('lang');
+        const language = (requested === 'zh' || requested === 'en' ? requested : savedLanguage) === 'zh' ? 'zh' : 'en';
+        if (requested === 'zh' || requested === 'en') {
+          try { localStorage.setItem('mcx-language-v2', language); } catch {}
+        }
         document.documentElement.dataset.language = language;
         document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
       })();
@@ -56,12 +64,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
   </head>
   <body id="top">
     <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="glass-ambient" aria-hidden="true"><span></span><span></span><span></span></div>
     <div class="interaction-ripples" aria-hidden="true"></div>
-    <Header />
+    <Header siteKind={siteKind} />
     <main id="main-content"><slot /></main>
-    <Footer />
+    <Footer siteKind={siteKind} />
     <script>
       const setupLanguage = () => {
+        const updateCrossSiteLinks = () => document.querySelectorAll<HTMLAnchorElement>('[data-cross-site]').forEach(link => {
+          const url = new URL(link.href, location.href);
+          url.searchParams.set('lang', document.documentElement.dataset.language === 'zh' ? 'zh' : 'en');
+          link.href = url.href;
+        });
+        updateCrossSiteLinks();
+        window.addEventListener('mcx:language-change', updateCrossSiteLinks);
         document.querySelectorAll<HTMLButtonElement>('[data-language-toggle]').forEach((button) => {
           if (button.dataset.ready) return;
           button.dataset.ready = 'true';
@@ -70,6 +86,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
             document.documentElement.dataset.language = next;
             document.documentElement.lang = next === 'zh' ? 'zh-CN' : 'en';
             try { localStorage.setItem('mcx-language-v2', next); } catch {}
+            const url = new URL(location.href);
+            if (url.searchParams.has('lang')) { url.searchParams.set('lang', next); history.replaceState(null, '', url); }
             window.dispatchEvent(new CustomEvent('mcx:language-change', { detail: next }));
           });
         });

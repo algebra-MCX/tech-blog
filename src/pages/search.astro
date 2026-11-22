@@ -1,4 +1,5 @@
 ---
+import { writingEvidence, evidenceLabels } from '@/data/evidence';
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Localized from '@/components/Localized.astro';
@@ -13,7 +14,7 @@ const translatedBody = (id: string) => translations.find(t => t.data.source === 
 const rows = [
   ...noteTopics.map(t => ({ title: t.en, titleZh: t.zh, description: t.description, descriptionZh: t.descriptionZh, href: `/notes/topics/${t.id}/`, type: 'topic', label: 'Notes topic', labelZh: '想法主题', project: '', domains: '', body: '' })),
   ...projects.map(p => ({ title: p.title, titleZh: p.titleZh, description: p.summary, descriptionZh: p.summaryZh, href: `/projects/${p.id}/`, type: 'project', label: 'Project', labelZh: '项目', project: p.id, domains: p.domains.join('|'), body: '' })),
-  ...writing.map(e => { const project = projectById(writingMap[e.id]?.project); return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.description, descriptionZh: e.data.descriptionZh, href: `/writing/${e.id}/`, type: 'article', label: 'Working outline', labelZh: '研究提纲', project: project?.id ?? '', domains: project?.domains.join('|') ?? '', body: (e.body ?? '') + translatedBody(e.id) }; }),
+  ...writing.map(e => { const project = projectById(writingMap[e.id]?.project); return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.description, descriptionZh: e.data.descriptionZh, href: `/writing/${e.id}/`, type: 'article', label: evidenceLabels[writingEvidence(e.id)].en, labelZh: evidenceLabels[writingEvidence(e.id)].zh, project: project?.id ?? '', domains: project?.domains.join('|') ?? '', body: (e.body ?? '') + translatedBody(e.id) }; }),
   ...notes.map(e => { const assignment = noteMap[e.id]; const project = projectById(assignment?.project); return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.topic, descriptionZh: e.data.topicZh, href: `/notes/${e.id}/`, type: assignment?.noteCategory ? 'note' : 'article', label: assignment?.noteCategory ? 'Perspective' : 'Working outline', labelZh: assignment?.noteCategory ? '技术观点' : '研究提纲', project: project?.id ?? '', domains: project?.domains.join('|') ?? '', body: (e.body ?? '') + translatedBody(e.id) }; }),
   ...guides.map(e => { const section = guideSections.find(s => s.id === e.data.category)!; return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.description, descriptionZh: e.data.descriptionZh, href: `/guides/${e.id}/`, type: 'guide', label: section.en, labelZh: section.zh, project: '', domains: e.data.domains.join('|'), body: (e.body ?? '') + translatedBody(e.id) }; })
 ];

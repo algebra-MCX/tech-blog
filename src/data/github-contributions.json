@@ -6,7 +6,8 @@
     "url": "https://github.com/deepseek-ai/DeepInfer/pull/99",
     "author": "algebra-MCX",
     "state": "open",
-    "mergedAt": null
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -14,8 +15,9 @@
     "title": "[MRV2] Select synchronized active DBO microbatch counts",
     "url": "https://github.com/vllm-project/vllm/pull/63111",
     "author": "algebra-MCX",
-    "state": "open",
-    "mergedAt": null
+    "state": "closed",
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -23,8 +25,9 @@
     "title": "[EP] Keep NIXL and shared expert state for multiple ubatches",
     "url": "https://github.com/vllm-project/vllm/pull/63110",
     "author": "algebra-MCX",
-    "state": "open",
-    "mergedAt": null
+    "state": "closed",
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -32,8 +35,9 @@
     "title": "[EP] Hand NIXL DBO operations across communication streams",
     "url": "https://github.com/vllm-project/vllm/pull/63109",
     "author": "algebra-MCX",
-    "state": "open",
-    "mergedAt": null
+    "state": "closed",
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -41,8 +45,9 @@
     "title": "[EP] Size NIXL dispatch from synchronized execution slices",
     "url": "https://github.com/vllm-project/vllm/pull/63108",
     "author": "algebra-MCX",
-    "state": "open",
-    "mergedAt": null
+    "state": "closed",
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -50,8 +55,9 @@
     "title": "[MRV2] Preserve routed expert rows after DBO staging",
     "url": "https://github.com/vllm-project/vllm/pull/63107",
     "author": "algebra-MCX",
-    "state": "open",
-    "mergedAt": null
+    "state": "closed",
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -59,8 +65,9 @@
     "title": "[MRV2] Stage decode tokens across captured DBO regions",
     "url": "https://github.com/vllm-project/vllm/pull/62430",
     "author": "algebra-MCX",
-    "state": "open",
-    "mergedAt": null
+    "state": "closed",
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -69,7 +76,8 @@
     "url": "https://github.com/vllm-project/vllm/pull/57184",
     "author": "algebra-MCX",
     "state": "closed",
-    "mergedAt": null
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -78,7 +86,8 @@
     "url": "https://github.com/vllm-project/vllm/pull/33355",
     "author": "algebra-MCX",
     "state": "closed",
-    "mergedAt": null
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "uw-syfi/TraceLab",
@@ -87,7 +96,8 @@
     "url": "https://github.com/uw-syfi/TraceLab/pull/11",
     "author": "algebra-MCX",
     "state": "open",
-    "mergedAt": null
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "uw-syfi/TraceLab",
@@ -96,7 +106,8 @@
     "url": "https://github.com/uw-syfi/TraceLab/pull/10",
     "author": "algebra-MCX",
     "state": "closed",
-    "mergedAt": null
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "uw-syfi/TraceLab",
@@ -105,7 +116,8 @@
     "url": "https://github.com/uw-syfi/TraceLab/pull/1",
     "author": "algebra-MCX",
     "state": "merged",
-    "mergedAt": "2026-06-21T14:43:21Z"
+    "mergedAt": "2026-06-21T14:43:21Z",
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "vllm-project/vllm",
@@ -114,7 +126,8 @@
     "url": "https://github.com/vllm-project/vllm/pull/33185",
     "author": "algebra-MCX",
     "state": "closed",
-    "mergedAt": null
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   },
   {
     "repository": "Jittor/JittorInfer",
@@ -122,7 +135,38 @@
     "title": "Feature/qwen2.5ge",
     "url": "https://github.com/Jittor/JittorInfer/pull/7",
     "author": "algebra-MCX",
+    "state": "closed",
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63372,
+    "title": "[Bugfix][MRV2] Keep routed-expert rows of every DBO microbatch",
+    "url": "https://github.com/vllm-project/vllm/pull/63372",
+    "author": "algebra-MCX",
+    "state": "merged",
+    "mergedAt": "2026-10-25T04:45:26Z",
+    "verifiedAt": "2026-11-22"
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63476,
+    "title": "[Bugfix][MRV2] Report the first failed DBO microbatch",
+    "url": "https://github.com/vllm-project/vllm/pull/63476",
+    "author": "algebra-MCX",
+    "state": "merged",
+    "mergedAt": "2026-10-25T05:56:22Z",
+    "verifiedAt": "2026-11-22"
+  },
+  {
+    "repository": "vllm-project/vllm",
+    "number": 63556,
+    "title": "[MRV2] Stage imbalanced MLA decode rows for FULL microbatch graphs",
+    "url": "https://github.com/vllm-project/vllm/pull/63556",
+    "author": "algebra-MCX",
     "state": "open",
-    "mergedAt": null
+    "mergedAt": null,
+    "verifiedAt": "2026-11-22"
   }
 ]

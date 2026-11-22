@@ -46,4 +46,4 @@ The total is identical. Maximum load and hypothetical fixed-capacity storage dif
 
 ## What this does not establish
 
-The model omits communication, kernel efficiency, routing overhead and the actual capacity policy. It predicts no speedup. Use it to formulate the next experiment, then follow the [MoEFlow project](https://tech-blog-chi.vercel.app/projects/moeflow/) or the [paired measurement playbook](/guides/paired-benchmarks/).
+The model omits communication, kernel efficiency, routing overhead and the actual capacity policy. It predicts no speedup. Use it to formulate the next experiment, then follow the [MoEFlow project](https://github.com/algebra-MCX/MoEFlow) or the [paired measurement playbook](/guides/paired-benchmarks/).

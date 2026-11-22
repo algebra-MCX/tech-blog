@@ -24,37 +24,36 @@ export const projects: readonly Project[] = [
     boundary: 'Layer-level and full-model evidence are tracked separately. Stable serving speedup remains an open question in the repository reports.', boundaryZh: '层级实验与完整模型证据分别记录。仓库报告中，服务层面的稳定加速仍是开放问题。',
     role: 'Experimental implementation and research notebook', roleZh: '实验实现与研究档案', start: ['expert-load-imbalance', 'paired-benchmarks'],
     resources: [
-      { title: 'Project overview & current limits', titleZh: '项目概览与当前边界', url: 'https://github.com/algebra-MCX/MoEFlow#readme', section: 'overview' },
-      { title: 'Paired baselines & validation', titleZh: '配对基线与验证方法', url: 'https://github.com/algebra-MCX/MoEFlow/blob/development/docs/validation.md', section: 'experiments' },
-      { title: 'End-to-end order controls', titleZh: '端到端测量顺序控制', url: 'https://github.com/algebra-MCX/MoEFlow/blob/development/docs/e2e_w1_order_control.md', section: 'experiments' },
-      { title: 'Pitfalls & investigations', titleZh: '踩坑与排障记录', url: 'https://github.com/algebra-MCX/MoEFlow/blob/development/docs/pitfalls.md', section: 'debugging' },
-      { title: 'Architecture & execution contract', titleZh: '架构与执行约定', url: 'https://github.com/algebra-MCX/MoEFlow/blob/main/docs/architecture.md', section: 'design' }
+      { title: 'Recorded performance & limitations', titleZh: '已记录的性能与局限', url: 'https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/README.md#performance', section: 'experiments' },
+      { title: 'Interleaved fusion benchmark', titleZh: '交替融合基准脚本', url: 'https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/scripts/paired_total_fusion.sbatch', section: 'experiments' },
+      { title: 'Independent correctness reference', titleZh: '独立正确性参考', url: 'https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/moeflow/reference.py', section: 'debugging' },
+      { title: 'Fixed-capacity execution', titleZh: '固定容量执行实现', url: 'https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/moeflow/fixed.py', section: 'design' }
     ]
   },
   {
     id: 'vllm', title: 'vLLM', titleZh: 'vLLM', kind: 'contributor', subtitle: 'Inference runtime contributions', subtitleZh: '推理运行时贡献',
     primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "distributed-training-inference", "runtime-scheduling"], technicalTags: ['runtime', 'cuda-graphs', 'distributed-systems', 'moe'],
-    researchContribution: 'Proposed runtime changes to keep imbalanced data-parallel decode compatible with captured microbatches and logical output ordering.',
-    researchContributionZh: '提出运行时修改，使不均衡的数据并行解码兼容已捕获的微批布局，并保持逻辑输出顺序。',
+    researchContribution: 'Merged DBO route-buffer and error-order fixes, alongside an open decode-staging proposal for imbalanced DP execution.',
+    researchContributionZh: '已合并 DBO 路由记录与异常顺序修复，并提出不均衡 DP 下的 decode staging 方案。',
     summary: 'A reading and research notebook on irregular execution, CUDA Graph policies, memory and communication in LLM serving.', summaryZh: '围绕大模型服务中的不规则执行、CUDA Graph 策略、内存与通信展开的阅读及研究档案。',
     domains: ['algorithms', 'infra'], status: 'active', repository: 'https://github.com/vllm-project/vllm',
     scope: 'How workload distributions interact with execution policies and end-to-end serving objectives.', scopeZh: '负载分布如何与执行策略及端到端服务目标相互作用。',
     boundary: 'These articles include working hypotheses and measurement plans. Reproducible measurements are still being attached.', boundaryZh: '这些文章包含工作假设与测量计划，可复现的测量材料仍在补充中。',
-    role: 'Pull request author; current proposals are under review', roleZh: 'PR 作者，当前提案正在审阅中', start: ['useful-work', 'paired-benchmarks'],
+    role: 'Merged correctness fixes and separate runtime proposals', roleZh: '已合并的正确性修复与独立运行时提案', start: ['useful-work', 'paired-benchmarks'],
     resources: [{ title: 'Upstream code & documentation', titleZh: '上游代码与文档', url: 'https://github.com/vllm-project/vllm#readme', section: 'resources' }, { title: 'Personal development fork', titleZh: '个人开发 Fork', url: 'https://github.com/algebra-MCX/vllm', section: 'resources' }]
   },
   {
-    id: 'mini-deepinfer', title: 'mini-DeepInfer', titleZh: 'mini-DeepInfer', kind: 'own',
+    id: 'mini-deepinfer', title: 'DeepInfer-Lab', titleZh: 'DeepInfer-Lab', kind: 'own',
     primaryCategory: 'systems', researchAreas: ["llm-serving-inference", "runtime-scheduling", "communication-memory-systems", "distributed-training-inference", "gpu-kernels", "performance-engineering"], technicalTags: ['inference', 'runtime', 'attention', 'moe', 'triton', 'blackwell'],
-    researchContribution: 'A readable PyTorch runtime serves the real DeepSeek-V4.1-Flash on 4 × B200 and matches the official reference within 0.05 logits across every scheduling mode.',
-    researchContributionZh: '用可读的 PyTorch 运行时在 4 × B200 上服务真实 DeepSeek-V4.1-Flash，在所有调度模式下与官方参考实现的 logits 差距小于 0.05。',
+    researchContribution: 'A readable PyTorch runtime serves the real DeepSeek-V4.1-Flash on 4 × B200 and matches the official reference within 0.05 logits in the documented batching, ZOS, chunked-prefill and preemption tests.',
+    researchContributionZh: '用可读的 PyTorch 运行时在 4 × B200 上服务真实 DeepSeek-V4.1-Flash，在已记录的批处理、ZOS、分块 prefill 和抢占测试中，logits 与官方参考差距小于 0.05。',
     subtitle: 'A readable DeepSeek-V4.1 runtime', subtitleZh: '可阅读的 DeepSeek-V4.1 运行时',
     summary: 'DeepInfer\'s engine design in about 2,000 lines of PyTorch: follow a request from the queue to its next sampled token.', summaryZh: '用约 2,000 行 PyTorch 读懂 DeepInfer 的引擎设计：从请求入队一路跟到下一个采样 token。',
-    domains: ['algorithms', 'infra'], status: 'active', repository: 'https://github.com/algebra-MCX/mini-DeepInfer',
+    domains: ['algorithms', 'infra'], status: 'active', repository: 'https://github.com/algebra-MCX/DeepInfer-Lab',
     scope: 'Paged KV blocks and state slots, prefill/decode scheduling with preemption, zero-overhead scheduling, deterministic sampling, EP × DP, and paired prefill measurements against official DeepInfer.', scopeZh: '分页 KV block 与 state slot、带抢占的 prefill/decode 调度、零开销调度、确定性采样、EP × DP，以及与官方 DeepInfer 的配对 prefill 测量。',
     boundary: 'A learning implementation, not a faster DeepInfer. Real-model prefill reaches 11.9% of the official engine in one paired run on 4 × B200; decode CUDA graphs were off for both and KV budgets were not forced equal.', boundaryZh: '这是学习型实现，不是更快的 DeepInfer。4 × B200 单轮配对测量中，真实模型 prefill 达到官方的 11.9%；两边均未开启 decode CUDA Graph，KV 预算也未强制相等。',
-    role: 'Personal learning implementation', roleZh: '个人学习实现', start: ['useful-work', 'paired-benchmarks'],
-    resources: [{ title: 'Source code & README', titleZh: '源码与说明', url: 'https://github.com/algebra-MCX/mini-DeepInfer#readme', section: 'resources' }]
+    role: 'Experimental runtime and measured optimization study', roleZh: '实验性运行时与实测优化研究', start: ['useful-work', 'paired-benchmarks'],
+    resources: [{ title: 'Source code & README', titleZh: '源码与说明', url: 'https://github.com/algebra-MCX/DeepInfer-Lab#readme', section: 'resources' }]
   },
   {
     id: 'deepinfer', title: 'DeepInfer', titleZh: 'DeepInfer', kind: 'contributor',
@@ -82,19 +81,6 @@ export const projects: readonly Project[] = [
     role: 'Open-source contributor', roleZh: '开源贡献者', start: ['useful-work', 'paired-benchmarks'],
     resources: [{ title: 'Upstream repository', titleZh: '上游仓库', url: 'https://github.com/uw-syfi/TraceLab#readme', section: 'resources' }]
   },
-  {
-    id: 'jittorinfer', title: 'JittorInfer', titleZh: 'JittorInfer', kind: 'contributor',
-    primaryCategory: 'systems', researchAreas: ["llm-serving-inference"], technicalTags: ['inference', 'model-integration', 'ascend', 'runtime'],
-    researchContribution: 'A Qwen2.5 integration proposal adds model-graph, tokenizer and execution-path support to the Ascend inference framework.',
-    researchContributionZh: '通过 Qwen2.5 集成提案，为昇腾推理框架补充模型计算图、分词器与执行路径支持。',
-    subtitle: 'Model support on Ascend', subtitleZh: '昇腾平台模型支持',
-    summary: 'An upstream model-support proposal for the JittorInfer inference framework.', summaryZh: '面向 JittorInfer 推理框架的上游模型支持提案。',
-    domains: ['algorithms', 'infra'], status: 'active', repository: 'https://github.com/Jittor/JittorInfer',
-    scope: 'The Qwen2.5 feature proposal and its upstream review record.', scopeZh: 'Qwen2.5 功能提案及其上游审阅记录。',
-    boundary: 'The PR is open. Supported configurations and validation are defined by the upstream discussion.', boundaryZh: 'PR 仍为开放状态，支持的配置与验证范围以上游讨论为准。',
-    role: 'Pull request author', roleZh: 'PR 作者', start: ['useful-work', 'paired-benchmarks'],
-    resources: [{ title: 'Upstream repository', titleZh: '上游仓库', url: 'https://github.com/Jittor/JittorInfer#readme', section: 'resources' }]
-  }
 ];
 for (const project of projects) {
   if (!project.researchAreas.length || project.researchAreas.some(id => researchAreas.find(area => area.id === id)?.category !== project.primaryCategory)) {
@@ -109,8 +95,8 @@ export const projectContributions = (project: Project) => contributions.filter(p
 export const featuredResearch = {
   projectId: 'moeflow', baselineUs: 249.7, fusedUs: 144.2,
   context: '4 × B200 · EP4 · BF16 · 1 token/rank',
-  report: 'https://github.com/algebra-MCX/MoEFlow/blob/main/docs/stage1_total_fusion_tables.md',
-  sourceCommit: 'e88e01ef723b20d87ae0b00059284ab4c2779542',
+  report: 'https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/README.md#performance',
+  sourceCommit: '2f4968ffef7cac4f8dcf39a4a65cec55c60472f8',
   boundary: 'Internal layer comparison against its own Torch ring baseline. In a separate comparison, native vLLM AG/RS remained 1.4–4.7% faster. Stable end-to-end serving gains are unproven.',
   boundaryZh: '内部层级对比，基线为项目自身的 Torch ring 实现。另一组对比中，原生 vLLM AG/RS 仍快 1.4–4.7%；尚未证明稳定的端到端服务收益。'
 } as const;

@@ -59,8 +59,8 @@ If the opportunity arises, I would like to organize small study groups around th
 ## Where to begin
 
 - **New to a field**: start with [Quickstarts](/guides/sections/quickstarts/), then work through a first Nano Project and its core experiments as the routes develop.
-- **Interested in my work**: explore my [projects and open-source contributions](https://tech-blog-chi.vercel.app/projects/). I would love to exchange ideas and experiences.
-- **Curious about my thinking**: read [Notes](https://tech-blog-chi.vercel.app/notes/) for my views on the future of technology, essays on everyday life, and lessons from different areas of experience.
+- **Interested in my work**: explore my projects and open-source contributions. I would love to exchange ideas and experiences.
+- **Curious about my thinking**: read Notes for my views on the future of technology, essays on everyday life, and lessons from different areas of experience.
 
 Spend less time on things that are not worth your attention, and more time developing your taste: recognizing which problems are worth solving and which work deserves a deeper look.
 

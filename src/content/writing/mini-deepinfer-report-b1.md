@@ -87,4 +87,4 @@ Ordered by remaining time: MoE 701 ms, other attention 254 ms, sparse attention 
 1. **C:** run MoE grouped GEMM directly on FP4 weights. Today dequantization takes 128 ms, bf16 conversion and copies about 300 ms, grouped GEMM 67 ms and communication 70 ms. The target is around 120 ms, for about 6,000 tok/s/GPU (17%).
 2. **B2:** scoring inside candidate blocks, a faster top-k and mask, saving about 50 ms more.
 
-Raw data: [`profile-2026-10-22/stage-b1/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/stage-b1/).
+Raw data: [`profile-2026-10-22/stage-b1/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/stage-b1/).

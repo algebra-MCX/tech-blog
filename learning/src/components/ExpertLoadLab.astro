@@ -1,0 +1,27 @@
+---
+const { href = '/guides/expert-load-imbalance/' } = Astro.props;
+import Localized from '../../../src/components/Localized.astro';
+---
+<section class="load-lab reading-glass" data-load-lab aria-label="Expert-load toy experiment / 专家负载玩具实验">
+  <p class="eyebrow"><Localized en="Try it · A scheduling model, no GPU timing" zh="动手试试 · 调度模型，不是 GPU 测量" /></p>
+  <h2><Localized en="Same 64 assignments. Different bottleneck." zh="同样 64 次分配，瓶颈有什么不同？" /></h2>
+  <p><Localized en="Keep four experts and 64 token–expert assignments fixed. Change only the largest expert's load; distribute the rest as evenly as possible." zh="固定四个专家和 64 次 token–专家分配，只改变最忙专家的负载，其余尽量均分。" /></p>
+  <label class="load-slider"><span><Localized en="Assignments to expert 0" zh="专家 0 的分配数" /> <output data-load-number>40</output></span><input type="range" min="16" max="64" value="40" step="1" aria-label="Expert 0 assignments / 专家 0 分配数" /></label>
+  <div class="load-presets" role="group" aria-label="Load presets / 负载预设"><button class="glass-control" type="button" data-load-preset="16"><Localized en="Balanced" zh="均衡" /></button><button class="glass-control" type="button" data-load-preset="40"><Localized en="Skewed" zh="偏斜" /></button><button class="glass-control" type="button" data-load-preset="64"><Localized en="Concentrated" zh="集中" /></button></div>
+  <div class="expert-bars">{[40,8,8,8].map((n,i)=><div><span>E{i}</span><div><i data-expert-bar={i} style={`width:${n/64*100}%`}></i></div><output data-expert-value={i}>{n}</output></div>)}</div>
+  <div class="load-results" aria-live="polite" aria-atomic="true"><div><span><Localized en="Total assignments" zh="总分配数" /></span><strong>64</strong></div><div><span><Localized en="Max / mean load" zh="最大 / 平均负载" /></span><strong data-imbalance>2.50×</strong></div><div><span><Localized en="Hypothetical slots (4 × max)" zh="假想槽位（4 × 最大负载）" /></span><strong data-capacity>160</strong></div></div>
+  <p class="evidence-caption"><Localized en="Balanced control: [16,16,16,16], 64 slots. The model omits routing, communication and kernel efficiency; its slots are illustrative, not MoEFlow's exact capacity policy. No speedup is predicted." zh="均衡对照：[16,16,16,16]，64 个槽位。模型忽略路由、通信与 kernel 效率；槽位只是示意，不是 MoEFlow 的精确容量策略，不能据此预测加速。" /></p>
+  <a class="text-link" href={href}><Localized en="Run the Python version and test a prediction" zh="运行 Python 版本，检验你的预测" /></a>
+</section>
+<script>
+ document.querySelectorAll<HTMLElement>('[data-load-lab]').forEach(root=>{
+  const slider=root.querySelector<HTMLInputElement>('input[type=range]');if(!slider)return;
+  const update=()=>{const n=Number(slider.value),rest=64-n;const loads=[n,...[0,1,2].map(i=>Math.floor(rest/3)+(i<rest%3?1:0))];
+   const set=(selector:string,value:string)=>{const el=root.querySelector(selector);if(el)el.textContent=value;};
+   set('[data-load-number]',String(n));set('[data-imbalance]',(Math.max(...loads)/16).toFixed(2)+'×');set('[data-capacity]',String(Math.max(...loads)*4));
+   loads.forEach((load,i)=>{set(`[data-expert-value="${i}"]`,String(load));const bar=root.querySelector<HTMLElement>(`[data-expert-bar="${i}"]`);if(bar)bar.style.width=`${load/64*100}%`;});
+   root.querySelectorAll<HTMLElement>('[data-load-preset]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.loadPreset)===n)));
+  };
+  slider.addEventListener('input',update);root.querySelectorAll<HTMLElement>('[data-load-preset]').forEach(button=>button.addEventListener('click',()=>{slider.value=button.dataset.loadPreset!;update();}));update();
+ });
+</script>

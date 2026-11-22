@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Localized from '@/components/Localized.astro';
 import QuickstartIndex from '@/components/QuickstartIndex.astro';
 import { guideSections } from '@/data/library';
 export function getStaticPaths() { return guideSections.filter(section => section.id === 'quickstarts').map(section => ({ params: { section: section.id }, props: { section } })); }

@@ -1,5 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "exclude": ["learning", "dist", "node_modules", "artifacts"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": { "@/*": ["src/*"] }

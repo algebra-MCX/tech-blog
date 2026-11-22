@@ -1,6 +1,14 @@
 ---
 source: mini-deepinfer-prefill
 ---
+## 什么结果改变了我对瓶颈的判断
+
+稀疏注意力起初主导了 profile，但单独缩短这个 kernel 的耗时，无法消除同一步的其他成本。A、B1 和 C1 三轮改动把下一步问题逐渐转向输入准备、专家计算与注意力 key 拼接。我的当前判断是，剩余差距分布在多个环节。Profile 帮助定位下一步需要单独验证的环节，配对实验则测量完整 prefill 吞吐。
+
+下一步可以固定负载与 KV 预算，只改变注意力 key 的拼接或读取方式。如果拼接耗时下降而稳态吞吐持平，就需要检查其他关键路径、执行重叠，或 profiler 自身的影响。
+
+[源码快照](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f) · [原始日志、profile 与作业计划](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f/docs/benchmarks/profile-2026-10-22) · [逐项实验报告](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f/docs/perf-reports)
+
 ## 测量方式
 
 [mini-DeepInfer](/writing/mini-deepinfer-runtime/) 在单机 4 × B200 上运行真实的 DeepSeek-V4.1-Flash。prefill 基准沿用 DeepInfer 测自己的口径：请求数、热身和测量窗口、指标定义都与官方 `run_sweep.sh prefill` 一致，两个引擎使用同一个 workload 文件。
@@ -119,7 +127,7 @@ C1 之后"注意力其余"的 254 ms 中，182 ms 是 key 拼接（gather / cat 
 - mini 的可选非专家权重缓存未开启。
 - tiny 模型的单卡输出吞吐是另一种负载和指标。在那组测试上，三项改动对 goodput 的影响分别是 +6%、−1.8%（在运行间波动范围内）和 +2.1%。
 
-每项改动的完整报告见 [A](/writing/mini-deepinfer-report-a/)、[B1](/writing/mini-deepinfer-report-b1/)、[C1](/writing/mini-deepinfer-report-c1/)。原始日志、profile 和作业配置在仓库的 [`docs/benchmarks/profile-2026-10-22/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/) 下；复现这组测量：
+每项改动的完整报告见 [A](/writing/mini-deepinfer-report-a/)、[B1](/writing/mini-deepinfer-report-b1/)、[C1](/writing/mini-deepinfer-report-c1/)。原始日志、profile 和作业配置在仓库的 [`docs/benchmarks/profile-2026-10-22/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/) 下；复现这组测量：
 
 ```bash
 torchrun --nproc-per-node 4 bench_prefill.py \

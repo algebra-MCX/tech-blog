@@ -118,7 +118,7 @@ forward 内的 host 同步已经去除，需要读取 GPU 结果的地方都集�
 运行完整检查：
 
 ```bash
-cd mini-DeepInfer
+cd DeepInfer-Lab
 pytest tests/test_block_manager.py tests/test_scheduler.py tests/test_sampler.py
 pytest
 ```
@@ -148,4 +148,4 @@ GPU 和官方 reference 测试需要可用的 CUDA 环境；没有 GPU 时应运
 - DSpark 投机解码、prefill 成本模型和端到端 batch-invariant 仍在路线图中；
 - 随机权重 checkpoint 只能验证执行语义，不能证明 DeepSeek-V4.1 的任务质量或生产吞吐。
 
-相关路线图、许可和第三方声明见 [README](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/README.md) 与 [THIRD_PARTY_NOTICES](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/THIRD_PARTY_NOTICES)。
+相关路线图、许可和第三方声明见 [README](https://github.com/algebra-MCX/DeepInfer-Lab/blob/main/README.md) 与 [THIRD_PARTY_NOTICES](https://github.com/algebra-MCX/DeepInfer-Lab/blob/main/THIRD_PARTY_NOTICES)。

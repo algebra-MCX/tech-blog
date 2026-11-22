@@ -1,0 +1,85 @@
+---
+import { getEntry, render } from 'astro:content';
+import Localized from '@/components/Localized.astro';
+import Tag from '@/components/Tag.astro';
+import { formatDate, formatDateZh, readingMinutes } from '@/lib/content';
+
+const entry = await getEntry('guides', 'how-to-read');
+const translation = await getEntry('guidesZh', 'how-to-read');
+if (!entry || !translation) throw new Error('The reading guide requires both language versions.');
+const { Content, headings } = await render(entry);
+const { Content: ContentZh, headings: headingsZh } = await render(translation);
+const contents = [
+  { language: 'en', headings: headings.filter(heading => heading.depth === 2) },
+  { language: 'zh', headings: headingsZh.filter(heading => heading.depth === 2) }
+];
+const { title, titleZh, description, descriptionZh, publishDate, tags } = entry.data;
+---
+<article class="article" data-reading-guide>
+  <header class="article-header shell reading-glass">
+    <div class="article-meta reveal">
+      <nav aria-label="Breadcrumb"><a href="/guides/sections/quickstarts/"><Localized en="Guides" zh="指南" /></a></nav>
+      <p><time datetime={publishDate.toISOString()}><Localized en={formatDate(publishDate)} zh={formatDateZh(publishDate)} /></time><span>·</span>{readingMinutes(entry.body)} <Localized en="min read" zh="分钟阅读" /></p>
+    </div>
+    <div class="article-hero">
+      <div class="article-title reveal reveal--2">
+        <h1><Localized en={title} zh={titleZh} /></h1>
+        <p class="dek"><Localized en={description} zh={descriptionZh} /></p>
+        <div class="article-tags">{tags.map(tag => <Tag text={tag} />)}</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-toc shell">
+    <details class="reading-glass">
+      <summary><Localized en="Contents" zh="目录" /> <span>{contents[0].headings.length.toString().padStart(2, '0')} <Localized en="sections" zh="节" /></span></summary>
+      {contents.map(list => (
+        <ol data-lang={list.language}>
+          {list.headings.map(heading => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+        </ol>
+      ))}
+    </details>
+  </div>
+
+  <div class="article-grid shell">
+    <aside class="toc reading-glass" aria-label="Table of contents">
+      <p><Localized en="Contents" zh="目录" /></p>
+      {contents.map(list => (
+        <ol data-lang={list.language}>
+          {list.headings.map((heading, index) => (
+            <li><a href={`#${heading.slug}`} data-toc-link><span>{String(index + 1).padStart(2, '0')}.</span><span>{heading.text.replace(/^\d{2}\.\s*/, '')}</span></a></li>
+          ))}
+        </ol>
+      ))}
+    </aside>
+    <div class="prose reading-glass">
+      <div data-lang="en"><Content /></div>
+      <div data-lang="zh"><ContentZh /></div>
+    </div>
+  </div>
+</article>
+
+<script>
+  let observer: IntersectionObserver | undefined;
+
+  const setupToc = () => {
+    observer?.disconnect();
+    const language = document.documentElement.dataset.language;
+    const links = [...document.querySelectorAll<HTMLAnchorElement>(`[data-reading-guide] .toc [data-lang="${language}"] [data-toc-link]`)];
+    observer = new IntersectionObserver(entries => {
+      const active = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (!active) return;
+      links.forEach(link => {
+        if (decodeURIComponent(link.hash.slice(1)) === active.target.id) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    links.forEach(link => {
+      const section = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      if (section) observer?.observe(section);
+    });
+  };
+
+  setupToc();
+  window.addEventListener('mcx:language-change', setupToc);
+</script>

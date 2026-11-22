@@ -1,3 +1,4 @@
+import {writingEvidence,evidenceLabels} from '@/data/evidence';
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { noteMap } from '@/data/library';
@@ -7,7 +8,7 @@ export async function GET(context: { site: URL }) {
   const guides = await getCollection('guides', ({ data }) => !data.draft);
   const notes = (await getCollection('notes', ({ data }) => !data.draft)).filter(n => noteMap[n.id]?.noteCategory);
   const posts = [
-    ...writing.map(post => ({ title: `[Working outline] ${post.data.title}`, description: post.data.description, pubDate: post.data.publishDate, link: `/writing/${post.id}/` })),
+    ...writing.map(post => ({ title: `[${evidenceLabels[writingEvidence(post.id)].en}] ${post.data.title}`, description: post.data.description, pubDate: post.data.publishDate, link: `/writing/${post.id}/` })),
     ...guides.map(post => ({ title: post.data.title, description: post.data.description, pubDate: post.data.publishDate, link: `/guides/${post.id}/` })),
     ...notes.map(post => ({ title: post.data.title, description: post.data.topic, pubDate: post.data.publishDate, link: `/notes/${post.id}/` }))
   ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());

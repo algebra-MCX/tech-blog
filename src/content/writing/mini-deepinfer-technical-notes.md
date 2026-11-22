@@ -127,7 +127,7 @@ Tests come in three layers:
 Run the full check:
 
 ```bash
-cd mini-DeepInfer
+cd DeepInfer-Lab
 pytest tests/test_block_manager.py tests/test_scheduler.py tests/test_sampler.py
 pytest
 ```
@@ -157,4 +157,4 @@ The current implementation puts "readable and matching" first:
 - DSpark speculative decoding, a prefill cost model and end-to-end batch invariance are still on the roadmap;
 - A random-weight checkpoint verifies execution semantics only; it cannot prove DeepSeek-V4.1's task quality or production throughput.
 
-For the roadmap, license and third-party notices see the [README](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/README.md) and [THIRD_PARTY_NOTICES](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/THIRD_PARTY_NOTICES).
+For the roadmap, license and third-party notices see the [README](https://github.com/algebra-MCX/DeepInfer-Lab/blob/main/README.md) and [THIRD_PARTY_NOTICES](https://github.com/algebra-MCX/DeepInfer-Lab/blob/main/THIRD_PARTY_NOTICES).

@@ -110,4 +110,4 @@ Ordered by remaining time (965 ms in total):
 2. **C2:** dequantize two values per byte and write them vectorized; about −80 ms expected.
 3. **C3:** run the gate in tf32x3, close to fp32 accuracy; about −40 ms expected.
 
-Raw data: [`profile-2026-10-22/stage-c1/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/stage-c1/).
+Raw data: [`profile-2026-10-22/stage-c1/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/stage-c1/).

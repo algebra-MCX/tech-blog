@@ -1,0 +1,10 @@
+import {spawn} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('..',import.meta.url));
+const env={...process.env,ASTRO_TELEMETRY_DISABLED:'1',PUBLIC_RESEARCH_URL:'http://localhost:4321',PUBLIC_LEARNING_URL:'http://localhost:4322',PUBLIC_HOMEPAGE_URL:process.env.PUBLIC_HOMEPAGE_URL||'http://localhost:4323'};
+const run=(args,cwd,extra={})=>new Promise((resolve,reject)=>{const child=spawn('npm',args,{cwd,env:{...env,...extra},stdio:'inherit'});child.on('error',reject);child.on('exit',code=>code===0?resolve():reject(new Error(`npm ${args.join(' ')} failed: ${code}`)));});
+await run(['run','build'],root,{SITE_URL:'http://localhost:4321'});
+await run(['run','build'],root+'/learning',{SITE_URL:'http://localhost:4322'});
+const children=[spawn('npm',['run','preview','--','--host','127.0.0.1','--port','4321'],{cwd:root,env,stdio:'inherit'}),spawn('npm',['run','preview','--','--host','127.0.0.1','--port','4322'],{cwd:root+'/learning',env,stdio:'inherit'})];
+console.log('Research: http://localhost:4321/\nLearning: http://localhost:4322/\nLocal previews only; no Git push or deployment.');
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>{children.forEach(child=>child.kill(signal));process.exit(0);});

@@ -1,0 +1,34 @@
+---
+import Localized from './Localized.astro';
+import { prefillStages, deepinferSource } from '@/data/evidence';
+---
+<section class="prefill-explorer" data-prefill-explorer aria-label="Recorded prefill measurements / 已记录的 prefill 测量">
+  <div class="experiment-topline"><span class="evidence-status"><Localized en="Measured · 4 × B200" zh="已有测量 · 4 × B200" /></span><span class="evidence-caption"><Localized en="Select an optimization round" zh="选择优化阶段" /></span></div>
+  <div class="experiment-tabs" role="group" aria-label="Optimization round / 优化阶段">{prefillStages.map((s,i)=><button class="glass-control" type="button" data-stage={i} aria-pressed={i===3?'true':'false'}><Localized en={s.en} zh={s.zh}/></button>)}</div>
+  <div class="experiment-output" aria-live="polite" aria-atomic="true"><strong data-throughput>4,315.9</strong><span><Localized en="input tok/s/GPU" zh="输入 tok/s/GPU" /></span><p><span data-self-gain>3.98</span>× <Localized en="own initial baseline" zh="自身初始基线" /> · <span data-official-share>11.9</span>% <Localized en="of official reference" zh="官方参考配置的吞吐" /></p></div>
+  <div class="comparison-bars" aria-label="Throughput on the same scale / 同尺度吞吐对比">
+    <div><span>DeepInfer-Lab</span><div class="bar-track"><i data-throughput-bar style="width:11.93%"></i></div><b data-mini-value>4,315.9</b></div>
+    <div><span><Localized en="Official + adapter" zh="官方 + 适配层" /></span><div class="bar-track"><i class="reference-bar" style="width:100%"></i></div><b>36,170.9</b></div>
+  </div>
+  <details class="stage-details"><summary><Localized en="Inspect the profiled bottlenecks (ms/step)" zh="展开各阶段的 profile 耗时（ms/步）" /></summary><table><thead><tr><th><Localized en="Stage" zh="环节" /></th><th><Localized en="Selected round" zh="当前阶段" /></th></tr></thead><tbody><tr><td><Localized en="Sparse attention core" zh="稀疏注意力核心" /></td><td data-stage-value="attention">99.0</td></tr><tr><td>Indexer</td><td data-stage-value="indexer">79.3</td></tr><tr><td>MoE</td><td data-stage-value="moe">410.0</td></tr><tr><td><Localized en="Other attention + runtime" zh="其他注意力与运行时" /></td><td>376.0</td></tr></tbody></table><p class="evidence-caption"><Localized en="Profile timings include instrumentation overhead; throughput comes from a separate steady-state timing window." zh="Profile 耗时包含采集开销；吞吐来自独立的稳态计时窗口。" /></p></details>
+  <p class="experiment-conditions"><Localized en="DeepSeek-V4.1-Flash · EP4/DP4/CP1 · 131,072 context / 126,976 cached · 4,096 new tokens/rank/step · 10 steady-state steps. One paired run per round; prefill only, decode graphs off, unequal KV budgets. Official reference includes the single-node NVLink adapter." zh="DeepSeek-V4.1-Flash · EP4/DP4/CP1 · 上下文 131,072 / 已缓存 126,976 · 每步每 rank 4,096 个新 token · 10 个稳态步。每阶段仅一组配对运行；仅测 prefill，decode 图关闭，KV 预算未强制相等。官方参考包含单节点 NVLink 适配层。" /></p>
+  <a class="text-link" href={`${deepinferSource}/docs/benchmarks/profile-2026-10-22/`}><Localized en="Inspect logs, profiles and job plans" zh="核对日志、profile 与作业计划" /></a>
+</section>
+<script>
+  import { prefillStages } from '@/data/evidence';
+  document.querySelectorAll<HTMLElement>('[data-prefill-explorer]').forEach(root=>{
+    root.querySelectorAll<HTMLButtonElement>('[data-stage]').forEach(button=>button.addEventListener('click',()=>{
+      const index=Number(button.dataset.stage); const stage=prefillStages[index]; if(!stage)return;
+      root.querySelectorAll('[data-stage]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      const set=(selector:string,value:string)=>{const node=root.querySelector(selector);if(node)node.textContent=value;};
+      set('[data-throughput]',stage.throughput.toLocaleString('en-US',{minimumFractionDigits:1}));
+      set('[data-mini-value]',stage.throughput.toLocaleString('en-US',{minimumFractionDigits:1}));
+      set('[data-self-gain]',(stage.throughput/1084.8).toFixed(2));set('[data-official-share]',(stage.throughput/36170.9*100).toFixed(1));
+      (['attention','indexer','moe'] as const).forEach(key=>set(`[data-stage-value="${key}"]`,stage[key].toFixed(1)));
+      const bar=root.querySelector<HTMLElement>('[data-throughput-bar]');if(bar)bar.style.width=`${stage.throughput/36170.9*100}%`;
+    }));
+  });
+</script>
+<style>
+.prefill-explorer{min-width:0}.experiment-topline{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.experiment-tabs{display:flex;flex-wrap:wrap;gap:7px;margin:20px 0}.experiment-tabs button{min-height:44px;padding:7px 10px;border-radius:10px;color:var(--ink-soft);font-size:14px}.experiment-tabs button[aria-pressed=true]{border-color:var(--accent);background:var(--lens-fill);color:var(--ink)}.experiment-output strong{display:block;font:600 clamp(34px,5vw,48px)/1.2 var(--sans);letter-spacing:-.04em;color:var(--ink)}.experiment-output>span{font-size:15px;color:var(--ink-faint)}.experiment-output p{font-size:15px;color:var(--ink-soft);margin:10px 0 24px}.comparison-bars{display:grid;gap:14px}.comparison-bars>div{display:grid;grid-template-columns:1fr auto;gap:5px 12px;font-size:14px}.bar-track{grid-column:1 / -1;grid-row:2;height:9px;border-radius:5px;background:var(--code-bg);overflow:hidden}.bar-track i{display:block;height:100%;min-width:2px;background:var(--accent);border-radius:5px;transition:width .3s}.bar-track i.reference-bar{background:var(--ink-faint);opacity:.5}.comparison-bars b{font-family:var(--mono);font-size:13px}.experiment-conditions{font-size:14px;line-height:1.8;color:var(--ink-faint);margin:22px 0 12px}.stage-details{margin-top:20px;font-size:14px}.stage-details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;list-style:revert;color:var(--accent)}.stage-details table{width:100%;font-size:14px;border-collapse:collapse}.stage-details td,.stage-details th{padding:8px;text-align:left;border-bottom:1px solid var(--line-soft)}.prefill-explorer>a{font-size:14px}@media(prefers-reduced-motion:reduce){.bar-track i{transition:none}}
+</style>

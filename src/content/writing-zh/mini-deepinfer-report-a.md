@@ -86,5 +86,5 @@ source: mini-deepinfer-report-a
 2. **B2：** 第 24–36 层只对候选块打分。
 3. **C：** MoE 直接用 FP4 权重做 grouped GEMM。
 
-原始数据：[`profile-2026-10-22/stage-a/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/stage-a/)，改动前：
-[`profile-2026-10-22/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/)。
+原始数据：[`profile-2026-10-22/stage-a/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/stage-a/)，改动前：
+[`profile-2026-10-22/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/)。

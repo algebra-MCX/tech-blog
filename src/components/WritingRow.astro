@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { writingEvidence, evidenceLabels } from '@/data/evidence';
 import Localized from './Localized.astro';
 import { formatCompactDate, formatCompactDateZh, readingMinutes } from '@/lib/content';
 interface Props { entry: CollectionEntry<'writing'>; compact?: boolean }
@@ -7,6 +8,7 @@ const { entry, compact = false } = Astro.props;
 ---
 <article class="writing-row" data-writing-row data-tags={entry.data.tags.join('|').toLowerCase()}>
   <div class="writing-main">
+    <p class="eyebrow"><Localized en={evidenceLabels[writingEvidence(entry.id)].en} zh={evidenceLabels[writingEvidence(entry.id)].zh} /></p>
     <h3><a href={`/writing/${entry.id}/`}><Localized en={entry.data.title} zh={entry.data.titleZh} /></a></h3>
     {!compact && <p><Localized en={entry.data.description} zh={entry.data.descriptionZh} /></p>}
   </div>

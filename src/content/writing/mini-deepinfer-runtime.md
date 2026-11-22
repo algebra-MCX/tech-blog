@@ -14,7 +14,7 @@ eyebrowZh: "运行时设计"
 
 [DeepInfer](https://github.com/deepseek-ai/DeepInfer) serves DeepSeek-V4.1-Flash on dozens of GPUs with a C++ scheduler, EP/DP/CP parallelism and custom kernels. It is the most interesting inference engine to study right now, and also one of the hardest to read: the design decisions are spread across C++, Python and TileLang, and running it needs SM100 hardware.
 
-[mini-DeepInfer](https://github.com/algebra-MCX/mini-DeepInfer) is my attempt to keep what makes it distinctive and drop the scale. The full V4.1 architecture runs on a single GPU with a 68M-parameter random-weight checkpoint, the real V4.1-Flash runs on 4 × B200, and every step of a request can be followed and changed in plain PyTorch.
+[mini-DeepInfer](https://github.com/algebra-MCX/DeepInfer-Lab) is my attempt to keep what makes it distinctive and drop the scale. The full V4.1 architecture runs on a single GPU with a 68M-parameter random-weight checkpoint, the real V4.1-Flash runs on 4 × B200, and every step of a request can be followed and changed in plain PyTorch.
 
 | Kept | Dropped |
 | --- | --- |
@@ -141,7 +141,7 @@ def reduce_scatter_rows(y, num_rows):
     return out[:num_rows]
 ```
 
-That is the whole parallel layer ([`parallel.py`](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/minideepinfer/models/deepseek_v41/parallel.py), 38 lines). In a single process every helper is a no-op, so the same model code runs on one GPU and on four.
+That is the whole parallel layer ([`parallel.py`](https://github.com/algebra-MCX/DeepInfer-Lab/blob/main/deepinfer_lab/models/deepseek_v41/parallel.py), 38 lines). In a single process every helper is a no-op, so the same model code runs on one GPU and on four.
 
 ## Correctness against the official reference
 
@@ -173,8 +173,8 @@ Each module maps to a place in DeepInfer:
 The [technical notes](/writing/mini-deepinfer-technical-notes/) walk through the same code module by module. To run it:
 
 ```bash
-git clone https://github.com/algebra-MCX/mini-DeepInfer.git
-cd mini-DeepInfer
+git clone https://github.com/algebra-MCX/DeepInfer-Lab.git
+cd DeepInfer-Lab
 uv run examples/offline_inference.py   # any CUDA GPU with 8 GB; random weights, meaningless text
 ```
 

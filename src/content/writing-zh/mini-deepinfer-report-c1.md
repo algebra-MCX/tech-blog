@@ -111,4 +111,4 @@ source: mini-deepinfer-report-c1
 2. **C2：** 反量化按字节一次解两个值并向量化写出，预计 −80 ms。
 3. **C3：** gate 改用 tf32x3，精度接近 fp32，预计 −40 ms。
 
-原始数据：[`profile-2026-10-22/stage-c1/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/stage-c1/)。
+原始数据：[`profile-2026-10-22/stage-c1/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/stage-c1/)。

@@ -1,25 +1,18 @@
-# AI Systems Learning Hub
+# Independent learning site
 
-Separate Astro application within the tech-blog repository, matching the research blog's visual design. All English/Chinese guides are copied and maintainable independently.
+A separate Astro application in `learning/`, sharing the research site's layout, fonts and glass style from `../src`. Introductory guides and bilingual text remain under `learning/src/content`.
 
-## Run
+From the repository root:
 
-From the learning directory:
+```sh
+npm ci
+npm --prefix learning ci
+npm --prefix learning run build
+node scripts/preview-sites.mjs
+```
 
-    npm install
-    npm run build
-    npm run dev
+For production, use a separate Vercel project rooted at the repository root, build `npm ci && npm --prefix learning ci && npm --prefix learning run build`, output `learning/dist`. This includes the shared files and independent dependency lock. Set `SITE_URL` to the public learning origin. Both sites use `PUBLIC_HOMEPAGE_URL` for the personal homepage link, which defaults to https://algebra-mcx.github.io/.
 
-## Vercel deployment
+Old research-blog guide URLs remain available until the independent learning site is public and its replacement routes have been verified. Keep the research reading guide at `/guides/how-to-read/`.
 
-Import the repository algebra-MCX/tech-blog as a NEW Vercel project.
-Set Root Directory to learning and Framework to Astro.
-Set PUBLIC_SITE_URL to the actual published new domain.
-Optionally set PUBLIC_MAIN_BLOG_URL=https://tech-blog-chi.vercel.app
-
-After verifying the learning site, set PUBLIC_LEARNING_URL in the existing blog's Vercel project to the new site's verified URL.
-The original main-site guide links are intentionally preserved until the second site is deployed.
-
-## Scope
-
-The learning site contains curated bilingual guides and quickstarts, not a copy of the research posts. Original external references remain linked. Do not mirror unlicensed third-party source material.
+The learning Vercel configuration is repository-root based. After approval, select it with `vercel --local-config learning/vercel.json`; do not deploy the root research configuration to the learning project. Project identities must be resolved before any deployment.

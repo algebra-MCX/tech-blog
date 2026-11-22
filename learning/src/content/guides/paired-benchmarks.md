@@ -28,4 +28,4 @@ Plot or inspect the distribution and paired differences. Report the sample count
 
 ## Save the artifact
 
-Keep a manifest with the configuration, exact command, raw samples, correctness results and analysis script. The [MoEFlow order-control report](https://github.com/algebra-MCX/MoEFlow/blob/development/docs/e2e_w1_order_control.md) is a concrete repository reference. Follow the [project page](https://tech-blog-chi.vercel.app/projects/moeflow/) for its scope and related evidence.
+Keep a manifest with the configuration, exact command, raw samples, correctness results and analysis script. The [MoEFlow order-control report](https://github.com/algebra-MCX/MoEFlow/blob/development/docs/e2e_w1_order_control.md) is a concrete repository reference. Follow the [project page](https://github.com/algebra-MCX/MoEFlow) for its scope and related evidence.

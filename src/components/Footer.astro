@@ -1,9 +1,15 @@
+---
+import Localized from './Localized.astro';
+import { site } from '@/data/site';
+interface Props { siteKind?: 'research' | 'learning' }
+const learning = Astro.props.siteKind === 'learning';
+---
 <footer class="site-footer shell">
   <p>© {new Date().getFullYear()} Chenxi Ma</p>
-  <nav aria-label="Footer">
-    <a href="/writing/"><span data-lang="en">All articles</span><span data-lang="zh">全部文章</span></a>
-    <a href="https://algebra-mcx.github.io/"><span data-lang="en">Homepage ↗</span><span data-lang="zh">个人主页 ↗</span></a>
-    <a href="https://github.com/algebra-MCX">GitHub ↗</a>
-    <a href="/rss.xml">RSS</a>
+  <nav aria-label="Footer / 页脚">
+    {!learning && <a href="/notes/"><Localized en="Notes" zh="想法" /></a>}
+    <a href={site.homepage} data-cross-site><Localized en="Homepage" zh="个人主页" /></a>
+    <a href={site.github}>GitHub</a>
+    {!learning && <a href="/rss.xml">RSS</a>}
   </nav>
 </footer>

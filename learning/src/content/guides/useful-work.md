@@ -24,4 +24,4 @@ A shorter kernel does not automatically imply a shorter request. Dependencies, c
 
 ## Next step
 
-[Run a small expert-load experiment](/guides/expert-load-imbalance/), then [plan a paired comparison](/guides/paired-benchmarks/). The [MoEFlow project](https://tech-blog-chi.vercel.app/projects/moeflow/) connects these ideas to repository reports.
+[Run a small expert-load experiment](/guides/expert-load-imbalance/), then [plan a paired comparison](/guides/paired-benchmarks/). The [MoEFlow project](https://github.com/algebra-MCX/MoEFlow) connects these ideas to repository reports.

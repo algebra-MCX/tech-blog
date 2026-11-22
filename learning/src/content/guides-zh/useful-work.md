@@ -17,4 +17,4 @@ source: useful-work
 
 ## 下一步
 
-先[运行专家负载小实验](/guides/expert-load-imbalance/)，再[设计配对对比](/guides/paired-benchmarks/)。[MoEFlow 项目](https://tech-blog-chi.vercel.app/projects/moeflow/)提供相应仓库报告的入口。
+先[运行专家负载小实验](/guides/expert-load-imbalance/)，再[设计配对对比](/guides/paired-benchmarks/)。[MoEFlow 项目](https://github.com/algebra-MCX/MoEFlow)提供相应仓库报告的入口。

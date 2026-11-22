@@ -83,8 +83,10 @@
   const lens = nav?.querySelector(".nav-lens");
   if (!nav || !lens) return;
   const links = [...nav.querySelectorAll("a")];
-  let selected = links.find(link => link.getAttribute("aria-current") === "page") || links[0];
-  let lensTarget = selected;
+  if (!links.length) return;
+  let lensTarget = links.find(link => link.getAttribute("aria-current") === "page") || links[0];
+  lensTarget.classList.add("is-lens-target");
+  let navigationPending = false;
   let lensFrame = 0;
   let current = null;
   let lastTime = null;
@@ -185,7 +187,9 @@
   links.forEach(link => {
     function dockLens() {
       if (link.getAttribute("aria-disabled") === "true") return;
+      lensTarget.classList.remove("is-lens-target");
       lensTarget = link;
+      lensTarget.classList.add("is-lens-target");
       revealLensTarget();
       refreshLens();
     }
@@ -193,6 +197,24 @@
       if (finePointer.matches && event.pointerType !== "touch") dockLens();
     });
     link.addEventListener("focus", dockLens);
+    link.addEventListener("click", event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (link.getAttribute("aria-disabled") === "true") return;
+      dockLens();
+      if (reducedMotion.matches || !rippleLayer || !link.href || link.hasAttribute("download")) return;
+      if (link.target && link.target !== "_self") return;
+      const destination = new URL(link.href);
+      if (!/^https?:$/.test(destination.protocol)) return;
+      if (destination.origin === location.origin && destination.pathname === location.pathname && destination.hash) return;
+      // Let the rings paint before a document navigation replaces the overlay.
+      event.preventDefault();
+      if (navigationPending) return;
+      navigationPending = true;
+      window.setTimeout(() => {
+        navigationPending = false;
+        location.assign(destination.href);
+      }, 220);
+    });
   });
   reducedMotion.addEventListener("change", refreshLens);
   window.addEventListener("resize", refreshLens, { passive: true });

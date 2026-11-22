@@ -91,4 +91,4 @@ tiny 模型的上下文不超过 1,280 token，打分本来就不是瓶颈。−
    通信 70 ms。目标 120 ms 左右，预计吞吐约 6,000 tok/s/GPU（17%）。
 2. **B2：** 候选块内打分、更快的 top-k 和 mask，预计再省约 50 ms。
 
-原始数据：[`profile-2026-10-22/stage-b1/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/stage-b1/)。
+原始数据：[`profile-2026-10-22/stage-b1/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/stage-b1/)。

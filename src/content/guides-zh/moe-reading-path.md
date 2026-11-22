@@ -19,7 +19,7 @@ source: moe-reading-path
 
 ## 进入项目
 
-打开 [MoEFlow](/projects/moeflow/)，先读概览，再查看仓库的验证与顺序控制报告。区分局部层级结果与端到端服务结果。
+打开 [MoEFlow](/projects/moeflow/)，沿着固定容量示例，核对测量记录与当前实验脚本。区分局部层级结果与端到端服务结果。
 
 ## 带着问题继续
 

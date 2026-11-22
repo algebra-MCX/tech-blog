@@ -1,6 +1,6 @@
 ---
-title: "From 3% to 11.9% of DeepInfer: Three Prefill Kernels on 4 × B200"
-titleZh: "从官方的 3% 到 11.9%：4 × B200 上的三项 prefill 优化"
+title: "Where Does the Prefill Bottleneck Move After a Kernel Gets Faster?"
+titleZh: "一个 Kernel 加速后，Prefill 瓶颈转移到了哪里？"
 description: "Paired, profiled measurements of the real DeepSeek-V4.1-Flash: tensor-core sparse attention, a fused indexer and a local-row MoE combine took mini-DeepInfer from 1,085 to 4,316 input tok/s/GPU — and showed where the remaining 8.4× lives."
 descriptionZh: "真实 DeepSeek-V4.1-Flash 上的配对、带 profile 的测量：tensor core 稀疏注意力、融合 indexer 和只合并本地行的 MoE，把 mini-DeepInfer 从 1,085 提到 4,316 输入 tok/s/GPU，并定位了剩余 8.4 倍差距所在。"
 publishDate: 2026-10-23
@@ -10,6 +10,14 @@ draft: false
 eyebrow: "Performance report"
 eyebrowZh: "性能报告"
 ---
+## What changed my diagnosis
+
+Sparse attention initially dominated the profile, but accelerating that kernel did not make the rest of the step disappear. The A, B1 and C1 changes progressively shifted the next question toward input preparation, expert work and attention key assembly. My current interpretation is that the remaining gap is distributed across multiple stages. The profiles identify where to investigate, and the paired run measures total prefill throughput.
+
+A useful countercheck would hold the workload and KV budget fixed and change only how the attention keys are assembled or read. If assembly time falls while steady-state prefill stays flat, a different stage, overlap, or the profiler itself could explain why the cost did not translate into a throughput gain.
+
+[Source snapshot](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f) · [Raw logs, profiles and job plans](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f/docs/benchmarks/profile-2026-10-22) · [Per-change reports](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f/docs/perf-reports)
+
 ## The measurement
 
 [mini-DeepInfer](/writing/mini-deepinfer-runtime/) runs the real DeepSeek-V4.1-Flash on a single node with 4 × B200. The prefill benchmark copies the way DeepInfer measures itself: request counts, warm-up and measurement windows and metric definitions match the official `run_sweep.sh prefill`, and the same workload file drives both engines.
@@ -128,7 +136,7 @@ Of the 254 ms of other attention after C1, 182 ms is key concatenation (gather /
 - mini's optional non-expert weight cache was disabled.
 - Tiny-model single-GPU output throughput is a different workload and metric. On that suite the three changes moved goodput by +6%, −1.8% (within run-to-run noise) and +2.1%.
 
-The full per-change reports are [A](/writing/mini-deepinfer-report-a/), [B1](/writing/mini-deepinfer-report-b1/) and [C1](/writing/mini-deepinfer-report-c1/). Raw logs, profiles and job plans are in the repository under [`docs/benchmarks/profile-2026-10-22/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/); to rerun the measurement:
+The full per-change reports are [A](/writing/mini-deepinfer-report-a/), [B1](/writing/mini-deepinfer-report-b1/) and [C1](/writing/mini-deepinfer-report-c1/). Raw logs, profiles and job plans are in the repository under [`docs/benchmarks/profile-2026-10-22/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/); to rerun the measurement:
 
 ```bash
 torchrun --nproc-per-node 4 bench_prefill.py \

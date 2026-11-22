@@ -36,4 +36,4 @@ concentrated: total=64, max=64, imbalance=4.0, capacity=256
 
 ## 这个模型的边界
 
-它没有包含通信、内核效率、路由开销与真实容量策略，不能用于预测加速比。可以据此提出下一项实验，再进入 [MoEFlow 项目](https://tech-blog-chi.vercel.app/projects/moeflow/)或[配对测量手册](/guides/paired-benchmarks/)。
+它没有包含通信、内核效率、路由开销与真实容量策略，不能用于预测加速比。可以据此提出下一项实验，再进入 [MoEFlow 项目](https://github.com/algebra-MCX/MoEFlow)或[配对测量手册](/guides/paired-benchmarks/)。

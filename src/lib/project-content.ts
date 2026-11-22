@@ -1,3 +1,4 @@
+import { writingEvidence } from '@/data/evidence';
 import { getCollection } from 'astro:content';
 import { type Project, projectContributions } from '@/data/projects';
 import { writingMap, noteMap } from '@/data/library';
@@ -12,7 +13,7 @@ export type ProjectView = typeof projectViews[number]['id'];
 export type ProjectItem = {
   id: string; href: string; title: string; titleZh: string;
   description?: string; descriptionZh?: string;
-  kind: string; source: 'outline' | 'repository' | 'pull-request'; state?: string;
+  kind: string; source: 'outline' | 'repository' | 'pull-request' | 'measurement' | 'engineering' | 'proposal' | 'analysis'; state?: string;
 };
 export async function getProjectContent(project: Project) {
   const [writing, notes, guides] = await Promise.all([
@@ -26,7 +27,7 @@ export async function getProjectContent(project: Project) {
   const outlines: ProjectItem[] = [
     ...writing.filter(entry => writingMap[entry.id]?.project === project.id)
       .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-      .map(entry => ({ id: entry.id, href: `/writing/${entry.id}/`, title: entry.data.title, titleZh: entry.data.titleZh, description: entry.data.description, descriptionZh: entry.data.descriptionZh, kind: writingMap[entry.id].section ?? 'design', source: 'outline' as const })),
+      .map(entry => ({ id: entry.id, href: `/writing/${entry.id}/`, title: entry.data.title, titleZh: entry.data.titleZh, description: entry.data.description, descriptionZh: entry.data.descriptionZh, kind: writingMap[entry.id].section ?? 'design', source: writingEvidence(entry.id) })),
     ...notes.filter(entry => noteMap[entry.id]?.project === project.id && !noteMap[entry.id]?.noteCategory)
       .map(entry => ({ id: entry.id, href: `/notes/${entry.id}/`, title: entry.data.title, titleZh: entry.data.titleZh, kind: noteMap[entry.id].section ?? 'design', source: 'outline' as const }))
   ];

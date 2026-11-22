@@ -87,4 +87,4 @@ Ordered by remaining time: MoE 726 ms, indexer 461 ms, other attention 254 ms.
 2. **B2:** score only the candidate blocks in layers 24–36.
 3. **C:** run MoE grouped GEMM directly on FP4 weights.
 
-Raw data: [`profile-2026-10-22/stage-a/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/stage-a/); before the change: [`profile-2026-10-22/`](https://github.com/algebra-MCX/mini-DeepInfer/tree/main/docs/benchmarks/profile-2026-10-22/).
+Raw data: [`profile-2026-10-22/stage-a/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/stage-a/); before the change: [`profile-2026-10-22/`](https://github.com/algebra-MCX/DeepInfer-Lab/tree/main/docs/benchmarks/profile-2026-10-22/).

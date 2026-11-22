@@ -21,4 +21,4 @@ source: paired-benchmarks
 
 ## 保存材料
 
-保留配置、完整命令、原始样本、正确性结果与分析脚本。[MoEFlow 测量顺序控制报告](https://github.com/algebra-MCX/MoEFlow/blob/development/docs/e2e_w1_order_control.md)提供一个具体仓库参考。[项目页](/projects/moeflow/)说明其研究范围与相关证据。
+保留配置、完整命令、原始样本、正确性结果与分析脚本。[MoEFlow 交替计时实现](https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/scripts/bench/timing.py)提供一个具体仓库参考。[项目页](/projects/moeflow/)说明其研究范围与相关证据。

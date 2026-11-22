@@ -1,4 +1,6 @@
 ---
+import { evidenceLabels, writingEvidence } from '@/data/evidence';
+import PrefillExplorer from '@/components/PrefillExplorer.astro';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
@@ -15,6 +17,7 @@ interface Props {
   headingsZh?: { depth: number; slug: string; text: string }[];
 }
 const { entry, headings, headingsZh = [] } = Astro.props;
+const material = entry.collection === 'writing' ? evidenceLabels[writingEvidence(entry.id)] : undefined;
 const toc = headings.filter((heading) => heading.depth === 2);
 const tocZh = headingsZh.filter((heading) => heading.depth === 2);
 const contents = [{ language: 'en', headings: toc }, { language: 'zh', headings: tocZh }];
@@ -24,25 +27,27 @@ const assignment = entry.collection === 'writing' ? writingMap[entry.id] : undef
 const project = projectById(assignment?.project);
 const guideSection = entry.collection === 'guides' && entry.data.category === 'quickstarts' ? guideSections.find(s => s.id === entry.data.category) : undefined;
 const section = projectSections.find(s => s.id === assignment?.section);
-const parentHref = project ? `/projects/${project.id}/` : guideSection ? `/guides/sections/${guideSection.id}/` : entry.collection === 'guides' ? '/guides/' : '/writing/';
+const parentHref = project ? `/projects/${project.id}/` : guideSection ? `/guides/sections/${guideSection.id}/` : entry.collection === 'guides' ? '/guides/' : '/projects/';
 const parentEn = project?.title ?? guideSection?.en ?? (entry.collection === 'guides' ? 'Guides' : 'All articles');
 const parentZh = project?.titleZh ?? guideSection?.zh ?? (entry.collection === 'guides' ? '指南' : '全部文章');
 const projectWriting = project ? (await getCollection('writing', ({ data }) => !data.draft)).filter(item => writingMap[item.id]?.project === project.id).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()) : [];
 const nextArticle = projectWriting[projectWriting.findIndex(item => item.id === entry.id) + 1];
 ---
-<BaseLayout title={`${entry.data.title} — Chenxi Ma`} description={entry.data.description} article>
+<BaseLayout title={`${entry.data.title} — Chenxi Ma`} description={entry.data.description} image={entry.id === 'moeflow-fixed-capacity' ? '/og-moeflow.png' : undefined} article>
   {entry.collection === 'guides' && <GuideProjectContext guideId={entry.id} position="top" />}
   <article class="article">
     <header class="article-header shell reading-glass">
+      {entry.id.startsWith('mini-deepinfer') && <p class="evidence-caption"><Localized en="Historical name: mini-DeepInfer. The repository is now DeepInfer-Lab; measurements belong to the dated configurations below." zh="文章保留历史名称 mini-DeepInfer，仓库现名 DeepInfer-Lab；测量结论对应下文标注日期的配置。" /></p>}
       <div class="article-meta reveal">
         <nav aria-label="Breadcrumb"><a href={entry.collection === 'guides' ? '/guides/' : '/projects/'}><Localized en={entry.collection === 'guides' ? 'Guides' : 'Projects'} zh={entry.collection === 'guides' ? '指南' : '项目'} /></a>{!(entry.collection === 'guides' && !guideSection) && <><span>›</span><a href={parentHref}><Localized en={parentEn} zh={parentZh} /></a></>}{section && project && <><span>›</span><a href={`/projects/${project.id}/articles/?kind=${section.id}`}><Localized en={section.en} zh={section.zh} /></a></>}</nav>
         <p><time datetime={entry.data.publishDate.toISOString()}><Localized en={formatDate(entry.data.publishDate)} zh={formatDateZh(entry.data.publishDate)} /></time><span>·</span>{readingMinutes(entry.body)} <Localized en="min read" zh="分钟阅读" /></p>
       </div>
       <div class="article-hero">
         <div class="article-title reveal reveal--2">
-          {'eyebrow' in entry.data && entry.data.eyebrow && <p class="eyebrow"><Localized en={entry.data.eyebrow} zh={entry.data.eyebrowZh ?? entry.data.eyebrow} /></p>}
+          {'eyebrow' in entry.data && entry.data.eyebrow && entry.data.eyebrow !== material?.en && <p class="eyebrow"><Localized en={entry.data.eyebrow} zh={entry.data.eyebrowZh ?? entry.data.eyebrow} /></p>}
           <h1><Localized en={entry.data.title} zh={entry.data.titleZh} /></h1>
           <p class="dek"><Localized en={entry.data.description} zh={entry.data.descriptionZh} /></p>
+          {material && <p class="evidence-status"><Localized en={material.en} zh={material.zh} /></p>}
           <div class="article-tags">{entry.data.tags.map((tag) => <Tag text={tag} href={entry.collection === 'guides' ? `/search/?type=guide&query=${encodeURIComponent(tag)}` : `/writing/?tag=${encodeURIComponent(tag)}`} />)}</div>
           {assignment?.state === 'outline' && <p class="reading-status"><strong><Localized en="Working outline" zh="研究提纲" /></strong> · <Localized en="Hypotheses and measurement plans; verified results are still being attached." zh="包含假设与测量计划，经验证的结果仍在补充中。" /></p>}
         </div>
@@ -61,7 +66,7 @@ const nextArticle = projectWriting[projectWriting.findIndex(item => item.id === 
         <p><Localized en="Contents" zh="目录" /></p>
         {contents.map((list) => <ol data-lang={list.language}>{list.headings.map((heading, index) => <li><a href={`#${heading.slug}`} data-toc-link><span>{String(index + 1).padStart(2, '0')}.</span><span>{tocLabel(heading.text)}</span></a></li>)}</ol>)}
       </aside>
-      <div class="prose reading-glass"><slot />{project && nextArticle && <a class="project-next-article" href={`/writing/${nextArticle.id}/`}><span class="eyebrow">{project.title} · <Localized en="Next in this project" zh="接着读" /></span><strong><Localized en={nextArticle.data.title} zh={nextArticle.data.titleZh} /> →</strong>{writingMap[nextArticle.id]?.state === 'outline' && <span><Localized en="Working outline" zh="研究提纲" /></span>}</a>}{entry.collection === 'guides' && <GuideProjectContext guideId={entry.id} position="next" />}{entry.id !== 'how-to-read' && <nav class="article-return" data-guide-return={entry.collection === 'guides' ? true : undefined} aria-label="Continue reading"><a href={project ? `/projects/${project.id}/articles/` : parentHref}><Localized en={project ? `← ${parentEn} articles` : `← Back to ${parentEn}`} zh={project ? `← ${parentZh}的全部文章` : `← 返回${parentZh}`} /></a>{project && <a href={`/projects/${project.id}/start/`}><Localized en="Reading path →" zh="阅读路线 →" /></a>}</nav>}</div>
+      <div class="prose reading-glass">{entry.id === 'mini-deepinfer-prefill' && <PrefillExplorer />}<slot />{project && nextArticle && <a class="project-next-article" href={`/writing/${nextArticle.id}/`}><span class="eyebrow">{project.title} · <Localized en="Next in this project" zh="接着读" /></span><strong><Localized en={nextArticle.data.title} zh={nextArticle.data.titleZh} /> →</strong>{writingMap[nextArticle.id]?.state === 'outline' && <span><Localized en="Working outline" zh="研究提纲" /></span>}</a>}{entry.collection === 'guides' && <GuideProjectContext guideId={entry.id} position="next" />}{entry.id !== 'how-to-read' && <nav class="article-return" data-guide-return={entry.collection === 'guides' ? true : undefined} aria-label="Continue reading"><a href={project ? `/projects/${project.id}/articles/` : parentHref}><Localized en={project ? `← ${parentEn} articles` : `← Back to ${parentEn}`} zh={project ? `← ${parentZh}的全部文章` : `← 返回${parentZh}`} /></a>{project && <a href={`/projects/${project.id}/start/`}><Localized en="Reading path →" zh="阅读路线 →" /></a>}</nav>}</div>
     </div>
   </article>
 </BaseLayout>
@@ -95,7 +100,20 @@ const nextArticle = projectWriting[projectWriting.findIndex(item => item.id === 
         if (!pre || pre.dataset.rendered) continue;
         pre.dataset.rendered = 'true';
         const container = document.createElement('div'); container.className = 'mermaid-diagram';
-        try { const { svg } = await mermaid.render(`mermaid-${index}-${Date.now()}`, block.textContent ?? ''); container.innerHTML = svg; pre.replaceWith(container); } catch { /* Keep source visible if Mermaid cannot render. */ }
+        try {
+          const { svg } = await mermaid.render(`mermaid-${index}-${Date.now()}`, block.textContent ?? '');
+          container.innerHTML = svg;
+          const drawing = container.querySelector('svg');
+          if (drawing) {
+            drawing.style.maxWidth = 'none';
+            const viewBox = drawing.getAttribute('viewBox')?.split(/\s+/).map(Number);
+            drawing.style.width = `${Math.max(280, viewBox?.[2] || 280)}px`;
+            drawing.style.height = 'auto';
+          }
+          container.tabIndex = 0;
+          container.setAttribute('aria-label', 'Mechanism diagram; scroll to inspect / 机制图，可横向滚动查看');
+          pre.replaceWith(container);
+        } catch { /* Keep source visible if Mermaid cannot render. */ }
       }
     }
   };

@@ -28,4 +28,4 @@ Plot or inspect the distribution and paired differences. Report the sample count
 
 ## Save the artifact
 
-Keep a manifest with the configuration, exact command, raw samples, correctness results and analysis script. The [MoEFlow order-control report](https://github.com/algebra-MCX/MoEFlow/blob/development/docs/e2e_w1_order_control.md) is a concrete repository reference. Follow the [project page](/projects/moeflow/) for its scope and related evidence.
+Keep a manifest with the configuration, exact command, raw samples, correctness results and analysis script. The [MoEFlow interleaved timing implementation](https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/scripts/bench/timing.py) is a concrete repository reference. Follow the [project page](/projects/moeflow/) for its scope and related evidence.

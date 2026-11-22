@@ -5,7 +5,7 @@ source: mini-deepinfer-runtime
 
 [DeepInfer](https://github.com/deepseek-ai/DeepInfer) 在几十张 GPU 上服务 DeepSeek-V4.1-Flash，靠的是 C++ 调度器、EP/DP/CP 并行和定制 kernel。它是当下最值得研究的推理引擎之一，也是最难读的之一：设计决策分散在 C++、Python 和 TileLang 里，运行还需要 SM100 硬件。
 
-[mini-DeepInfer](https://github.com/algebra-MCX/mini-DeepInfer) 尝试保留它最有特色的部分、去掉规模相关的部分。完整的 V4.1 架构可以用 6800 万参数的随机权重 checkpoint 在单张 GPU 上运行，真实的 V4.1-Flash 在 4 × B200 上运行，请求的每一步都能在普通 PyTorch 代码里跟踪和修改。
+[mini-DeepInfer](https://github.com/algebra-MCX/DeepInfer-Lab) 尝试保留它最有特色的部分、去掉规模相关的部分。完整的 V4.1 架构可以用 6800 万参数的随机权重 checkpoint 在单张 GPU 上运行，真实的 V4.1-Flash 在 4 × B200 上运行，请求的每一步都能在普通 PyTorch 代码里跟踪和修改。
 
 | 保留 | 去掉 |
 | --- | --- |
@@ -132,7 +132,7 @@ def reduce_scatter_rows(y, num_rows):
     return out[:num_rows]
 ```
 
-这就是整个并行层（[`parallel.py`](https://github.com/algebra-MCX/mini-DeepInfer/blob/main/minideepinfer/models/deepseek_v41/parallel.py)，38 行）。单进程时这些函数都是空操作，所以同一份模型代码既能跑一张卡，也能跑四张卡。
+这就是整个并行层（[`parallel.py`](https://github.com/algebra-MCX/DeepInfer-Lab/blob/main/deepinfer_lab/models/deepseek_v41/parallel.py)，38 行）。单进程时这些函数都是空操作，所以同一份模型代码既能跑一张卡，也能跑四张卡。
 
 ## 对照官方参考实现
 
@@ -164,8 +164,8 @@ token 比较到官方自身 top-2 差距小于容差的那一步为止：随机�
 [技术说明](/writing/mini-deepinfer-technical-notes/)按模块逐段对应这份代码。运行方式：
 
 ```bash
-git clone https://github.com/algebra-MCX/mini-DeepInfer.git
-cd mini-DeepInfer
+git clone https://github.com/algebra-MCX/DeepInfer-Lab.git
+cd DeepInfer-Lab
 uv run examples/offline_inference.py   # 任意 8 GB 显存的 CUDA GPU；随机权重，输出文本没有意义
 ```
 

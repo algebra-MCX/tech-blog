@@ -1,67 +1,49 @@
 ---
-title: "How to read this blog"
-titleZh: "如何阅读这个博客"
-description: "Project-driven learning: a short path in, a working mental model, and the ability to explore independently."
-descriptionZh: "以项目驱动学习：尽快入门，建立可运行的心智模型，具备独立探索的能力。"
-publishDate: 2026-10-22
+title: "A Reading Path Through My Research"
+titleZh: "如何阅读我的研究与工程成果"
+description: "Start with a measured investigation, inspect the implementation and evidence, then find the open questions."
+descriptionZh: "先看有测量的代表作，再核对实现与证据，最后查看尚待验证的问题。"
+publishDate: 2026-11-22
 category: learning-paths
 domains: [algorithms, data, infra]
-tags: [Start Here, Project-driven Learning]
+tags: [Start Here, Research, Evidence]
 ---
-**Knowledge keeps growing. What is truly scarce is a learning path that is short and clear without sacrificing depth.**
+This site is for researchers and engineers who want to understand how I reason about AI systems, inspect what I built and decide whether there is a useful technical conversation to have.
 
-The LLM field moves fast, making it easy to learn in fragments without knowing what you understand or where to go next. Be wary of handing your core thinking over to a coding agent.
+The [homepage](/) is an editorial selection, not a list sorted by recency. Start with the question that is closest to your work.
 
-Zhang Yiming has spoken about understanding as a core competitive advantage—something others must ultimately find valuable. Depth of understanding does not come from collecting more technologies. It comes from knowing which problems matter most in a field and developing your own thinking about them. That is why I started this blog.
+## Start with one investigation
 
-## 01. Get started as quickly as possible
+**Performance reasoning:** read [the three-step DeepInfer-Lab prefill study](/writing/mini-deepinfer-prefill/). It moves from a profile to a kernel change, correctness checks and a new bottleneck. The 3.98× improvement is relative to my initial implementation. The official reference remains 8.4× faster in the stated configuration.
 
-Getting started should be fast, but the foundations must hold. I believe the first pass should take no more than a week: a short, concentrated effort with one test of understanding—can you reconstruct the core principles from a blank whiteboard?
+**Execution-design tradeoffs:** read [MoEFlow's fixed-capacity study](/writing/moeflow-fixed-capacity/). Fusion improves its own Torch Ring baseline, but native vLLM still wins the separate layer comparison. Stable serving speedup is not established.
 
-For LLM infrastructure, for example, you do not need to spend two months learning all of PyTorch first. Learn the necessary concepts—tensors, autograd and GPU execution—then build a minimal inference program. Return to the principles when a concrete problem exposes a gap. Foundations should help you solve problems rather than become a barrier to starting.
+**Upstream engineering:** read [the merged vLLM DBO correctness fixes](/writing/vllm-dbo-correctness/). Follow token-row ownership from a failing regression to the patch, model comparison and collaborator's refactor.
 
-This is the method behind the whole blog: **project-driven learning**.
+## Find the evidence beside the claim
 
-## 02. One short entry path for each field
+For each study, look for the baseline, exact measurement boundary, model, hardware, workload, correctness rule and known limits. The numerical widget on the prefill study switches among recorded rounds; it is not a GPU simulation or a fresh benchmark.
 
-I plan to build a concise route into each major field, paired with a small project:
+| Work | Implementation | Experimental or review evidence |
+| --- | --- | --- |
+| DeepInfer-Lab, formerly mini-DeepInfer | [Source snapshot](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f) | [Logs, profiles and job plans](https://github.com/algebra-MCX/DeepInfer-Lab/tree/23ccc4dca8bb58fb47803ee061ee0825bacdfe9f/docs/benchmarks/profile-2026-10-22) |
+| MoEFlow | [Source and independent reference](https://github.com/algebra-MCX/MoEFlow/tree/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8) | [Recorded tables and limitations](https://github.com/algebra-MCX/MoEFlow/blob/2f4968ffef7cac4f8dcf39a4a65cec55c60472f8/README.md#performance); raw paired JSON is not in this snapshot |
+| vLLM | [Routing patch and regression](https://github.com/vllm-project/vllm/pull/63372/files) | [Review, validation and co-author credit](https://github.com/vllm-project/vllm/pull/63372) |
 
-- **Systems**: start with a minimal inference engine to understand runtime, scheduling, GPU kernels and distributed execution.
-- **Algorithms**: use mathematical intuition and minimal implementations to understand why model architectures work.
-- **Hardware**: begin with GPU execution and memory models to build intuition for hardware–software co-design.
-- **Agents**: start with a minimal tool-calling loop to understand planning, memory and state.
-- **Data**: build a runnable data pipeline to understand the central problems in data systems.
+I have checked that these materials are available. That is not a claim that I reran their GPU benchmarks while preparing this site. Historical source labels and incomplete provenance stay visible in the reports.
 
-You do not need to begin with tens of thousands of lines of framework source. Build the essential mechanism first.
+## Distinguish results from proposals
 
-## 03. What counts as being ready to explore?
+**Measured experiment** means a stated configuration has recorded results. **Merged engineering** means the linked upstream accepted the change. **Mechanism analysis** explains an implementation. **Engineering proposal** remains a proposed change. **Research outline** contains questions or a measurement plan, not established experimental conclusions.
 
-I do not measure understanding by the number of articles read or hours spent studying. For each field, I will provide three things: **a minimal implementation, a few key experiments, and a set of practical checks**—modify the implementation, explain what happens and analyze the bottlenecks.
+The [decode-staging proposal](/writing/vllm-decode-staging/) is a useful example: historical timings and head-specific correctness tests have different versions and limits. They cannot be promoted into one general speedup claim. The [writing archive](/writing/) labels the state of every entry.
 
-After working through a minimal inference engine, for example, you should be able to do more than run it. You should understand how requests are scheduled, how the KV cache is managed, where bottlenecks might arise, and how to test your judgment experimentally. That is what I mean by being ready to explore. It does not mean mastery; it means having a working mental model and the ability to keep going independently.
+## Follow a request when the mechanism gets complicated
 
-**The goal of an introduction is not to learn everything. It is to become capable of continuing on your own.**
+Read [the runtime walkthrough](/writing/mini-deepinfer-runtime/): request arrival, block and state-slot allocation, prefill/decode scheduling, sampling and release. Then use the [technical notes](/writing/mini-deepinfer-technical-notes/) for module-level details. The diagram, worked row examples and measurements should explain the same contract.
 
-## 04. Connect the parts to the whole
+## Bring a concrete question
 
-Understanding one kernel, attention mechanism or runtime in isolation is not enough. Why does a model architecture change the design of an inference system? Why does a GPU's memory hierarchy affect algorithm choices? Why do some methods that theoretically reduce computation turn out to be slower in practice? No single field offers a complete answer.
-
-I plan to develop this blog from the fundamentals to deeper ideas, weaving in my own thinking.
-
-## 05. Open code and experiments
-
-I will gradually open-source the small projects, core experiments and practical checks on GitHub so that others can run, modify, question and reproduce them. For each experiment, I will try to record the version, environment, measurement method, comparison conditions and known limitations. Failed experiments, mistaken hypotheses and debugging records deserve a place too.
-
-## 06. Perhaps we can research together
-
-If the opportunity arises, I would like to organize small study groups around these projects: reading papers, reproducing experiments and discussing designs. An impressive background is not required. What matters is a willingness to build, think carefully and let experimental results test your views. This is still an idea; I hope it can gradually take shape.
-
-## Where to begin
-
-- **New to a field**: start with [Quickstarts](/guides/sections/quickstarts/), then work through a first Nano Project and its core experiments as the routes develop.
-- **Interested in my work**: explore my [projects and open-source contributions](/projects/). I would love to exchange ideas and experiences.
-- **Curious about my thinking**: read [Notes](/notes/) for my views on the future of technology, essays on everyday life, and lessons from different areas of experience.
-
-Spend less time on things that are not worth your attention, and more time developing your taste: recognizing which problems are worth solving and which work deserves a deeper look.
+A counterexample, reproduction attempt, trace or alternative design is a good reason to talk. Include the input, source revision, comparison rule and the boundary where our explanations differ. Reach me through [my personal homepage](https://algebra-mcx.github.io/) or open a [DeepInfer-Lab issue](https://github.com/algebra-MCX/DeepInfer-Lab/issues).
 
 — Chenxi Ma

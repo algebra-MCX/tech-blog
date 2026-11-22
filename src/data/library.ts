@@ -30,6 +30,9 @@ export const noteTopics = [
 export const visibleNoteTopics = noteTopics.filter(topic => topic.id !== 'research' && topic.id !== 'investing');
 export type Assignment = { project?: string; section?: 'experiments' | 'debugging' | 'design'; state: 'outline' | 'perspective'; noteCategory?: 'perspectives' | 'decisions' | 'questions'; noteTopic?: typeof noteTopics[number]['id'] };
 export const writingMap: Record<string, Assignment> = {
+  'moeflow-fixed-capacity': { project: 'moeflow', section: 'experiments', state: 'perspective' },
+  'vllm-dbo-correctness': { project: 'vllm', section: 'debugging', state: 'perspective' },
+  'vllm-decode-staging': { project: 'vllm', section: 'design', state: 'perspective' },
   'cuda-graph-fallback': { project: 'vllm', section: 'debugging', state: 'outline' },
   'benchmarking-moe': { project: 'moeflow', section: 'experiments', state: 'outline' },
   'gpu-memory-long-context': { project: 'vllm', section: 'experiments', state: 'outline' },

@@ -55,3 +55,7 @@ The pinned homepage reading guide is `src/content/guides/how-to-read.md`, with i
 Copy `.env.example` to `.env` and replace the example domain, social URLs, and email address. Search the content for `TODO` before publishing: benchmark details, hardware, contribution status, biography, and profiler captures were deliberately not invented.
 
 The default canonical domain is `https://tech-blog-chi.vercel.app`; override it with `SITE_URL` only when changing the deployment domain.
+
+## Local research and learning previews
+
+Run `node scripts/preview-sites.mjs` to build and serve the research blog at http://localhost:4321/ and the independent learning site at http://localhost:4322/. Both link back to the personal homepage preview at http://localhost:4323/. See [learning site configuration](learning/README.md) for configuration and verification.

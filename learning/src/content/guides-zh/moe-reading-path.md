@@ -19,7 +19,7 @@ source: moe-reading-path
 
 ## 进入项目
 
-打开 [MoEFlow](https://tech-blog-chi.vercel.app/projects/moeflow/)，先读概览，再查看仓库的验证与顺序控制报告。区分局部层级结果与端到端服务结果。
+打开 [MoEFlow](https://github.com/algebra-MCX/MoEFlow)，先读概览，再查看仓库的验证与顺序控制报告。区分局部层级结果与端到端服务结果。
 
 ## 带着问题继续
 
