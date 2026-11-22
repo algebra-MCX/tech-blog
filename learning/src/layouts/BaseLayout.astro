@@ -1,7 +1,13 @@
 ---
 import SharedLayout from '../../../src/layouts/BaseLayout.astro';
 import '../styles/learning.css';
-interface Props { title?: string; description?: string; image?: string; article?: boolean }
-const {image='/og-inference.png', article=false, title='Learning — Chenxi Ma',description='Necessary concepts, minimal implementations and one-variable experiments connected to real AI systems.'}=Astro.props;
+import type { ComponentProps } from 'astro/types';
+type Props = Omit<ComponentProps<typeof SharedLayout>, 'siteKind'>;
+const {
+  image = '/og-inference.png',
+  title = 'Learning — Chenxi Ma',
+  description = 'Necessary concepts, minimal implementations and one-variable experiments connected to real AI systems.',
+  ...metadata
+} = Astro.props;
 ---
-<SharedLayout title={title} description={description} image={image} article={article} siteKind="learning"><slot /></SharedLayout>
+<SharedLayout title={title} description={description} image={image} {...metadata} siteKind="learning"><slot /></SharedLayout>

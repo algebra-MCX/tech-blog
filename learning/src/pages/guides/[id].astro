@@ -8,10 +8,16 @@ import {guideInfo} from '../../guide-info';
 export async function getStaticPaths(){const entries=await getCollection('guides',({data})=>!data.draft);const zh=await getCollection('guidesZh');return entries.map(entry=>({params:{id:entry.id},props:{entry,translation:zh.find(t=>t.data.source===entry.id)}}));}
 const {entry,translation}=Astro.props;const en=await render(entry);const zh=translation?await render(translation):null;const Content=en.Content;const ContentZh=zh?.Content;
 const info = guideInfo[entry.id];
+const isReadingGuide = entry.id === 'how-to-read';
+const canonicalPath = isReadingGuide ? import.meta.env.BASE_URL : undefined;
+const articleDetails = isReadingGuide ? undefined : {
+  headline: entry.data.title,
+  published: entry.data.publishDate
+};
 const lists=[{lang:'en',headings:en.headings},{lang:'zh',headings:zh?.headings??[]}];
 ---
-<BaseLayout title={`${entry.data.title} — Learning`} description={entry.data.description} image={info?.image} article>
-{entry.id === 'how-to-read' ? <ReadingGuide /> : <article class="shell hub-article"><header class="reading-glass hub-article-header"><nav class="hub-breadcrumb" aria-label="Breadcrumb / 面包屑"><a href="/"><Localized en="Learning" zh="学习首页" /></a><span>›</span><a href="/guides/sections/quickstarts/"><Localized en="Guides & experiments" zh="指南与实验" /></a></nav><h1><Localized en={entry.data.title} zh={entry.data.titleZh}/></h1><p><Localized en={entry.data.description} zh={entry.data.descriptionZh}/></p>{info && <dl class="guide-start"><div><dt><Localized en="You need" zh="需要的基础" /></dt><dd><Localized en={info.need} zh={info.needZh} /></dd></div><div><dt><Localized en="Try this" zh="动手任务" /></dt><dd><Localized en={info.task} zh={info.taskZh} /></dd></div></dl>}</header><details class="learning-toc reading-glass"><summary><Localized en="Contents" zh="目录" /></summary>{lists.map(list=><ul data-lang={list.lang}>{list.headings.filter(h=>h.depth===2).map(h=><li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>)}</details>
+<BaseLayout title={`${entry.data.title} — Learning`} description={entry.data.description} image={info?.image} articleDetails={articleDetails} canonicalPath={canonicalPath}>
+{isReadingGuide ? <ReadingGuide /> : <article class="shell hub-article"><header class="reading-glass hub-article-header"><nav class="hub-breadcrumb" aria-label="Breadcrumb / 面包屑"><a href="/"><Localized en="Learning" zh="学习首页" /></a><span>›</span><a href="/guides/sections/quickstarts/"><Localized en="Guides & experiments" zh="指南与实验" /></a></nav><h1><Localized en={entry.data.title} zh={entry.data.titleZh}/></h1><p><Localized en={entry.data.description} zh={entry.data.descriptionZh}/></p>{info && <dl class="guide-start"><div><dt><Localized en="You need" zh="需要的基础" /></dt><dd><Localized en={info.need} zh={info.needZh} /></dd></div><div><dt><Localized en="Try this" zh="动手任务" /></dt><dd><Localized en={info.task} zh={info.taskZh} /></dd></div></dl>}</header><details class="learning-toc reading-glass"><summary><Localized en="Contents" zh="目录" /></summary>{lists.map(list=><ul data-lang={list.lang}>{list.headings.filter(h=>h.depth===2).map(h=><li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>)}</details>
 {entry.id==='expert-load-imbalance' && <ExpertLoadLab href="#python-experiment" />}
 {entry.id==='prefill-decode-kv-cache' && <ol class="request-flow reading-glass" aria-label="Request timeline / 请求流程">
   <li><strong><Localized en="Prompt" zh="输入提示" /></strong><span>2,048 tokens</span></li>

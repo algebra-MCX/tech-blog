@@ -19,7 +19,7 @@ const rows = [
   ...guides.map(e => { const section = guideSections.find(s => s.id === e.data.category)!; return { title: e.data.title, titleZh: e.data.titleZh, description: e.data.description, descriptionZh: e.data.descriptionZh, href: `/guides/${e.id}/`, type: 'guide', label: section.en, labelZh: section.zh, project: '', domains: e.data.domains.join('|'), body: (e.body ?? '') + translatedBody(e.id) }; })
 ];
 ---
-<BaseLayout title="Search — Chenxi Ma" description="Search projects, guides, perspectives and working articles in English and Chinese.">
+<BaseLayout title="Search — Chenxi Ma" noindex description="Search projects, guides, perspectives and working articles in English and Chinese.">
   <header class="page-intro shell"><h1><Localized en="Search" zh="搜索" /></h1><p><Localized en="Find a project, a specific problem or an idea. Search works in English and Chinese." zh="查找项目、具体问题或观点，支持中英文搜索。" /></p></header>
   <section class="library-section shell" data-filter-list>
     <label class="search-large reading-glass"><span class="sr-only"><Localized en="Search all content" zh="搜索全部内容" /></span><Icon name="search" /><input type="search" data-filter="query" placeholder="Search / 搜索" autocomplete="off" /></label>

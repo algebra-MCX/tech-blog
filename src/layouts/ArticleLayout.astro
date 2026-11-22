@@ -32,8 +32,13 @@ const parentEn = project?.title ?? guideSection?.en ?? (entry.collection === 'gu
 const parentZh = project?.titleZh ?? guideSection?.zh ?? (entry.collection === 'guides' ? '指南' : '全部文章');
 const projectWriting = project ? (await getCollection('writing', ({ data }) => !data.draft)).filter(item => writingMap[item.id]?.project === project.id).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()) : [];
 const nextArticle = projectWriting[projectWriting.findIndex(item => item.id === entry.id) + 1];
+const articleDetails = {
+  headline: entry.data.title,
+  published: entry.data.publishDate,
+  modified: 'updatedDate' in entry.data ? entry.data.updatedDate : undefined
+};
 ---
-<BaseLayout title={`${entry.data.title} — Chenxi Ma`} description={entry.data.description} image={entry.id === 'moeflow-fixed-capacity' ? '/og-moeflow.png' : undefined} article>
+<BaseLayout title={`${entry.data.title} — Chenxi Ma`} description={entry.data.description} image={entry.id === 'moeflow-fixed-capacity' ? '/og-moeflow.png' : undefined} articleDetails={articleDetails}>
   {entry.collection === 'guides' && <GuideProjectContext guideId={entry.id} position="top" />}
   <article class="article">
     <header class="article-header shell reading-glass">
