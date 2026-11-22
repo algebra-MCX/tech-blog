@@ -13,10 +13,10 @@ const nav = learning ? [
   { href: '/guides/sections/quickstarts/', en: 'Experiments', zh: '最小实验', active: path.includes('quickstarts'), cross: false },
   { href: site.homepage, en: 'Homepage', zh: '个人主页', active: false, cross: true }
 ] : [
+  { href: '/guides/how-to-read/', en: 'Start here', zh: '阅读指南', active: path === '/guides/how-to-read/', cross: false },
   { href: '/', en: 'Selected work', zh: '代表作', active: path === '/', cross: false },
   { href: '/projects/', en: 'Projects', zh: '项目', active: path.startsWith('/projects/'), cross: false },
   { href: '/writing/', en: 'Writing', zh: '文章', active: path.startsWith('/writing/'), cross: false },
-  { href: '/guides/how-to-read/', en: 'Start here', zh: '阅读指南', active: path === '/guides/how-to-read/', cross: false },
   { href: site.homepage, en: 'Homepage', zh: '个人主页', active: false, cross: true }
 ];
 ---
