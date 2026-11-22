@@ -21,28 +21,103 @@
       "permanent": true
     },
     {
-      "source": "/projects/:path*",
-      "destination": "/blog/projects/:path*",
+      "source": "/projects",
+      "destination": "/blog/projects/",
       "permanent": true
     },
     {
-      "source": "/writing/:path*",
-      "destination": "/blog/writing/:path*",
+      "source": "/projects/",
+      "destination": "/blog/projects/",
       "permanent": true
     },
     {
-      "source": "/guides/:path*",
-      "destination": "/blog/guides/:path*",
+      "source": "/projects/:path+",
+      "destination": "/blog/projects/:path+/",
       "permanent": true
     },
     {
-      "source": "/notes/:path*",
-      "destination": "/blog/notes/:path*",
+      "source": "/projects/:path+/",
+      "destination": "/blog/projects/:path+/",
       "permanent": true
     },
     {
-      "source": "/search/:path*",
-      "destination": "/blog/search/:path*",
+      "source": "/writing",
+      "destination": "/blog/writing/",
+      "permanent": true
+    },
+    {
+      "source": "/writing/",
+      "destination": "/blog/writing/",
+      "permanent": true
+    },
+    {
+      "source": "/writing/:path+",
+      "destination": "/blog/writing/:path+/",
+      "permanent": true
+    },
+    {
+      "source": "/writing/:path+/",
+      "destination": "/blog/writing/:path+/",
+      "permanent": true
+    },
+    {
+      "source": "/guides",
+      "destination": "/blog/guides/",
+      "permanent": true
+    },
+    {
+      "source": "/guides/",
+      "destination": "/blog/guides/",
+      "permanent": true
+    },
+    {
+      "source": "/guides/:path+",
+      "destination": "/blog/guides/:path+/",
+      "permanent": true
+    },
+    {
+      "source": "/guides/:path+/",
+      "destination": "/blog/guides/:path+/",
+      "permanent": true
+    },
+    {
+      "source": "/notes",
+      "destination": "/blog/notes/",
+      "permanent": true
+    },
+    {
+      "source": "/notes/",
+      "destination": "/blog/notes/",
+      "permanent": true
+    },
+    {
+      "source": "/notes/:path+",
+      "destination": "/blog/notes/:path+/",
+      "permanent": true
+    },
+    {
+      "source": "/notes/:path+/",
+      "destination": "/blog/notes/:path+/",
+      "permanent": true
+    },
+    {
+      "source": "/search",
+      "destination": "/blog/search/",
+      "permanent": true
+    },
+    {
+      "source": "/search/",
+      "destination": "/blog/search/",
+      "permanent": true
+    },
+    {
+      "source": "/search/:path+",
+      "destination": "/blog/search/:path+/",
+      "permanent": true
+    },
+    {
+      "source": "/search/:path+/",
+      "destination": "/blog/search/:path+/",
       "permanent": true
     }
   ],
