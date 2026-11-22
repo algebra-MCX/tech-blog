@@ -63,6 +63,15 @@ try {
     await namespacePages(destination, section.name);
   }
   await cp('homepage', assembled, { recursive: true });
+  const fontDirectory = join(assembled, 'fonts');
+  await mkdir(fontDirectory);
+  for (const [family, stylesheet] of [
+    ['inter', import.meta.resolve('@fontsource-variable/inter')],
+    ['newsreader', import.meta.resolve('@fontsource-variable/newsreader')]
+  ]) {
+    await cp(new URL(`files/${family}-latin-wght-normal.woff2`, stylesheet), join(fontDirectory, `${family}.woff2`));
+    await cp(new URL('LICENSE', stylesheet), join(fontDirectory, `${family}-license.txt`));
+  }
   const homepage = join(assembled, 'index.html');
   await writeFile(homepage, (await readFile(homepage, 'utf8')).replaceAll('__SITE_ORIGIN__', origin));
   const sitemapParts = ['sitemap-home.xml'];

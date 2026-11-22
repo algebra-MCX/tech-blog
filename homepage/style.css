@@ -255,8 +255,30 @@ h2 { font-size: 28px; }
 }
 @media(prefers-reduced-motion:reduce) { .social-link:not([aria-disabled="true"]):hover { transform: none; } }
 
-/* A softly rounded reading face, with native Chinese sans-serif fallbacks. */
-:root { --sans: "Nunito Sans", "SF Pro Rounded", ui-rounded, -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/inter.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Newsreader Variable";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("fonts/newsreader.woff2") format("woff2");
+}
+:root {
+  --sans: "Inter Variable", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --serif: "Newsreader Variable", "Songti SC", "Noto Serif SC", SimSun, Georgia, serif;
+}
+main :is(h1, h2, h3) {
+  font-family: var(--serif);
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+.bio p, .contribution-list dd p { font-family: var(--serif); }
 body { font-weight: 400; letter-spacing: .005em; }
 h1 { font-weight: 600; letter-spacing: -.035em; }
 h2 { font-weight: 600; letter-spacing: -.025em; }

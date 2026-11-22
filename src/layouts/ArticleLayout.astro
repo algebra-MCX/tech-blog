@@ -99,7 +99,8 @@ const articleDetails = {
     const blocks = [...document.querySelectorAll<HTMLElement>('pre[data-language="mermaid"] > code')];
     if (blocks.length) {
       const { default: mermaid } = await import('mermaid');
-      mermaid.initialize({ startOnLoad: false, theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'neutral', securityLevel: 'strict', fontFamily: 'Nunito Sans, sans-serif' });
+      const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--sans').trim();
+      mermaid.initialize({ startOnLoad: false, theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'neutral', securityLevel: 'strict', fontFamily });
       for (const [index, block] of blocks.entries()) {
         const pre = block.parentElement;
         if (!pre || pre.dataset.rendered) continue;

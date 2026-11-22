@@ -1,5 +1,5 @@
 .portfolio-intro { padding: 58px 0 36px; }
-.portfolio-intro h1 { font-size: clamp(36px, 4.7vw, 48px); max-width: 760px; margin: 0 0 18px; }
+.portfolio-intro h1 { font-size: clamp(36px, 4.7vw, 48px); max-width: 820px; margin: 0 0 18px; }
 .portfolio-intro > p:not(.eyebrow) { max-width: 760px; color: var(--ink-soft); font-size: 21px; }
 .portfolio-links, .study-links { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 17px; color: var(--accent); }
 .portfolio-links a, .study-links a { min-height: 36px; display: inline-flex; align-items: center; }
@@ -39,4 +39,9 @@
   .compact-study { padding: 24px; }
   .portfolio-section-title { align-items: start; flex-direction: column; gap: 4px; }
   .portfolio-intro { padding-top: 40px; }
+}
+
+.portfolio-intro > p:not(.eyebrow), .study-narrative > p:not(.eyebrow),
+.compact-study > p:not(.eyebrow, .evidence-caption), .portfolio-open p:not(.eyebrow) {
+  font-family: var(--serif);
 }
