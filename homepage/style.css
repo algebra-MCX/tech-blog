@@ -383,6 +383,8 @@ main, .bio, .project-copy { min-width: 0; }
   border-top: 1px solid var(--line);
 }
 .top-project h3 { margin: 0; font-size: 24px; }
+.top-project h3 a { display: inline-flex; align-items: center; gap: 10px; }
+.top-project-logo { display: block; object-fit: contain; flex: none; }
 .top-project > p {
   margin: 8px 0 10px;
   color: var(--muted);

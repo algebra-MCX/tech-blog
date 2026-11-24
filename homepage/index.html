@@ -82,7 +82,6 @@
       <div class="bio">
         <p><span data-zh="你好，我是马晨熙，目前是一名大三学生，正在 ">Hi, I'm Chenxi Ma, a third-year undergraduate student currently interning at </span><a href="https://syslab.cs.washington.edu/">UW Systems Lab</a><span data-zh=" 实习，由 "> under the guidance of </span><a href="https://homes.cs.washington.edu/~baris/">Baris Kasikci</a><span data-zh=" 和 "> and </span><a href="https://www.cs.washington.edu/people/faculty/arvind">Arvind Krishnamurthy</a><span data-zh=" 指导。">.</span></p>
         <p data-zh="我的技术兴趣包括推理 Runtime、GPU 调度、混合专家模型，以及分布式推理中的通信与计算。同时，我也对模型架构、Agent Harness、硬件与 Infra 之间的 Co-design 感兴趣。">My technical interests include inference runtimes, GPU scheduling, mixture-of-experts models, and communication and computation in distributed inference. I'm also interested in co-design across model architectures, agent harnesses, hardware, and infrastructure.</p>
-        <p><span data-zh="我是 ">I'm a contributor to </span><a href="https://github.com/vllm-project/vllm">vLLM</a><span data-zh=" 的贡献者，方向是 Model Runner V2 中的 MoE 专家并行、双批次重叠（DBO）和基于 NIXL 的 dispatch。">, working on MoE expert parallelism, dual-batch overlap (DBO), and NIXL-based dispatch in Model Runner V2 (MRV2).</span> <span data-zh="随着 MRV2 架构更新，DBO 将成为默认实现。">With the MRV2 architecture update, DBO will become the default implementation.</span> <span data-zh="我也为 ">I also contribute to </span><a href="https://github.com/sgl-project/sglang">SGLang</a><span data-zh=" 贡献代码，关注 TBO 与专家路由记录的正确性。"> (TBO and expert-routing correctness).</span></p>
         <p class="site-intro">
           <span data-zh="我在">On my </span><a data-blog-link href="/blog/" data-zh="博客">blog</a><span data-zh="分享近期工作、开源贡献与技术思考。">, I share my latest work, open-source contributions, and technical notes.</span>
           <span data-zh="我为刚接触大模型的读者搭建了"> I built the </span><a data-learning-link href="/learning/" data-zh="学习">learning site</a><span data-zh="，从基础概念和动手实验开始。"> for readers new to LLMs, with foundational concepts and hands-on experiments.</span>
@@ -131,8 +130,8 @@
       </div>
       <div class="top-projects">
         <section class="top-project" aria-labelledby="vllm">
-          <h3 id="vllm"><a href="https://github.com/vllm-project/vllm">vLLM</a></h3>
-          <p data-zh="我参与 MoE 专家并行开发，修复微批次重叠时的专家路由记录和 NIXL dispatch 问题。">I work on MoE expert parallelism, keeping routing records and NIXL dispatch correct when microbatches overlap.</p>
+          <h3 id="vllm"><a href="https://github.com/vllm-project/vllm"><img class="top-project-logo" src="assets/vllm-logo.svg" width="32" height="32" alt="">vLLM</a></h3>
+          <p data-zh="我为 Model Runner V2 的 MoE 专家并行贡献代码，聚焦双批次重叠（DBO）中的专家路由记录和基于 NIXL 的 dispatch 修复。">I contribute to MoE expert parallelism in Model Runner V2, focusing on expert-routing records under dual-batch overlap (DBO) and fixes to NIXL-based dispatch.</p>
           <details class="contribution-details">
             <summary><span data-zh="查看贡献">Read more</span></summary>
               <dl class="research-list contribution-list">
@@ -186,8 +185,8 @@
           </details>
         </section>
         <section class="top-project" aria-labelledby="sglang">
-          <h3 id="sglang"><a href="https://github.com/sgl-project/sglang">SGLang</a></h3>
-          <p data-zh="我参与专家路由的正确性修复，确保批次重叠时每个 token 的路由结果写入正确的行。">I work on expert-routing correctness, making sure overlapping batches record each token’s expert in the right row.</p>
+          <h3 id="sglang"><a href="https://github.com/sgl-project/sglang"><img class="top-project-logo" src="assets/sglang-logo.svg" width="32" height="32" alt="">SGLang</a></h3>
+          <p data-zh="我修复双批次重叠（TBO）中的专家路由记录问题，确保每个 token 的路由结果写入正确的行。">I fix expert-routing records under two-batch overlap (TBO) so each token’s routing results are written to the right row.</p>
           <details class="contribution-details">
             <summary><span data-zh="查看贡献">Read more</span></summary>
               <dl class="research-list contribution-list">
