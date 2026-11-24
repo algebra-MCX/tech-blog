@@ -16,12 +16,6 @@
   let language = "en";
   function applyLanguage(nextLanguage) {
     language = nextLanguage === "zh" ? "zh" : "en";
-    try { localStorage.setItem("mcx-language-v2", language); } catch {}
-    const pageUrl = new URL(location.href);
-    if (pageUrl.searchParams.has("lang")) {
-      pageUrl.searchParams.set("lang", language);
-      history.replaceState(null, "", pageUrl);
-    }
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
     translations.forEach(item => { item.node.textContent = item[language]; });
     translatedAttributes.forEach(item => {
@@ -36,13 +30,15 @@
     languageButton.lang = language === "en" ? "zh-CN" : "en";
     languageButton.setAttribute("aria-label", language === "en" ? "Switch to Chinese" : "切换至英文");
   }
-  const requestedLanguage = new URLSearchParams(location.search).get("lang");
-  let savedLanguage;
-  try { savedLanguage = localStorage.getItem("mcx-language-v2"); } catch {}
-  applyLanguage(requestedLanguage === "en" || requestedLanguage === "zh" ? requestedLanguage : savedLanguage);
+  applyLanguage(new URLSearchParams(location.search).get("lang"));
   languageButton.hidden = false;
   languageButton.addEventListener("click", () => {
-    applyLanguage(language === "en" ? "zh" : "en");
+    const nextLanguage = language === "en" ? "zh" : "en";
+    const pageUrl = new URL(location.href);
+    if (nextLanguage === "zh") pageUrl.searchParams.set("lang", "zh");
+    else pageUrl.searchParams.delete("lang");
+    history.replaceState(null, "", pageUrl);
+    applyLanguage(nextLanguage);
   });
   function configuredUrl(value) {
     try {
