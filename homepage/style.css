@@ -408,3 +408,6 @@ main, .bio, .project-copy { min-width: 0; }
 .publication p strong { color: var(--ink); }
 .publication-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 8px; }
 .publication-links a { display: inline-flex; align-items: center; min-height: 44px; }
+
+main > .section:first-child { border-top: 0; }
+main > .section + .profile { border-top: 1px solid var(--line); }

@@ -83,7 +83,7 @@
   const lens = nav?.querySelector(".nav-lens");
   if (!nav || !lens) return;
   const links = [...nav.querySelectorAll("a")];
-  let selected = links.find(link => link.getAttribute("href") === (window.location.hash || "#about")) || links[0];
+  let selected = links.find(link => link.getAttribute("href") === window.location.hash) || links[0];
   let lensTarget = selected;
   let lensFrame = 0;
   let current = null;
@@ -192,7 +192,7 @@
     refreshLens();
   }
   function selectFromHash() {
-    const hash = window.location.hash || "#about";
+    const hash = window.location.hash;
     const section = document.getElementById(hash.slice(1))?.closest("section[id]");
     const sectionHash = section ? `#${section.id}` : hash;
     selected = links.find(link => link.getAttribute("href") === hash)
