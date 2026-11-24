@@ -402,3 +402,9 @@ main, .bio, .project-copy { min-width: 0; }
 @media (max-width: 620px) {
   .top-projects { grid-template-columns: 1fr; gap: 14px; }
 }
+
+.publication h3 { margin: 0 0 6px; font-size: 23px; line-height: 1.4; }
+.publication p { margin: 4px 0; color: var(--muted); font-size: 16px; }
+.publication p strong { color: var(--ink); }
+.publication-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 8px; }
+.publication-links a { display: inline-flex; align-items: center; min-height: 44px; }
