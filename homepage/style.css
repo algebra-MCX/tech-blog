@@ -446,3 +446,39 @@ main, .bio, .project-copy { min-width: 0; }
 .publication p strong { color: var(--ink); }
 .publication-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 8px; }
 .publication-links a { display: inline-flex; align-items: center; min-height: 44px; }
+
+.resource-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 420px;
+  margin: 17px 0 18px;
+}
+.resource-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 55px;
+  padding: 8px 12px;
+  border-radius: 15px;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+.resource-link.glass-control:hover { text-decoration: none; border-color: var(--link); }
+.resource-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--lens-fill);
+  color: var(--link);
+}
+.resource-icon svg { width: 19px; height: 19px; }
+.resource-arrow { margin-inline-start: auto; color: var(--link); }
+@media (max-width: 380px) {
+  .resource-link { padding-inline: 9px; }
+  .resource-arrow { display: none; }
+}
