@@ -73,7 +73,7 @@
       <a href="#about" data-zh="关于我">About me</a>
       <a data-blog-link href="/blog/" data-zh="博客">Blog</a>
       <a data-learning-link href="/learning/" data-zh="学习">Learning</a>
-      <a href="#contributions" data-zh="贡献与致谢">Contributions</a>
+      <a href="#projects" data-zh="代表项目">Top Projects</a>
     </nav>
     <button class="language-toggle glass-control" type="button" lang="zh-CN" aria-label="Switch to Chinese" hidden>中文</button>
   </header>
@@ -125,82 +125,90 @@
 
     <section class="section contributions" id="contributions" aria-labelledby="contributions-title">
       <span id="projects" aria-hidden="true"></span>
-      <div class="section-title"><h2 id="contributions-title" data-zh="贡献与致谢">Contributions &amp; Thanks</h2><a class="all-link" href="https://github.com/search?q=is%3Apr+author%3Aalgebra-MCX+is%3Apublic+-user%3Aalgebra-MCX&amp;type=pullrequests" data-zh="全部 PR ↗">All PRs ↗</a></div>
-      <p class="section-intro" data-zh="我为 vLLM 和 SGLang 贡献代码，关注 MoE 专家并行、批次重叠、专家路由记录、NIXL dispatch 和 KV cache。以下收录已合并和进行中的工作。感谢在这些工作中给予帮助的伙伴。">I contribute to vLLM and SGLang, with a focus on MoE expert parallelism, batch overlap, expert-routing records, NIXL dispatch, and KV caches. Selected merged and ongoing contributions are listed below. Thanks to everyone who helped along the way.</p>
-      <nav class="contribution-nav" aria-label="Open-source projects" data-zh-label="开源项目">
-        <a class="glass-control" href="#vllm">vLLM</a>
-        <a class="glass-control" href="#sglang">SGLang</a>
-      </nav>
-      <section class="contribution-group" aria-labelledby="vllm">
-        <h3 id="vllm">vLLM</h3>
-        <dl class="research-list contribution-list">
-          <div>
-            <dt><a href="https://github.com/vllm-project/vllm/pull/64086">vLLM #64086 · Preserve invalid expert IDs in NIXL round-robin mapping</a></dt>
-            <dd>
-              <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
-              <p data-zh="修复 NIXL 专家重映射把填充标记 −1 误当成有效专家的问题，并添加覆盖 dispatch 和 combine 的回归测试。">Keep the padding sentinel −1 from being remapped to a real expert in NIXL, with regression tests covering dispatch and combine.</p>
-            </dd>
-          </div>
-          <div>
-            <dt><a href="https://github.com/vllm-project/vllm/pull/63476">vLLM #63476 · Report the first failed DBO microbatch</a></dt>
-            <dd>
-              <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
-              <p data-zh="报告最先记录的 microbatch 异常，避免后续错误掩盖原始问题。">Report the first recorded microbatch failure so that follow-on errors do not hide the original problem.</p>
-              <div class="contribution-credit"><span data-zh="感谢帮助：">Thanks for the help: </span><a href="https://github.com/LucasWilkinson">@LucasWilkinson</a></div>
-            </dd>
-          </div>
-          <div>
-            <dt><a href="https://github.com/vllm-project/vllm/pull/63372">vLLM #63372 · Keep routed-expert rows of every DBO microbatch</a></dt>
-            <dd>
-              <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
-              <p data-zh="按各 microbatch 的 token 偏移保存专家路由，修复路由结果相互覆盖的问题。">Preserve expert routing at each microbatch's token offset, fixing overwritten routing results.</p>
-              <p><a data-blog-link data-blog-path="writing/vllm-dbo-correctness/" href="/blog/writing/vllm-dbo-correctness/" data-zh="故障分析与回归测试">Failure analysis and regression tests</a></p>
-              <div class="contribution-credit"><span data-zh="感谢帮助：">Thanks for the help: </span><a href="https://github.com/aoshen02">@aoshen02</a>, <a href="https://github.com/Ronald1995">@Ronald1995</a></div>
-              <div class="contribution-credit"><span data-zh="共同作者（重构与补充测试）：">Co-author (refactor &amp; additional tests): </span><a href="https://github.com/Ronald1995">@Ronald1995</a></div>
-            </dd>
-          </div>
-          <div>
-            <dt><a href="https://github.com/vllm-project/vllm/pull/63485">vLLM #63485 · Size NIXL dispatch from synchronized execution slices</a></dt>
-            <dd>
-              <span class="contribution-status contribution-status--pending" data-zh="进行中">In progress</span>
-              <p data-zh="按同步后的 DP / SP 执行规模设置 NIXL dispatch 容量，减少小批次下的冗余工作。">Size NIXL dispatch from synchronized DP / SP execution sizes to reduce unnecessary work for small batches.</p>
-            </dd>
-          </div>
-          <div>
-            <dt><a href="https://github.com/vllm-project/vllm/pull/63556">vLLM #63556 · Stage imbalanced MLA decode rows for FULL microbatch graphs</a></dt>
-            <dd>
-              <span class="contribution-status contribution-status--pending" data-zh="进行中">In progress</span>
-              <p data-zh="在 DP 负载不均时，将符合条件的 MLA decode token 分布到已捕获的 microbatch 区域，并在采样前恢复逻辑顺序。">Distribute eligible MLA decode tokens across captured microbatch regions under uneven DP loads, then restore logical order before sampling.</p>
-            </dd>
-          </div>
-          <div>
-            <dt><a href="https://github.com/vllm-project/vllm/pull/63567">vLLM #63567 · Support routed-expert returns with decode staging</a></dt>
-            <dd>
-              <span class="contribution-status contribution-status--pending" data-zh="草稿">Draft</span>
-              <p data-zh="基于 #63556，在 decode staging 后按逻辑 token 顺序返回专家路由，并在捕获缓冲区复用后保持路由快照有效。">Build on #63556 to return expert-routing records in logical token order after decode staging, with snapshots that remain valid when capture buffers are reused.</p>
-            </dd>
-          </div>
-        </dl>
-      </section>
-      <section class="contribution-group" aria-labelledby="sglang">
-        <h3 id="sglang">SGLang</h3>
-        <dl class="research-list contribution-list">
-          <div>
-            <dt><a href="https://github.com/sgl-project/sglang/pull/48666">SGLang #48666 · Capture routed experts at each TBO child's parent rows</a></dt>
-            <dd>
-              <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
-              <p data-zh="将 TBO 子批次的专家路由写入父批次中对应的 token 行，修复共享缓冲区中的记录覆盖，并对齐非 EP 数据并行场景下的行偏移。">Map each TBO child's expert-routing records to its rows in the parent batch, preventing shared-buffer overwrites and aligning row offsets for non-EP data parallelism.</p>
-            </dd>
-          </div>
-          <div>
-            <dt><a href="https://github.com/sgl-project/sglang/pull/48691">SGLang #48691 · Read DP-local routed-expert rows for every A2A backend</a></dt>
-            <dd>
-              <span class="contribution-status contribution-status--pending" data-zh="进行中">In progress</span>
-              <p data-zh="在 DP attention 下，统一各 all-to-all 后端对 DP 本地专家路由记录的读取方式，修复 NIXL 在非零 DP rank 上返回错误专家 ID 的问题。">Read DP-local expert-routing records consistently across all-to-all backends under DP attention, fixing incorrect expert IDs returned by NIXL on nonzero DP ranks.</p>
-            </dd>
-          </div>
-        </dl>
-      </section>
+      <div class="section-title">
+        <h2 id="contributions-title" data-zh="代表项目">Top Projects</h2>
+        <a class="all-link" href="https://github.com/search?q=is%3Apr+author%3Aalgebra-MCX+is%3Apublic+-user%3Aalgebra-MCX&amp;type=pullrequests" data-zh="全部 PR ↗">All PRs ↗</a>
+      </div>
+      <div class="top-projects">
+        <section class="top-project" aria-labelledby="vllm">
+          <h3 id="vllm"><a href="https://github.com/vllm-project/vllm">vLLM</a></h3>
+          <p data-zh="我参与 MoE 专家并行开发，修复微批次重叠时的专家路由记录和 NIXL dispatch 问题。">I work on MoE expert parallelism, keeping routing records and NIXL dispatch correct when microbatches overlap.</p>
+          <details class="contribution-details">
+            <summary><span data-zh="查看贡献">Read more</span></summary>
+              <dl class="research-list contribution-list">
+                <div>
+                  <dt><a href="https://github.com/vllm-project/vllm/pull/64086">vLLM #64086 · Preserve invalid expert IDs in NIXL round-robin mapping</a></dt>
+                  <dd>
+                    <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
+                    <p data-zh="修复 NIXL 专家重映射把填充标记 −1 误当成有效专家的问题，并添加覆盖 dispatch 和 combine 的回归测试。">Keep the padding sentinel −1 from being remapped to a real expert in NIXL, with regression tests covering dispatch and combine.</p>
+                  </dd>
+                </div>
+                <div>
+                  <dt><a href="https://github.com/vllm-project/vllm/pull/63476">vLLM #63476 · Report the first failed DBO microbatch</a></dt>
+                  <dd>
+                    <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
+                    <p data-zh="报告最先记录的 microbatch 异常，避免后续错误掩盖原始问题。">Report the first recorded microbatch failure so that follow-on errors do not hide the original problem.</p>
+                    <div class="contribution-credit"><span data-zh="感谢帮助：">Thanks for the help: </span><a href="https://github.com/LucasWilkinson">@LucasWilkinson</a></div>
+                  </dd>
+                </div>
+                <div>
+                  <dt><a href="https://github.com/vllm-project/vllm/pull/63372">vLLM #63372 · Keep routed-expert rows of every DBO microbatch</a></dt>
+                  <dd>
+                    <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
+                    <p data-zh="按各 microbatch 的 token 偏移保存专家路由，修复路由结果相互覆盖的问题。">Preserve expert routing at each microbatch's token offset, fixing overwritten routing results.</p>
+                    <p><a data-blog-link data-blog-path="writing/vllm-dbo-correctness/" href="/blog/writing/vllm-dbo-correctness/" data-zh="故障分析与回归测试">Failure analysis and regression tests</a></p>
+                    <div class="contribution-credit"><span data-zh="感谢帮助：">Thanks for the help: </span><a href="https://github.com/aoshen02">@aoshen02</a>, <a href="https://github.com/Ronald1995">@Ronald1995</a></div>
+                    <div class="contribution-credit"><span data-zh="共同作者（重构与补充测试）：">Co-author (refactor &amp; additional tests): </span><a href="https://github.com/Ronald1995">@Ronald1995</a></div>
+                  </dd>
+                </div>
+                <div>
+                  <dt><a href="https://github.com/vllm-project/vllm/pull/63485">vLLM #63485 · Size NIXL dispatch from synchronized execution slices</a></dt>
+                  <dd>
+                    <span class="contribution-status contribution-status--pending" data-zh="进行中">In progress</span>
+                    <p data-zh="按同步后的 DP / SP 执行规模设置 NIXL dispatch 容量，减少小批次下的冗余工作。">Size NIXL dispatch from synchronized DP / SP execution sizes to reduce unnecessary work for small batches.</p>
+                  </dd>
+                </div>
+                <div>
+                  <dt><a href="https://github.com/vllm-project/vllm/pull/63556">vLLM #63556 · Stage imbalanced MLA decode rows for FULL microbatch graphs</a></dt>
+                  <dd>
+                    <span class="contribution-status contribution-status--pending" data-zh="进行中">In progress</span>
+                    <p data-zh="在 DP 负载不均时，将符合条件的 MLA decode token 分布到已捕获的 microbatch 区域，并在采样前恢复逻辑顺序。">Distribute eligible MLA decode tokens across captured microbatch regions under uneven DP loads, then restore logical order before sampling.</p>
+                  </dd>
+                </div>
+                <div>
+                  <dt><a href="https://github.com/vllm-project/vllm/pull/63567">vLLM #63567 · Support routed-expert returns with decode staging</a></dt>
+                  <dd>
+                    <span class="contribution-status contribution-status--pending" data-zh="草稿">Draft</span>
+                    <p data-zh="基于 #63556，在 decode staging 后按逻辑 token 顺序返回专家路由，并在捕获缓冲区复用后保持路由快照有效。">Build on #63556 to return expert-routing records in logical token order after decode staging, with snapshots that remain valid when capture buffers are reused.</p>
+                  </dd>
+                </div>
+              </dl>
+          </details>
+        </section>
+        <section class="top-project" aria-labelledby="sglang">
+          <h3 id="sglang"><a href="https://github.com/sgl-project/sglang">SGLang</a></h3>
+          <p data-zh="我参与专家路由的正确性修复，确保批次重叠时每个 token 的路由结果写入正确的行。">I work on expert-routing correctness, making sure overlapping batches record each token’s expert in the right row.</p>
+          <details class="contribution-details">
+            <summary><span data-zh="查看贡献">Read more</span></summary>
+              <dl class="research-list contribution-list">
+                <div>
+                  <dt><a href="https://github.com/sgl-project/sglang/pull/48666">SGLang #48666 · Capture routed experts at each TBO child's parent rows</a></dt>
+                  <dd>
+                    <span class="contribution-status" data-zh="已合并到 main">Merged into main</span>
+                    <p data-zh="将 TBO 子批次的专家路由写入父批次中对应的 token 行，修复共享缓冲区中的记录覆盖，并对齐非 EP 数据并行场景下的行偏移。">Map each TBO child's expert-routing records to its rows in the parent batch, preventing shared-buffer overwrites and aligning row offsets for non-EP data parallelism.</p>
+                  </dd>
+                </div>
+                <div>
+                  <dt><a href="https://github.com/sgl-project/sglang/pull/48691">SGLang #48691 · Read DP-local routed-expert rows for every A2A backend</a></dt>
+                  <dd>
+                    <span class="contribution-status contribution-status--pending" data-zh="进行中">In progress</span>
+                    <p data-zh="在 DP attention 下，统一各 all-to-all 后端对 DP 本地专家路由记录的读取方式，修复 NIXL 在非零 DP rank 上返回错误专家 ID 的问题。">Read DP-local expert-routing records consistently across all-to-all backends under DP attention, fixing incorrect expert IDs returned by NIXL on nonzero DP ranks.</p>
+                  </dd>
+                </div>
+              </dl>
+          </details>
+        </section>
+      </div>
     </section>
 
   </main>

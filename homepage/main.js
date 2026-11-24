@@ -74,29 +74,13 @@
     link.removeAttribute("title");
     link.removeAttribute("role");
   });
-  const contributionLinks = [...document.querySelectorAll(".contribution-nav a")];
-  function updateContributionNavigation() {
-    const selected = contributionLinks.find(link => link.hash === location.hash) ?? contributionLinks[0];
-    contributionLinks.forEach(link => {
-      const active = link === selected;
-      const group = document.getElementById(link.hash.slice(1))?.closest(".contribution-group");
-      if (group) group.hidden = !active;
-      if (active) link.setAttribute("aria-current", "location");
-      else link.removeAttribute("aria-current");
-    });
+  function openLinkedProject() {
+    const project = document.getElementById(location.hash.slice(1))?.closest(".top-project");
+    const details = project?.querySelector("details");
+    if (details) details.open = true;
   }
-  contributionLinks.forEach(link => {
-    link.addEventListener("click", event => {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
-      if (link.hash === location.hash) return;
-      history.pushState(null, "", link.hash);
-      // Update both navigation bars without triggering a scroll to the old anchor.
-      window.dispatchEvent(new Event("hashchange"));
-    });
-  });
-  updateContributionNavigation();
-  window.addEventListener("hashchange", updateContributionNavigation);
+  openLinkedProject();
+  window.addEventListener("hashchange", openLinkedProject);
 
   const portrait = document.querySelector(".portrait");
   if (portrait) {
